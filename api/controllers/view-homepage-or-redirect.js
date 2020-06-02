@@ -26,10 +26,18 @@ module.exports = {
   fn: async function () {
 
     if (this.req.me) {
-      throw {redirect:'/welcome'};
+      if (this.req.me.isSuperAdmin) {
+        throw { redirect: '/admin/dashboard' };
+      } else if (this.req.me.isSchoolAdmin) {
+        throw { redirect: '/school/dashboard' };
+      } else {
+        throw { redirect: '/user/apply' };
+      }
+    } else {
+      throw { redirect: '/login' };
     }
 
-    return {};
+    // return {};
 
   }
 

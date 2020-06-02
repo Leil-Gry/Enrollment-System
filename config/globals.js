@@ -50,3 +50,14 @@ module.exports.globals = {
   sails: true,
 
 };
+
+
+global.constants = {
+  // Application: status
+  APPLICATION_STATUS_EDITING: 1,
+  APPLICATION_STATUS_SUBMITTED: 2,
+  APPLICATION_STATUS_CHECKED: 3,
+  APPLICATION_STATUS_RECOMMENDED: 4,
+  APPLICATION_STATUS_EXAMED: 11,
+  APPLICATION_STATUS_ADMITTED: 12
+};

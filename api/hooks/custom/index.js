@@ -41,12 +41,6 @@ module.exports = function defineCustomHook(sails) {
         }
 
         let problems = [];
-        if (sails.config.custom.stripeSecret === undefined) {
-          problems.push('No `sails.config.custom.stripeSecret` was configured.');
-        }
-        if (sails.config.custom.stripePublishableKey === undefined) {
-          problems.push('No `sails.config.custom.stripePublishableKey` was configured.');
-        }
         if (sails.config.custom.mailgunSecret === undefined) {
           problems.push('No `sails.config.custom.mailgunSecret` was configured.');
         }
