@@ -17,19 +17,11 @@ module.exports.bootstrap = async function() {
 
   // Load JSON data
   global.jsonData = global.jsonData || {};
-<<<<<<< HEAD
   global.jsonData.schools = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../assets/json/schools.json')).toString().replace(/\t|\n| +/g, ''));
   global.jsonData.nations = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../assets/json/nations.json')).toString());
   global.jsonData.province = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../assets/json/province.json')).toString());
   global.jsonData.city = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../assets/json/city.json')).toString());
   global.jsonData.intention = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../assets/json/intention.json')).toString());
-=======
-  global.jsonData.schools = fs.readFileSync(path.resolve(__dirname, '../assets/json/schools.json'));
-  global.jsonData.nations = fs.readFileSync(path.resolve(__dirname, '../assets/json/nations.json'));
-  global.jsonData.province = fs.readFileSync(path.resolve(__dirname, '../assets/json/province.json'));
-  global.jsonData.city = fs.readFileSync(path.resolve(__dirname, '../assets/json/city.json'));
-  global.jsonData.intention = fs.readFileSync(path.resolve(__dirname, '../assets/json/intention.json'));
->>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
 
 
   // This bootstrap version indicates what version of fake data we're dealing with here.

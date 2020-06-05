@@ -23,14 +23,6 @@ module.exports = {
       type: 'string'
     },
 
-<<<<<<< HEAD
-=======
-    school: {
-      type: 'string',
-      required: true
-    },
-
->>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     name: {
       type: 'string',
       required: true
@@ -118,14 +110,11 @@ module.exports = {
       required: true
     },
 
-<<<<<<< HEAD
     intentType: {
       type: 'string',
       required: true
     },
 
-=======
->>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     intention1:{
       type: 'string',
       required: true
