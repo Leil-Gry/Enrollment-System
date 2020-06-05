@@ -13,7 +13,7 @@ parasails.registerPage('userApply', {
     photo: '',
     showImg: false,  // must use v-if, otherwise getting photo file returns 404
     imageUrl: '',
-    showPhoto: false,
+    uploadPhoto: false,
 
     formData:{
       name:'',
@@ -40,11 +40,11 @@ parasails.registerPage('userApply', {
       resume:'',
       volunteeringExperience:'',
       rewardsAndPunishment:'',
-      school:'杭州电子科技大学'
+      school:'',
+      intentType:''
     },
+
     formTitle:'',
-    status:Number,
-    disabledForm: false,
     showDownload: false,
     school: '',
     schools: [],
@@ -55,11 +55,20 @@ parasails.registerPage('userApply', {
     cities:[],
     regions: [],
     city: [],
+
+    status:Number,
     allApplyStatus: constants.APPLICATION_STATUS,
-    ifWorkedInTheCYL: IFWORKEDINTHECYL,
-    ifObeyTheAdjustment: IFOBEYTHEADJUSTMENT,
-    politics: POLITICS,
-    education: EDUCATION,
+    statusInfo:constants.APPLICATION_STATUS_INFO,
+
+    intentTypes: constants.INTENTTYPES,
+    ifWorkedInTheCYL: constants.IFWORKEDINTHECYL,
+    ifObeyTheAdjustment: constants.IFOBEYTHEADJUSTMENT,
+    politics: constants.POLITICS,
+    education: constants.EDUCATION,
+
+    showConfirmModel:false,
+    showSubmitBtn:false,
+    disabledForm: false,
     saveSuccess: false,
     submitSuccess:false,
 
@@ -85,6 +94,7 @@ parasails.registerPage('userApply', {
       domicileAddr: { required: true },
       phone: { required: true,maxLength:20 },
       email: { required: true,isEmail:true },
+      intentType: { required: true },
       intention1: { required: true },
       intention2: { required: true,differentWith: 'intention1'},
       homeAddressAndPhone: { required: true }
@@ -103,7 +113,7 @@ parasails.registerPage('userApply', {
         // });
 
       }
-    }
+    },
   },
 
   // computed: {
@@ -136,14 +146,13 @@ parasails.registerPage('userApply', {
       autoclose: 1,//选择后自动关闭
     };
     $('.birthDate').datetimepicker(dateMonthConfig);
-    this.statusControl();
   },
 
   //  ╦╔╗╔╔╦╗╔═╗╦═╗╔═╗╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
-    submittedForm: async function() {
+    createApply: async function() {
       this.saveForm();
       // if(this.isEmailVerificationRequired) {
       //   // If email confirmation is enabled, show the success message.
@@ -161,17 +170,24 @@ parasails.registerPage('userApply', {
     getApplyForm: async function() {
       let form = await Cloud.getApply.with();
       if(form) {
-        this.showPhoto = true;
         this.formData = form;
+        this.photo = form.photo;
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
+        this.disabledForm = form.status > 1?true:false;
+        if(!this.disabledForm) {
+          this.uploadPhoto = true;
+          this.showSubmitBtn = true;
+        }
       } else {
-        this.showPhoto = false;
+        this.uploadPhoto = false;
         let localForm = JSON.parse(localStorage.getItem('applyForm'));
         this.formData = localForm?localForm:this.formData;
         if(localForm){
           this.getCityRegion(localForm.domicileProvince,localForm.domicileCity,localForm.domicileAddr);
         }
       }
+      this.status = form.status;
+      this.statusControl();
     },
 
     getCityRegion: async function(province,city,region) {
@@ -183,15 +199,28 @@ parasails.registerPage('userApply', {
       }
     },
 
+    // 保存报表到本地
     saveForm: async function() {
       localStorage.setItem('applyForm',JSON.stringify(this.formData));
-      this.ShowTip('保存成功', 'success');
+      $('select').blur();
     },
 
-    submitApply: async function() {
+    // 用户点击后，进行输入校验。校验成功跳出提示弹窗。
+    submitCheck: async function() {
       this.saveForm();
-      await Cloud.createApply.with(this.formData);
-      this.cloudSuccess = true;
+      if(!this.imageUrl) {
+        ShowTip('请先上传照片！','danger');
+        return;
+      }
+      this.$refs.form.submitApply().then((res) => {
+        this.showConfirmModel = res;
+      });
+    },
+
+    // 用户确认提交，数据发送到服务端
+    submitApply: async function() {
+      await Cloud.submit.with(this.formData);
+      this.showConfirmModel = false;
     },
 
     getCities: async function() {
@@ -210,17 +239,12 @@ parasails.registerPage('userApply', {
     getRegions: async function() {
       this.regions = [];
       this.formData.domicileAddr = '';
-      console.log(this.formData.domicileCity);
       let city = this.formData.domicileCity;
       this.regions = this.cityRegions[city];
     },
 
     statusControl: async function() {
-      // let apply = await Cloud.getApply.with()
-      // console.log(apply)
-      // this.status = apply.status
-      this.status = 1;
-      this.formTitle = FORMTITLE[this.status];
+      this.formTitle = this.statusInfo[this.status];
       if(this.status === constants.APPLICATION_STATUS_EDITING){
         this.disabledForm = false;
       } else {
@@ -228,16 +252,13 @@ parasails.registerPage('userApply', {
       }
     },
 
-    ShowTip(tip, type) {
-      var $tip = $('#tip');
-      if ($tip.length === 0) {
-      // 设置样式，也可以定义在css文件中
-        $tip = $('<span id="tip" style="width:50%;position:fixed;top:50px;left: 50%;z-index:9999;height: 50px;padding: 0 20px;line-height: 50px;"></span>');
-        $('body').append($tip);
+    judge:async function () {
+      if(this.disabledForm) {
+        ShowTip('报名表已不能修改！', 'danger');
+      } else if(!this.uploadPhoto) {
+        ShowTip('保存报名表后才能上传图片！', 'danger');
       }
-      $tip.stop(true).prop('class', 'alert alert-' + type).text(tip).css('margin-left', -$tip.outerWidth() / 2).fadeIn(200).delay(2000).fadeOut(200);
-    }
-
+    },
 
   }
 });
