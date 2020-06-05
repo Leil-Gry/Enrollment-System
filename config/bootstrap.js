@@ -72,22 +72,15 @@ module.exports.bootstrap = async function() {
   await Batch.createEach([{
     name: '2020'
   }]);
-<<<<<<< HEAD
   // await School.createEach([{
   //   name: '杭州电子科技大学'
   // }]);
-=======
-  await School.createEach([{
-    name: '杭州电子科技大学'
-  }]);
->>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
   await User.createEach([
     { emailAddress: 'admin@example.com', fullName: 'Web admin', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('abc123') },
     // { emailAddress: 'admin@hdu.com', fullName: 'Hdu admin', isSchoolAdmin: true, school: 1, password: await sails.helpers.passwords.hashPassword('abc123') },
     { emailAddress: '1@a.com', fullName: '张三', password: await sails.helpers.passwords.hashPassword('abc123') },
     { emailAddress: '2@a.com', fullName: '李四', password: await sails.helpers.passwords.hashPassword('abc123') },
   ]);
-<<<<<<< HEAD
   for (let school of global.jsonData.schools) {
     let created = await School.createEach([{
       name: school.name
@@ -103,11 +96,6 @@ module.exports.bootstrap = async function() {
   await Application.createEach([{
     // status: constants.APPLICATION_STATUS_SUBMITTED,
     user: 2,
-=======
-  await Application.createEach([{
-    // status: constants.APPLICATION_STATUS_SUBMITTED,
-    user: 3,
->>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     batch: 1,
     school: 1,
     name: '张三',
@@ -127,10 +115,7 @@ module.exports.bootstrap = async function() {
     phone: '13900001111',
     email: '120987666@qq.com',
     homeAddressAndPhone: '杭州市杭州经济开发区白杨街道2号大街1158号',
-<<<<<<< HEAD
     intentType: '水利',
-=======
->>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     intention1: '温州市',
     intention2: '洞头县',
     obeyTheAdjustment: true,
