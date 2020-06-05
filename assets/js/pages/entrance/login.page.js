@@ -8,6 +8,8 @@ parasails.registerPage('login', {
 
     // Form data
     formData: {
+      emailAddress: '1@a.com',
+      password: 'abc123',
       rememberMe: true,
     },
 

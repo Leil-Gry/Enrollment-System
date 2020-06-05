@@ -50,15 +50,17 @@ module.exports = {
     });
 
     // Send recovery email
-    await sails.helpers.sendTemplateEmail.with({
-      to: inputs.emailAddress,
-      subject: 'Password reset instructions',
-      template: 'email-reset-password',
-      templateData: {
-        fullName: userRecord.fullName,
-        token: token
-      }
-    });
+    await AuthService.sendPasswordResetEmail(inputs.emailAddress, token);
+    // await sails.helpers.sendTemplateEmail.with({
+    //   to: inputs.emailAddress,
+    //   subject: 'Password reset instructions',
+    //   template: 'email-reset-password',
+    //   templateData: {
+    //     fullName: userRecord.fullName,
+    //     token: token
+    //   }
+    // });
+
 
   }
 

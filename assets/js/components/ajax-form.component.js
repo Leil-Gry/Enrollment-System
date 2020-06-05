@@ -94,7 +94,7 @@ parasails.registerComponent('ajaxForm', {
     if (this.formRules) {
       var SUPPORTED_RULES = [
         'required', 'isEmail', 'isIn', 'is', 'minLength', 'maxLength',
-        'sameAs', 'isHalfwayDecentPassword', 'custom'
+        'sameAs','differentWith', 'isHalfwayDecentPassword', 'custom'
       ];
       for (let fieldName in this.formRules) {
         for (let ruleName in this.formRules[fieldName]) {
@@ -259,6 +259,13 @@ parasails.registerComponent('ajaxForm', {
               let otherFieldValue = formData[otherFieldName];
               violation = (
                 otherFieldValue !== fieldValue
+              );
+            } else if (ruleName === 'differentWith' && ruleRhs !== '' && _.isString(ruleRhs)) {
+              // ® Must match the value in another field
+              let otherFieldName = ruleRhs;
+              let otherFieldValue = formData[otherFieldName];
+              violation = (
+                otherFieldValue === fieldValue
               );
             } else if (ruleName === 'isHalfwayDecentPassword' && (ruleRhs === true || ruleRhs === false)) {
               // ® Must be a halfway-decent password
