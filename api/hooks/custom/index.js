@@ -24,7 +24,7 @@ module.exports = function defineCustomHook(sails) {
 
         let missingFeatureText = isMissingStripeConfig && isMissingMailgunConfig ? 'billing and email' : isMissingStripeConfig ? 'billing' : 'email';
         let suffix = '';
-        if (_.contains(['silly'], sails.config.log.level)) {
+        if (_.includes(['silly'], sails.config.log.level)) {
           suffix =
 `
 > Tip: To exclude sensitive credentials from source control, use:
@@ -182,6 +182,11 @@ will be disabled and/or hidden in the UI.
               throw new Error('Cannot attach logged-in user as `req.me` because this property already exists!  (Is it being attached somewhere else?)');
             }
             req.me = loggedInUser;
+
+            var currentBatch = await Batch.find().sort('name desc');
+            if (currentBatch && currentBatch.length > 0) {
+              req.currentBatch = currentBatch[0];
+            }
 
             // If our "lastSeenAt" attribute for this user is at least a few seconds old, then set it
             // to the current timestamp.

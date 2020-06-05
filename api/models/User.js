@@ -114,7 +114,10 @@ So, while this \`isSuperAdmin\` demarcation might not be the right approach fore
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    // n/a
+    // for schoolAdmin
+    school: {
+      model: 'school'
+    }
 
   },
 

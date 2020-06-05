@@ -22,7 +22,7 @@ module.exports.custom = {
   * > but it can also be used for user-uploaded images, webhooks, etc.      *
   *                                                                         *
   **************************************************************************/
-  baseUrl: 'http://localhost:1337',
+  baseUrl: 'http://localhost:1338',
 
   /**************************************************************************
   *                                                                         *
@@ -66,11 +66,11 @@ module.exports.custom = {
   // > If you're using the default privacy policy, this will be referenced
   // > as the contact email of your "data protection officer" for the purpose
   // > of compliance with regulations such as GDPR.
-  internalEmailAddress: 'support+development@example.com',
+  // internalEmailAddress: 'support+development@example.com',
 
   // Whether to require proof of email address ownership any time a new user
   // signs up, or when an existing user attempts to change their email address.
-  verifyEmailAddresses: false,
+  verifyEmailAddresses: true,
 
   /**************************************************************************
   *                                                                         *
@@ -91,6 +91,16 @@ module.exports.custom = {
   * Any other custom config this Sails app should use during development.    *
   *                                                                          *
   ***************************************************************************/
-  // …
+
+  pagination: {
+    maxPageSize: 50,
+  },
+
+  avatarLocation :'assets/public/avatars',
+
+  defaultAvatarName : 'default.jpg',
+
+  linuxSplitChar : '/',
+  windowsSplitChar : '\\'
 
 };
