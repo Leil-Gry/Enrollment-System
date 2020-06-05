@@ -13,7 +13,11 @@ parasails.registerPage('userApply', {
     photo: '',
     showImg: false,  // must use v-if, otherwise getting photo file returns 404
     imageUrl: '',
+<<<<<<< HEAD
     canUpload: false,
+=======
+    uploadPhoto: false,
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
 
     formData:{
       name:'',
@@ -33,7 +37,10 @@ parasails.registerPage('userApply', {
       phone:'',
       email:'',
       homeAddressAndPhone:'',
+<<<<<<< HEAD
       intentType:'',
+=======
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
       intention1:'',
       intention2:'',
       obeyTheAdjustment:true,
@@ -41,7 +48,12 @@ parasails.registerPage('userApply', {
       resume:'',
       volunteeringExperience:'',
       rewardsAndPunishment:'',
+<<<<<<< HEAD
       school:''
+=======
+      school:'',
+      intentType:''
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     },
 
     formTitle:'',
@@ -106,7 +118,11 @@ parasails.registerPage('userApply', {
       if (v) {
         this.showImg = true;
         setTimeout(() => {
+<<<<<<< HEAD
           this.imageUrl = this.getImageUrl(this.photo);
+=======
+          this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
         }, 2000);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
@@ -131,6 +147,7 @@ parasails.registerPage('userApply', {
     // Attach any initial data from the server.
     _.extend(this, SAILS_LOCALS);
 
+<<<<<<< HEAD
     this.schools = await Cloud.findSchool.with();
     this.nations = await Cloud.findNation.with();
     this.province = await Cloud.findProvince.with();
@@ -143,6 +160,14 @@ parasails.registerPage('userApply', {
       e = window.event||e;
       e.returnValue=('确定离开当前页面吗？');
     };
+=======
+    this.schools = JSON.parse(await Cloud.findSchool.with());
+    this.nations = JSON.parse(await Cloud.findNation.with());
+    this.province = JSON.parse(await Cloud.findProvince.with());
+    this.cities = JSON.parse(await Cloud.findCity.with());
+    this.intention = JSON.parse(await Cloud.findIntention.with());
+    this.getApplyForm();
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
   },
   mounted: async function() {
     let dateMonthConfig = {
@@ -158,10 +183,13 @@ parasails.registerPage('userApply', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
+<<<<<<< HEAD
     getImageUrl: function(fd) {
       return '/public/avatars/' + fd; // TODO: constants
     },
 
+=======
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     createApply: async function() {
       this.saveForm();
       // if(this.isEmailVerificationRequired) {
@@ -182,6 +210,7 @@ parasails.registerPage('userApply', {
       if(form) {
         this.formData = form;
         this.photo = form.photo;
+<<<<<<< HEAD
         this.imageUrl = this.getImageUrl(this.photo);
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
         this.disabledForm = form.status > 1?true:false;
@@ -191,6 +220,16 @@ parasails.registerPage('userApply', {
         }
       } else {
         this.canUpload = false;
+=======
+        this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
+        this.disabledForm = form.status > 1?true:false;
+        if(!this.disabledForm) {
+          this.uploadPhoto = true;
+          this.showSubmitBtn = true;
+        }
+      } else {
+        this.uploadPhoto = false;
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
         let localForm = JSON.parse(localStorage.getItem('applyForm'));
         this.formData = localForm?localForm:this.formData;
         if(localForm){
@@ -230,6 +269,7 @@ parasails.registerPage('userApply', {
 
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
+<<<<<<< HEAD
       await Cloud.submitApplication.with(this.formData);
       this.showConfirmModel = false;
     },
@@ -238,6 +278,12 @@ parasails.registerPage('userApply', {
       await Cloud.download.with({ id: this.formData.id });
     },
 
+=======
+      await Cloud.submit.with(this.formData);
+      this.showConfirmModel = false;
+    },
+
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     getCities: async function() {
       this.city = [];
       this.regions = [];
@@ -267,10 +313,17 @@ parasails.registerPage('userApply', {
       }
     },
 
+<<<<<<< HEAD
     judge: async function () {
       if(this.disabledForm) {
         ShowTip('报名表已不能修改！', 'danger');
       } else if(!this.canUpload) {
+=======
+    judge:async function () {
+      if(this.disabledForm) {
+        ShowTip('报名表已不能修改！', 'danger');
+      } else if(!this.uploadPhoto) {
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
         ShowTip('保存报名表后才能上传图片！', 'danger');
       }
     },

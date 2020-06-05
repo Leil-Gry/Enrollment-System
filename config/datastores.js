@@ -49,7 +49,11 @@ module.exports.datastores = {
     *                                                                          *
     ***************************************************************************/
     adapter: 'sails-mysql',
+<<<<<<< HEAD
     url: 'mysql://root:1116@127.0.0.1:3306/applyproject'
+=======
+    url: 'mysql://root:15051502@localhost:3306/enrollment'
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
 
   },
 

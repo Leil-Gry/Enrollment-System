@@ -106,7 +106,11 @@ module.exports = {
     };
     var imageModule = new ImageModule(opts);
 
+<<<<<<< HEAD
     let fileName =  '两项计划报名登记表.docx';
+=======
+    let fileName =  '两项计划报名登记表.pdf';
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
     var content = fs.readFileSync(path.resolve(sails.config.appPath, 'assets/templates/form-template.docx'), 'binary');
 
     var zip = new PizZip(content);
@@ -138,6 +142,7 @@ module.exports = {
     }
 
     var buf = doc.getZip().generate({type: 'nodebuffer', compression: 'DEFLATE'});
+<<<<<<< HEAD
     // buf = await new Promise((resolve, reject) => {
     //   libre.convert(buf, 'pdf', undefined, (err, result) => {
     //     if (err) {
@@ -147,6 +152,17 @@ module.exports = {
     //     return resolve(result);
     //   });
     // });
+=======
+    buf = await new Promise((resolve, reject) => {
+      libre.convert(buf, 'pdf', undefined, (err, result) => {
+        if (err) {
+          return reject(Error(`Error converting file: ${err}`));
+        }
+
+        return resolve(result);
+      });
+    });
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
 
     return exits.success({
       fileName,

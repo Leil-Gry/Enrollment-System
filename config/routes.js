@@ -65,6 +65,7 @@ module.exports.routes = {
   'GET /api/v1/intention': { action: 'options/find-intention' },
 
   'GET /api/v1/user/apply': { action: 'user/get-apply' },
+<<<<<<< HEAD
   'POST  /api/v1/application/apply': { action: 'application/create-application' },
   'POST /api/v1/application/submit': { action: 'application/submit-application'},
   'POST /api/v1/application/:id/file': { action: 'application/upload-photo' },
@@ -74,5 +75,11 @@ module.exports.routes = {
   'POST /api/v1/school/application/:id/status': { action: 'school/update-school-application-status' },
   'GET /api/v1/admin/application': { action: 'application/find-application'},
   'POST /api/v1/admin/application/:id/status': { action: 'admin/update-application-status' },
+=======
+  'POST  /api/v1/application/apply': { action: 'application/create' },
+  'POST /api/v1/application/submit': { action: 'application/submit'},
+  'POST /api/v1/application/:id/file': { action: 'application/upload-photo' },
+  'GET /api/v1/application/:id/download': { action: 'application/download' }
+>>>>>>> 2b1d9814caeaf0c7876cb8732803ead859467d2d
 
 };
