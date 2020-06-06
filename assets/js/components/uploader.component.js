@@ -24,6 +24,7 @@ parasails.registerComponent('uploader', {
   data: function (){
     return {
       //…
+      resizedimage: ''
     };
   },
 
@@ -74,22 +75,23 @@ parasails.registerComponent('uploader', {
         // reader.readAsDataURL(event.target.files[0]);
         const settings = {
           file: event.target.files[0],
-          maxWidth: 148,
-          maxHeight: 196
+          maxWidth: 98, // 148,
+          maxHeight: 130 // 196
         };
-        const resizedimage = await this.resizeImage(settings);
 
-        let fd;
-        try {
-          fd = await Cloud.uploadPhoto.with({id: 1, photo: resizedimage});
-        } catch (e) {
-          console.log(e);
-          // TODO: show toast
-        }
+        this.resizedimage = await this.resizeImage(settings);
 
-        if (fd) {
-          this.$emit('update:photo', fd);
-        }
+        // let fd;
+        // try {
+        //   fd = await Cloud.uploadPhoto.with({id: 1, photo: resizedimage});
+        // } catch (e) {
+        //   console.log(e);
+        //   // TODO: show toast
+        // }
+
+        // if (fd) {
+        //   this.$emit('update:photo', fd);
+        // }
       }
     },
 
@@ -155,6 +157,10 @@ parasails.registerComponent('uploader', {
         };
         reader.readAsDataURL(file);
       }));
+    },
+
+    getImage () {
+      return this.resizedimage;
     }
   }
 });

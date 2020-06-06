@@ -41,9 +41,9 @@
           </div>
           <div class="form-group col-6"  @click="judge()">
               <div class="image-area mt-4">
-                <img id="imageResult" v-if="showImg" :src="imageUrl" width="148" height="196" alt="" class="rounded shadow-sm mx-auto d-block">
+                <img id="imageResult" v-if="showImg" :src="imageUrl" width="98" height="130" alt="" class="rounded shadow-sm mx-auto d-block">
               </div>
-              <uploader :photo.sync="photo" :can-upload="canUpload" v-if="!disabledForm"/>
+              <uploader ref="uploader" :photo.sync="photo" :can-upload="canUpload" v-if="!disabledForm"/>
           </div>
         </div>
 
