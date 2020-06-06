@@ -137,15 +137,6 @@ parasails.registerPage('userApply', {
     this.cities = await Cloud.findCity.with();
     this.intention = await Cloud.findIntention.with();
     this.getApplyForm();
-<<<<<<< HEAD
-=======
-  },
-  created: async function () {
-    window.onbeforeunload = function(e){
-      e = window.event||e;
-      e.returnValue=('确定离开当前页面吗？');
-    };
->>>>>>> 24102df86342eb3c36c9a509697fae13fbca1d47
   },
   mounted: async function() {
     let dateMonthConfig = {
@@ -165,30 +156,11 @@ parasails.registerPage('userApply', {
       return '/public/avatars/' + fd; // TODO: constants
     },
 
-<<<<<<< HEAD
     createApply: async function(data) {
       this.saveForm();
       this.formData = await Cloud.createApplication.with();
       ShowTip('保存成功！','success');
-      // if(this.isEmailVerificationRequired) {
-      //   // If email confirmation is enabled, show the success message.
       this.cloudSuccess = true;
-
-=======
-    createApply: async function() {
-      this.saveForm();
-      // if(this.isEmailVerificationRequired) {
-      //   // If email confirmation is enabled, show the success message.
-      this.cloudSuccess = true;
->>>>>>> 24102df86342eb3c36c9a509697fae13fbca1d47
-      // }
-      // else {
-      //   // Otherwise, redirect to the logged-in dashboard.
-      //   // > (Note that we re-enable the syncing state here.  This is on purpose--
-      //   // > to make sure the spinner stays there until the page navigation finishes.)
-      //   this.syncing = true;
-      //   window.location = '/';
-      // }
     },
 
     getApplyForm: async function() {
@@ -246,11 +218,8 @@ parasails.registerPage('userApply', {
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
       await Cloud.submitApplication.with(this.formData);
-<<<<<<< HEAD
       ShowTip('提交成功！','success');
       this.getApplyForm();
-=======
->>>>>>> 24102df86342eb3c36c9a509697fae13fbca1d47
       this.showConfirmModel = false;
     },
 
@@ -276,12 +245,9 @@ parasails.registerPage('userApply', {
       this.formData.domicileAddr = '';
       let city = this.formData.domicileCity;
       this.regions = this.cityRegions[city];
-<<<<<<< HEAD
       if(!this.regions){
         this.formData.domicileAddr = ' ';
       }
-=======
->>>>>>> 24102df86342eb3c36c9a509697fae13fbca1d47
     },
 
     statusControl: async function() {
