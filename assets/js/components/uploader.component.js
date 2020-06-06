@@ -14,7 +14,7 @@ parasails.registerComponent('uploader', {
   //  ╩  ╩╚═╚═╝╩  ╚═╝
   props: [
     'syncing',
-    'photo',
+    // 'photo',
     'canUpload'
   ],
 
@@ -93,7 +93,7 @@ parasails.registerComponent('uploader', {
         // this.$emit('update:photo', fd);
         // }
 
-        this.$emit('update:photo', event.target.files[0].name);  // 页面上更新图片，这样子不行
+        // this.$emit('update:photo', event.target.files[0].name);  // 页面上更新图片，这样子不行
       }
     },
 

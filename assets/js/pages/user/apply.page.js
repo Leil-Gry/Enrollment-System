@@ -106,9 +106,9 @@ parasails.registerPage('userApply', {
     photo: function(v) {
       if (v) {
         this.showImg = true;
-        setTimeout(() => {
-          this.imageUrl = this.getImageUrl(this.photo);
-        }, 1000);  // WHY ?
+        // setTimeout(() => {
+        this.imageUrl = this.getImageUrl(this.photo);
+        // }, 1000);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
         // });
@@ -168,12 +168,14 @@ parasails.registerPage('userApply', {
         let fd;
         try {
           fd = await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
+          // this.photo = fd;
         } catch (e) {
           console.log(e);// TODO: show toast
         }
       }
 
       this.formData = await Cloud.createApplication.with();
+      this.photo = this.formData.photo;
       ShowTip('保存成功！','success');
       this.cloudSuccess = true;
       this.saveForm();
