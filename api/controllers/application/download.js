@@ -9,7 +9,7 @@ const libre = require('libreoffice-convert');
 var merge = require('lodash/merge');
 expressions.filters.lower = function(input) {
   // This condition should be used to make sure that if your input is undefined, your output will be undefined as well and will not throw an error
-  if (!input) return input;
+  if (!input) {return input;}
   return input.toLowerCase();
 };
 
@@ -20,7 +20,7 @@ function angularParser(tag) {
     };
   }
   const expr = expressions.compile(
-      tag.replace(/(’|‘)/g, "'").replace(/(“|”)/g, '"')
+      tag.replace(/(’|‘)/g, '\'').replace(/(“|”)/g, '"')
   );
   return {
     get: function(scope, context) {
@@ -106,7 +106,7 @@ module.exports = {
     };
     var imageModule = new ImageModule(opts);
 
-    let fileName =  '两项计划报名登记表.pdf';
+    let fileName =  '两项计划报名登记表.docx';
     var content = fs.readFileSync(path.resolve(sails.config.appPath, 'assets/templates/form-template.docx'), 'binary');
 
     var zip = new PizZip(content);
@@ -138,15 +138,15 @@ module.exports = {
     }
 
     var buf = doc.getZip().generate({type: 'nodebuffer', compression: 'DEFLATE'});
-    buf = await new Promise((resolve, reject) => {
-      libre.convert(buf, 'pdf', undefined, (err, result) => {
-        if (err) {
-          return reject(Error(`Error converting file: ${err}`));
-        }
+    // buf = await new Promise((resolve, reject) => {
+    //   libre.convert(buf, 'pdf', undefined, (err, result) => {
+    //     if (err) {
+    //       return reject(Error(`Error converting file: ${err}`));
+    //     }
 
-        return resolve(result);
-      });
-    });
+    //     return resolve(result);
+    //   });
+    // });
 
     return exits.success({
       fileName,
@@ -160,7 +160,7 @@ module.exports = {
 // The error object contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
 function replaceErrors(key, value) {
   if (value instanceof Error) {
-    return Object.getOwnPropertyNames(value).reduce(function(error, key) {
+    return Object.getOwnPropertyNames(value).reduce((error, key) => {
       error[key] = value[key];
       return error;
     }, {});
@@ -172,9 +172,9 @@ function errorHandler(error) {
   console.log(JSON.stringify({error: error}, replaceErrors));
 
   if (error.properties && error.properties.errors instanceof Array) {
-    const errorMessages = error.properties.errors.map(function (error) {
+    const errorMessages = error.properties.errors.map((error) => {
       return error.properties.explanation;
-    }).join("\n");
+    }).join('\n');
     console.log('errorMessages', errorMessages);
     // errorMessages is a humanly readable message looking like this :
     // 'The tag beginning with "foobar" is unopened'

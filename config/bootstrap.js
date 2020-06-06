@@ -77,7 +77,7 @@ module.exports.bootstrap = async function() {
   // }]);
   await User.createEach([
     { emailAddress: 'admin@example.com', fullName: 'Web admin', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('abc123') },
-    { emailAddress: 'admin@hdu.com', fullName: 'Hdu admin', isSchoolAdmin: true, school: 1, password: await sails.helpers.passwords.hashPassword('abc123') },
+    // { emailAddress: 'admin@hdu.com', fullName: 'Hdu admin', isSchoolAdmin: true, school: 1, password: await sails.helpers.passwords.hashPassword('abc123') },
     { emailAddress: '1@a.com', fullName: '张三', password: await sails.helpers.passwords.hashPassword('abc123') },
     { emailAddress: '2@a.com', fullName: '李四', password: await sails.helpers.passwords.hashPassword('abc123') },
   ]);
