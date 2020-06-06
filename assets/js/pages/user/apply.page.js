@@ -131,11 +131,12 @@ parasails.registerPage('userApply', {
     // Attach any initial data from the server.
     _.extend(this, SAILS_LOCALS);
 
-    this.schools = await Cloud.findSchool.with();
-    this.nations = await Cloud.findNation.with();
-    this.province = await Cloud.findProvince.with();
-    this.cities = await Cloud.findCity.with();
+    this.schools   = await Cloud.findSchool.with();
+    this.nations   = await Cloud.findNation.with();
+    this.province  = await Cloud.findProvince.with();
+    this.cities    = await Cloud.findCity.with();
     this.intention = await Cloud.findIntention.with();
+<<<<<<< HEAD
     await this.getApplyForm();
     if (this.status === 1) {
       window.onbeforeunload = function(e){
@@ -143,6 +144,9 @@ parasails.registerPage('userApply', {
         e.returnValue=('确定离开当前页面吗？');
       };
     }
+=======
+    this.getApplyForm();
+>>>>>>> 60a8c5aadbbb651df339be48e3982e2dfa6e479a
   },
   mounted: async function() {
     let dateMonthConfig = {
@@ -164,23 +168,16 @@ parasails.registerPage('userApply', {
 
     createApply: async function() {
       this.saveForm();
-      // if(this.isEmailVerificationRequired) {
-      //   // If email confirmation is enabled, show the success message.
+      this.formData = await Cloud.createApplication.with();
+      ShowTip('保存成功！','success');
       this.cloudSuccess = true;
-      // }
-      // else {
-      //   // Otherwise, redirect to the logged-in dashboard.
-      //   // > (Note that we re-enable the syncing state here.  This is on purpose--
-      //   // > to make sure the spinner stays there until the page navigation finishes.)
-      //   this.syncing = true;
-      //   window.location = '/';
-      // }
     },
 
     getApplyForm: async function() {
       let form = await Cloud.getApply.with();
       if(form) {
         this.formData = form;
+        this.showSubmitBtn = false;
         this.photo = form.photo;
         this.imageUrl = this.getImageUrl(this.photo);
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
@@ -231,6 +228,8 @@ parasails.registerPage('userApply', {
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
       await Cloud.submitApplication.with(this.formData);
+      ShowTip('提交成功！','success');
+      this.getApplyForm();
       this.showConfirmModel = false;
     },
 
@@ -259,6 +258,9 @@ parasails.registerPage('userApply', {
       this.formData.domicileAddr = '';
       let city = this.formData.domicileCity;
       this.regions = this.cityRegions[city];
+      if(!this.regions){
+        this.formData.domicileAddr = ' ';
+      }
     },
 
     statusControl: async function() {

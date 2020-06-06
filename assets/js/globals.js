@@ -114,6 +114,17 @@ const constants = {
     }
   ],
 
+  ADJUSTMENT: {
+    true:'服从',
+    false:'不服从'
+  },
+
+  WORKEDINTHECYL: {
+    true:'是',
+    false:'否'
+  },
+
+
   IFWORKEDINTHECYL: [
     {
       value:true,

@@ -9,14 +9,21 @@
             <th>姓名</th>
             <th>报名时间</th>
             <th>状态</th>
+            <th>order</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data of applyList" @click="applyDetail(data)" data-toggle="modal" data-target="#applyDetail" >
+          <tr v-for="data of applyList" @click="getApplyDetail(data)" data-toggle="modal" data-target="#applyDetail" >
             <td>{{data.id}}</td>
             <td>{{data.name}}</td>
             <td>{{data.applyTime}}</td>
             <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
+            <td>
+              <select :disabled="data.status<statusChecked" class="form-control">
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -32,24 +39,11 @@
               <h4 class="modal-title">{{applyForm.name}}</h4>
             </div>
             <div class="modal-body">
-              <div class="row">
-                <div class="form-group col-4">
-                  <label for="name">姓名</label>
-                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.name" disabled>
-                </div>
-                <div class="form-group col-4">
-                  <label for="name">性别</label>
-                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.sex" disabled>
-                </div>
-                <div class="form-group col-4">
-                  <label for="nation">民族</label>
-                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.nation" disabled>
-                </div>
-              </div>
+              <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
-            <div class="modal-footer">
-              <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal">确定提交</ajax-button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <div class="modal-footer" v-if="waitCheck">
+              <button :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回</button>
             </div>
       
           </div>

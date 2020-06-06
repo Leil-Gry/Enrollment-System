@@ -406,9 +406,11 @@ parasails.registerComponent('ajaxForm', {
               if (ruleRhs === false) {
                 violation = false;
               } else {
-                violation = (
-                  !parasails.util.isValidEmailAddress(fieldValue)
-                );
+                violation = false;
+
+                // violation = (
+                //   !parasails.util.isValidEmailAddress(fieldValue)
+                // );
               }
             } else if (ruleName === 'isIn' && _.isArray(ruleRhs)) {
               // ® Must be one of these things

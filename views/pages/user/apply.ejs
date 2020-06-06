@@ -1,10 +1,5 @@
 <div id="userApply" v-cloak>
   <div class="container">
-    <div class="alert alert-success alert-dismissible fade show" v-if="submitSuccess">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>提交成功!</strong>
-    </div>
-
     <div class="stepBar">
       <span v-for="data in allApplyStatus" :class="[status >= data ? 'step-ok' : '']"><i>{{statusInfo[data].stepNum}}</i>{{statusInfo[data].stepLabel}}</span>
     </div>
@@ -40,7 +35,7 @@
               <div class="image-area mt-4">
                 <img id="imageResult" v-if="showImg" :src="imageUrl" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
               </div>
-              <uploader :photo.sync="photo" :can-upload="canUpload"/>
+              <uploader :photo.sync="photo" :can-upload="canUpload" v-if="!disabledForm"/>
           </div>
         </div>
         <div class="form-group">
