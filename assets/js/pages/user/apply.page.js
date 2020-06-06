@@ -136,17 +136,7 @@ parasails.registerPage('userApply', {
     this.province  = await Cloud.findProvince.with();
     this.cities    = await Cloud.findCity.with();
     this.intention = await Cloud.findIntention.with();
-<<<<<<< HEAD
-    await this.getApplyForm();
-    if (this.status === 1) {
-      window.onbeforeunload = function(e){
-        e = window.event||e;
-        e.returnValue=('确定离开当前页面吗？');
-      };
-    }
-=======
     this.getApplyForm();
->>>>>>> 60a8c5aadbbb651df339be48e3982e2dfa6e479a
   },
   mounted: async function() {
     let dateMonthConfig = {
@@ -196,6 +186,15 @@ parasails.registerPage('userApply', {
       }
       this.status = form.status;
       this.statusControl();
+
+      if (this.status === 1) {
+        window.onbeforeunload = function(e){
+          e = window.event||e;
+          e.returnValue=('确定离开当前页面吗？');
+        };
+      } else {
+        window.onbeforeunload = '';
+      }
     },
 
     getCityRegion: async function(province,city,region) {
