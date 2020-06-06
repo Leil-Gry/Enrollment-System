@@ -11,7 +11,10 @@ parasails.registerPage('adminDashboard', {
     photo: '',
     imageUrl:'',
     applyID: '',
+    applyName: '',
+    applyOrder: null,
     waitCheck:false,
+    orderInput:false,
 
     statusList: constants.APPLICATION_STATUS_INFO,
     statusChecked:constants.APPLICATION_STATUS_CHECKED,
@@ -36,7 +39,7 @@ parasails.registerPage('adminDashboard', {
       if (v) {
         // setTimeout(() => {
         this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
-        // }, 500);  // WHY ?
+        // }, 2000);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
         // });
@@ -67,12 +70,36 @@ parasails.registerPage('adminDashboard', {
     },
 
     checkApply: async function(status) {
-      await Cloud.updateApplicationStatus.with({id: this.applyID, status:status});
+      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
       this.getApplyList();
     },
 
     getImageUrl: function(fd) {
       return '/public/avatars/' + fd; // TODO: constants
+    },
+
+    showInput: async function(data) {
+      this.orderInput = true;
+      this.applyID = data.id;
+      this.applyName = data.name;
+    },
+
+    setOrder: async function() {
+      this.orderInput = false;
+      let rule = /^\d+$/;
+      if(!rule.test(this.applyOrder)){
+        ShowTip('请输入一个>=0的数字！','danger');
+        return;
+      }
+      await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
+      this.getApplyList();
+    },
+
+    validateNumber: async function() {
+      let rule = /^\d+$/;
+      if(!rule.test(this.applyOrder)){
+        ShowTip('请输入一个>=0的数字！','danger');
+      }
     },
 
   }

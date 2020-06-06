@@ -19,9 +19,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data of applyList" >            
+          <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">            
             <td>{{data.id}}</td>
-            <td>{{data.school.name}}</td>
+            <td>{{data.school}}</td>
             <td>{{data.name}}</td>
             <td>{{data.sex}}</td>
             <td>{{data.nation}}</td>
@@ -29,15 +29,24 @@
             <td>{{data.education}}</td>
             <td>{{data.domicileProvince}}</td>
             <td>{{data.intention1}}、{{data.intention2}}</td>
-            <td><button type="button" class="btn" :class="statusList[data.status].labelType" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">{{statusList[data.status].text}}</button></td>
+            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
             <td>
-              <select :disabled="data.status<statusChecked" class="form-control">
-                <option>1</option>
-                <option>2</option>
-              </select>
+              <a href="#" id="order" @click.stop @click="showInput(data)" >
+                <span v-if="data.order > 0">{{data.order}}</span>
+                <span v-else>点击输入排序</span>
+              </a>
             </td>
           </tr>
         </tbody>
+
+        <div v-show="orderInput" class="model">
+          <div class='mask'></div>
+          <div class='board' @blur="orderInput=false">
+            <div class="title">设置{{applyName}}的推荐排名</div>
+            <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()" @mouseout="validateNumber()"/>
+          </div>
+        </div>
+
       </table>
       <span v-else>
         尚无报名信息
