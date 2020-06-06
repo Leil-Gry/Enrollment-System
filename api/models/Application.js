@@ -19,6 +19,11 @@ module.exports = {
       defaultsTo: constants.APPLICATION_STATUS_EDITING
     },
 
+    order: { // 0 for not recommended
+      type: 'number',
+      columnType: 'int'
+    },
+
     photo: {
       type: 'string'
     },

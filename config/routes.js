@@ -72,7 +72,8 @@ module.exports.routes = {
 
   'GET /api/v1/application': { action: 'application/find-application'},
   'GET /api/v1/application/:id': { action: 'application/find-one-application'},
+  'POST /api/v1/application/:id': { action: 'school/set-order'},
   'POST /api/v1/school/application/:id/status': { action: 'school/update-school-application-status' },
-  'POST /api/v1/admin/application/:id/status': { action: 'admin/update-application-status' },
+  'POST /api/v1/admin/application/:id/status': { action: 'admin/update-application-status' }
 
 };

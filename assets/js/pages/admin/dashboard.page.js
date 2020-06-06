@@ -34,9 +34,9 @@ parasails.registerPage('adminDashboard', {
   watch: {
     photo: function(v) {
       if (v) {
-        setTimeout(() => {
-          this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
-        }, 2000);  // WHY ?
+        // setTimeout(() => {
+        this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
+        // }, 500);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
         // });
@@ -62,7 +62,6 @@ parasails.registerPage('adminDashboard', {
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
         this.applyID = form.id;
-        this.imageUrl = this.getImageUrl(this.photo);
         this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;
       }
     },

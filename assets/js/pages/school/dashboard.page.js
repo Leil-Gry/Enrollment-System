@@ -34,9 +34,9 @@ parasails.registerPage('schoolDashboard', {
   watch: {
     photo: function(v) {
       if (v) {
-        setTimeout(() => {
-          this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
-        }, 2000);  // WHY ?
+        // setTimeout(() => {
+        this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
+        // }, 2000);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
         // });
@@ -61,9 +61,7 @@ parasails.registerPage('schoolDashboard', {
         this.applyForm.obeyTheAdjustment = constants.ADJUSTMENT[form.obeyTheAdjustment];
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
-        console.log(form);
         this.applyID = form.id;
-        this.imageUrl = this.getImageUrl(this.photo);
         this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;
       }
     },

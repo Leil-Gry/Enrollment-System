@@ -49,12 +49,10 @@ module.exports = {
     }
 
     let application = await Application.findOne({
-      id: inputs.id,
-      school: this.req.me.school,
-      batch: this.req.currentBatch.id
+      id: inputs.id
     });
 
-    if (!application) {
+    if (!application || application.school !== this.req.me.school) {
       throw 'notFound';
     }
 

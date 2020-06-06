@@ -114,7 +114,7 @@ parasails.registerPage('userApply', {
         // });
 
       }
-    },
+    }
   },
 
   // computed: {
@@ -169,12 +169,7 @@ parasails.registerPage('userApply', {
         try {
           fd = await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
         } catch (e) {
-          console.log(e);
-          // TODO: show toast
-        }
-
-        if (fd) {
-          this.$emit('update:photo', fd);
+          console.log(e);// TODO: show toast
         }
       }
 
@@ -191,7 +186,6 @@ parasails.registerPage('userApply', {
         this.formData = form;
         this.showSubmitBtn = false;
         this.photo = form.photo;
-        this.imageUrl = this.getImageUrl(this.photo);
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
         this.disabledForm = form.status > 1?true:false;
         if(!this.disabledForm) {
@@ -294,9 +288,7 @@ parasails.registerPage('userApply', {
     },
 
     judge: async function () {
-      if(this.disabledForm) {
-        ShowTip('报名表已不能修改！', 'danger');
-      } else if(!this.canUpload) {
+      if(!this.canUpload) {
         ShowTip('保存报名表后才能上传图片！', 'danger');
       }
     }
