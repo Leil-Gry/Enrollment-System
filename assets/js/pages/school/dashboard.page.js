@@ -51,7 +51,6 @@ parasails.registerPage('schoolDashboard', {
   methods: {
     getApplyList: async function() {
       this.applyList = await Cloud.findApplication.with();
-      // console.log(this.applyList)
     },
 
     getApplyDetail: async function(id) {
@@ -69,9 +68,8 @@ parasails.registerPage('schoolDashboard', {
     },
 
     checkApply: async function(status) {
-      await Cloud.updateApplicationStatus.with({id: this.applyID, status:status});
+      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
       this.getApplyList();
-      // console.log(this.applyList)
     },
 
     getImageUrl: function(fd) {

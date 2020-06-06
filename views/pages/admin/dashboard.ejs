@@ -1,6 +1,54 @@
 <div id="adminDashboard" v-cloak>
   <div class="container">
-    TODO
+    <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
+    <div class="my-3 row">
+      <table class="table clickable table-hover large" v-if="applyList.length > 0">
+        <thead>
+          <tr>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>报名时间</th>
+            <th>状态</th>
+            <th>order</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="data of applyList" >
+            <td>{{data.id}}</td>
+            <td>{{data.name}}</td>
+            <td><js-timestamp :at="data.createdAt"></js-timestamp><br/></td>
+            <td><button type="button" class="btn" :class="statusList[data.status].labelType" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" >{{statusList[data.status].text}}</button></td>
+            <td>
+              <select :disabled="data.status<statusChecked" class="form-control">
+                <option>1</option>
+                <option>2</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <span v-else>
+        尚无报名信息
+      </span>
+
+      <!-- 详情弹框 -->
+      <div class="modal fade" id="applyDetail">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">{{applyForm.name}}</h4>
+            </div>
+            <div class="modal-body">
+              <apply-form :apply-form="applyForm" :image-url="imageUrl" />
+            </div>
+            <div class="modal-footer" v-if="waitCheck">
+              <button :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal" @click="checkApply( )">审核通过</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

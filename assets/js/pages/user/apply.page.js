@@ -131,10 +131,10 @@ parasails.registerPage('userApply', {
     // Attach any initial data from the server.
     _.extend(this, SAILS_LOCALS);
 
-    this.schools = await Cloud.findSchool.with();
-    this.nations = await Cloud.findNation.with();
-    this.province = await Cloud.findProvince.with();
-    this.cities = await Cloud.findCity.with();
+    this.schools   = await Cloud.findSchool.with();
+    this.nations   = await Cloud.findNation.with();
+    this.province  = await Cloud.findProvince.with();
+    this.cities    = await Cloud.findCity.with();
     this.intention = await Cloud.findIntention.with();
     this.getApplyForm();
   },
@@ -156,7 +156,7 @@ parasails.registerPage('userApply', {
       return '/public/avatars/' + fd; // TODO: constants
     },
 
-    createApply: async function(data) {
+    createApply: async function() {
       this.saveForm();
       this.formData = await Cloud.createApplication.with();
       ShowTip('保存成功！','success');
