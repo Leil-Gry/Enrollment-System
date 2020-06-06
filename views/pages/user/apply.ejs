@@ -30,22 +30,23 @@
                 <option value="女">女</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="nation">民族</label>
+              <select class="form-control" id="nation" v-model="formData.nation" :class="[formErrors.nation ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+                <option value="" disabled>请选择你的民族</option>
+                <option v-for="data in nations" :value="data.name">{{data.name}}</option>
+              </select>
+              <div class="invalid-feedback" v-if="formErrors.nation">请选择你的民族.</div>
+            </div>
           </div>
           <div class="form-group col-6"  @click="judge()">
               <div class="image-area mt-4">
-                <img id="imageResult" v-if="showImg" :src="imageUrl" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
+                <img id="imageResult" v-if="showImg" :src="imageUrl" width="148" height="196" alt="" class="rounded shadow-sm mx-auto d-block">
               </div>
               <uploader :photo.sync="photo" :can-upload="canUpload" v-if="!disabledForm"/>
           </div>
         </div>
-        <div class="form-group">
-          <label for="nation">民族</label>
-          <select class="form-control" id="nation" v-model="formData.nation" :class="[formErrors.nation ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
-            <option value="" disabled>请选择你的民族</option>
-            <option v-for="data in nations" :value="data.name">{{data.name}}</option>
-          </select>
-          <div class="invalid-feedback" v-if="formErrors.nation">请选择你的民族.</div>
-        </div>
+
         <div class="row">
           <div class="form-group col-6">
             <label for="birthDate">出生年月</label>
