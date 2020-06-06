@@ -82,9 +82,9 @@ module.exports.bootstrap = async function() {
     { emailAddress: '2@a.com', fullName: '李四', password: await sails.helpers.passwords.hashPassword('abc123') },
   ]);
   for (let school of global.jsonData.schools) {
-    let created = await School.createEach([{
+    let created = await School.create({
       name: school.name
-    }]).fetch();
+    }).fetch();
     await User.create({
       emailAddress: school.name + '@zjstudent.com',
       password: await sails.helpers.passwords.hashPassword('zj123456'),

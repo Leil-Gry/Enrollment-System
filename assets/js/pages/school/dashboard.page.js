@@ -61,6 +61,7 @@ parasails.registerPage('schoolDashboard', {
         this.applyForm.obeyTheAdjustment = constants.ADJUSTMENT[form.obeyTheAdjustment];
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
+        console.log(form);
         this.applyID = form.id;
         this.imageUrl = this.getImageUrl(this.photo);
         this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;

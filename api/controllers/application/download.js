@@ -102,7 +102,7 @@ module.exports = {
       return fs.readFileSync(tagValue);
     };
     opts.getSize = function(img, tagValue, tagName) {
-      return [148, 196];
+      return [98, 130];  // [148, 196];
     };
     var imageModule = new ImageModule(opts);
 

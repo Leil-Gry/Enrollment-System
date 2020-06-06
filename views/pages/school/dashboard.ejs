@@ -13,15 +13,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data of applyList" @click="getApplyDetail(data)" data-toggle="modal" data-target="#applyDetail" >
+          <tr v-for="data of applyList">
             <td>{{data.id}}</td>
             <td>{{data.name}}</td>
-            <td>{{data.applyTime}}</td>
-            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
+            <td><js-timestamp :at="data.createdAt"></js-timestamp><br/></td>
+            <td><button type="button" class="btn" :class="statusList[data.status].labelType" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" >{{statusList[data.status].text}}</button></td>
             <td>
-              <select :disabled="data.status<statusChecked" class="form-control">
-                <option>1</option>
-                <option>2</option>
+              <select :disabled="data.status<statusChecked" class="form-control">                
+                <option>待审核</option>
+                <option>推荐</option>
+                <option>退回</option>
               </select>
             </td>
           </tr>
