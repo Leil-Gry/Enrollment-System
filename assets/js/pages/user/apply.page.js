@@ -98,7 +98,7 @@ parasails.registerPage('userApply', {
       intention1: { required: true },
       intention2: { required: true,differentWith: 'intention1'},
       homeAddressAndPhone: { required: true }
-    },
+    }
   },
 
   watch: {
@@ -136,13 +136,13 @@ parasails.registerPage('userApply', {
     this.province = await Cloud.findProvince.with();
     this.cities = await Cloud.findCity.with();
     this.intention = await Cloud.findIntention.with();
-    this.getApplyForm();
-  },
-  created: async function () {
-    window.onbeforeunload = function(e){
-      e = window.event||e;
-      e.returnValue=('确定离开当前页面吗？');
-    };
+    await this.getApplyForm();
+    if (this.status === 1) {
+      window.onbeforeunload = function(e){
+        e = window.event||e;
+        e.returnValue=('确定离开当前页面吗？');
+      };
+    }
   },
   mounted: async function() {
     let dateMonthConfig = {
@@ -235,8 +235,11 @@ parasails.registerPage('userApply', {
     },
 
     download: async function() {
-      await Cloud.download.with({ id: this.formData.id });
+      // await Cloud.download.with({ id: this.formData.id });
+      let url = `/api/v1/application/${this.formData.id}/download`;
+      window.location.href = url;
     },
+
 
     getCities: async function() {
       this.city = [];
@@ -273,7 +276,6 @@ parasails.registerPage('userApply', {
       } else if(!this.canUpload) {
         ShowTip('保存报名表后才能上传图片！', 'danger');
       }
-    },
-
+    }
   }
 });

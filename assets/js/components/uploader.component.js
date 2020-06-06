@@ -72,6 +72,7 @@ parasails.registerComponent('uploader', {
         //   $('#imageResult').attr('src', e.target.result);
         // };
         // reader.readAsDataURL(event.target.files[0]);
+        console.log(event.target.files[0]);
         let fd;
         try {
           fd = await Cloud.uploadPhoto.with({id: 1, photo:event.target.files[0]});
@@ -85,7 +86,46 @@ parasails.registerComponent('uploader', {
         }
 
       }
-    }
+    },
+
+    // resize: async function (file) {
+    //   // Ensure it's an image
+    //   // if(file.type.match(/image.*/)) {
+    //   //   console.log('An image has been loaded');
+
+    //   //   // Load the image
+    //   //   var reader = new FileReader();
+    //   //   reader.onload = function (readerEvent) {
+    //   //     var image = new Image();
+    //   //     image.onload = function (imageEvent) {
+
+    //   //       // Resize the image
+    //   //       var canvas = document.createElement('canvas');
+    //   //       var max_width = 1200;
+    //   //       var max_height = 1200;
+    //   //       var width = image.width;
+    //   //       var height = image.height;
+    //   //       if (width > height) {
+    //   //         if (width > max_size) {
+    //   //           height *= max_size / width;
+    //   //           width = max_size;
+    //   //         }
+    //   //       } else {
+    //   //         if (height > max_size) {
+    //   //           width *= max_size / height;
+    //   //           height = max_size;
+    //   //         }
+    //   //       }
+    //   //       canvas.width = width;
+    //   //       canvas.height = height;
+    //   //       canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+    //   //       resizedImage = canvas.toDataURL('image/jpeg');
+    //   //     };
+    //   //     image.src = readerEvent.target.result;
+    //   //   };
+    //   //   reader.readAsDataURL(file);
+    //   // }
+    // }
 
   }
 });
