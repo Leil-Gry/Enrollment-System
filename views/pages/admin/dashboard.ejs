@@ -21,7 +21,7 @@
         <tbody>
           <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">            
             <td>{{data.id}}</td>
-            <td>{{data.school}}</td>
+            <td>{{data.school.name}}</td>
             <td>{{data.name}}</td>
             <td>{{data.sex}}</td>
             <td>{{data.nation}}</td>
