@@ -55,6 +55,10 @@ module.exports.http = {
     //   return middlewareFn;
     // })(),
 
+    poweredBy: false
+
   },
+
+
 
 };

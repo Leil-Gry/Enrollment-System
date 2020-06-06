@@ -1,6 +1,229 @@
 <div id="userApply" v-cloak>
   <div class="container">
-    TODO： 报名
+    <div class="alert alert-success alert-dismissible fade show" v-if="submitSuccess">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>提交成功!</strong>
+    </div>
+
+    <div class="stepBar">
+      <span v-for="data in allApplyStatus" :class="[status >= data ? 'step-ok' : '']"><i>{{statusInfo[data].stepNum}}</i>{{statusInfo[data].stepLabel}}</span>
+    </div>
+    <h1 class="text-center" style="margin-top: 30px;">{{formTitle.bigTitle}}</h1>
+    <div class="signup-form">
+      <p class="text-center">{{formTitle.subTitle}}</p>
+      <ajax-form action="createApplication" ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="createApply()" >
+        <div class=row >
+          <div class="col-6">
+            <div class="form-group">
+              <label for="school">学校名称</label>
+              <select class="form-control" id="school" type="text" v-model="formData.school" :class="[formErrors.school ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+                <option value="" disabled>请选择你的学校</option>
+                <option v-for="data in schools" :value="data.id">{{data.name}}</option>
+              </select>
+              <div class="invalid-feedback" v-if="formErrors.school">请选择你的所在学校.</div>
+            </div>
+            <div class="form-group">
+              <label for="name">姓名</label>
+              <input class="form-control"  id="name" type="text"  :class="[formErrors.name ? 'is-invalid' : '']" v-model.trim="formData.name" placeholder="例：张三" autocomplete="name" focus-first @blur="saveForm()" :disabled=disabledForm>
+              <div class="invalid-feedback" v-if="formErrors.name">请输入你的姓名</div>
+            </div>
+            <div class="form-group">
+              <label for="name">性别</label>
+              <select class="form-control" id="sex" type="text" v-model="formData.sex" @blur="saveForm()" :disabled=disabledForm>
+                <option value="0" disabled>请选择你的性别</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-6"  @click="judge()">
+              <div class="image-area mt-4">
+                <img id="imageResult" v-if="showImg" :src="imageUrl" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
+              </div>
+              <uploader :photo.sync="photo" :can-upload="canUpload" v-if="!disabledForm"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nation">民族</label>
+          <select class="form-control" id="nation" v-model="formData.nation" :class="[formErrors.nation ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+            <option value="" disabled>请选择你的民族</option>
+            <option v-for="data in nations" :value="data.name">{{data.name}}</option>
+          </select>
+          <div class="invalid-feedback" v-if="formErrors.nation">请选择你的民族.</div>
+        </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="birthDate">出生年月</label>
+            <input class="form-control" :class="[formErrors.birthDate ? 'is-invalid' : '']" v-model="formData.birthDate" placeholder="请输入你的出生年月：1997.9" @blur="saveForm()" :disabled=disabledForm>
+            <div class="invalid-feedback" v-if="formErrors.birthDate">请选择你的出生年月.</div>
+          </div>
+          <div class="form-group col-6">
+            <label for="politicalStatus">政治面貌</label>
+            <select class="form-control" id="politicalStatus" v-model="formData.politicalStatus" :class="[formErrors.politicalStatus ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+              <option value="" disabled>请选择你的政治面貌</option>
+              <option v-for="data in politics" :value="data.name">{{data.name}}</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.politicalStatus">请选择你的政治面貌.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name">身份证号</label>
+          <input class="form-control" id="IDNumber" type="text" v-model.trim="formData.IDNumber" placeholder="例：330XXXXX" :class="[formErrors.IDNumber ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+          <div class="invalid-feedback" v-if="formErrors.IDNumber">请输入你的身份证号.</div>
+        </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="education">学历</label>
+            <select class="form-control" id="education" type="text" v-model="formData.education" :class="[formErrors.education ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+              <option value="" disabled>请选择你的学历</option>
+              <option v-for="data in education" :value="data.name">{{data.name}}</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.education">请选择你的学历.</div>
+          </div>
+          <div class="form-group col-6">
+            <label for="major">院（系）专业</label>
+            <input class="form-control" id="major" type="text" v-model.trim="formData.major" placeholder="例：计算机科学与技术" :class="[formErrors.major ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+            <div class="invalid-feedback" v-if="formErrors.major">请输入你的院（系）专业.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name">特长</label>
+          <input class="form-control" id="specialty" type="text" v-model.trim="formData.specialty" placeholder="请填写你的特长" @blur="saveForm()" :disabled=disabledForm>
+        </div>
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="name">健康状况</label>
+            <input class="form-control" id="healthStatus" type="text" v-model.trim="formData.healthStatus" placeholder="请输入你的健康状况" :class="[formErrors.healthStatus ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+            <div class="invalid-feedback" v-if="formErrors.healthStatus">请输入你的健康状况.</div>
+          </div>
+          <div class="form-group col-6">
+            <label for="name">既往病史</label>
+            <input class="form-control" id="pastMedicalHistory" type="text" v-model.trim="formData.pastMedicalHistory" placeholder="" @blur="saveForm()" :disabled=disabledForm>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="name">入学前户籍所在地</label>
+        </div>
+        <div class="row">
+          <div class="form-group col-4">
+            <select class="form-control" id="domicileProvince" v-model="formData.domicileProvince" @change="getCities()" :class="[formErrors.domicileProvince ? 'is-invalid' : '']" :disabled=disabledForm @blur="saveForm()">
+              <option value="" selected disabled>省</option>
+              <option v-for="data in province" :value="data.name">{{data.name}}</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.domicileProvince">请选择你的省或直辖市.</div>
+          </div>
+          <div class="form-group col-4">
+            <select class="form-control" id="domicileCity"  v-model="formData.domicileCity" @change="getRegions()" :class="[formErrors.domicileCity ? 'is-invalid' : '']" :disabled=disabledForm @blur="saveForm()">
+              <option value="" selected disabled>市</option>
+              <option v-for="data in city" :value="data">{{data}}</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.domicileCity">请选择你的所在城市.</div>
+          </div>
+          <div class="form-group col-4">
+            <select class="form-control" id="domicileAddr" v-model="formData.domicileAddr" :class="[formErrors.domicileAddr ? 'is-invalid' : '']" :disabled=disabledForm @blur="saveForm()">
+              <option value="" selected disabled>区</option>
+              <option v-for="data in regions" :value="data.name">{{data.name}}</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.domicileAddr">请选择你的所在区域.</div>
+          </div>
+        </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label for="name">联系电话</label>
+              <input class="form-control" id="phone" type="text" v-model.trim="formData.phone" placeholder="联系电话" :class="[formErrors.phone ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+              <div class="invalid-feedback" v-if="formErrors.phone">请输入你的电话.</div>
+            </div>
+            <div class="form-group col-6">
+              <label for="name">电子邮箱</label>
+              <input class="form-control" id="name" type="text" v-model.trim="formData.email" placeholder="电子邮箱" :class="[formErrors.email ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
+              <div class="invalid-feedback" v-if="formErrors.email">请输入正确的电子邮箱地址.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name">家庭通讯地址及电话</label>
+            <input class="form-control"  id="homeAddressAndPhone" type="text" v-model.trim="formData.homeAddressAndPhone" placeholder="例：杭州市西华小区93幢505，155155XXX" :class="[formErrors.homeAddressAndPhone ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm >
+            <div class="invalid-feedback" v-if="formErrors.homeAddressAndPhone">请输入你的家庭通讯地址及电话</div>
+          </div>
+          <div class="form-group">
+            <label for="name">服务意向</label>
+            <div class="form-group">
+              <select class="form-control" id="intention1" v-model="formData.intentType" :class="[formErrors.intentType ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()">
+                <option value="" selected disabled>请选择你的服务意向类型</option>
+                <option v-for="data in intentTypes" :value="data">{{data}}</option>
+              </select>
+              <div class="invalid-feedback" v-if="formErrors.intentType">请选择你的服务意向类型</div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="name">服务意向地区</label>
+          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <select class="form-control" id="intention1" v-model="formData.intention1" :class="[formErrors.intention1 ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()">
+                <option value="" selected disabled>意向1</option>
+                <option v-for="data in intention" :value="data.name">{{data.name}}</option>
+              </select>
+              <div class="invalid-feedback" v-if="formErrors.intention1">请选择你的第一服务意向地区</div>
+            </div>
+            <div class="form-group col-6">
+              <select class="form-control" id="intention2" v-model="formData.intention2" :class="[formErrors.intention2 ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()"  >
+                <option value="" selected disabled>意向2</option>
+                <option v-for="data in intention" :value="data.name">{{data.name}}</option>
+              </select>
+              <div class="invalid-feedback" v-if="formErrors.intention2">请选择你的第二服务意向地区且不能与第一意向地重复</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label for="name">是否服从分配</label>
+              <select class="form-control" id="obeyTheAdjustment" v-model="formData.obeyTheAdjustment" :disabled=disabledForm  @blur="saveForm()">
+                <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label for="name">是否从事过共青团工作</label>
+              <select class="form-control" id="workedInTheCYL"  v-model="formData.workedInTheCYL" :disabled=disabledForm >
+                <option v-for="data in ifWorkedInTheCYL" :value="data.value">{{data.label}}</option>
+              </select>
+            </div>
+         </div>
+         <div class="form-group">
+            <label for="name">个人简历</label>
+            <textarea class="form-control"  id="resume" rows="5" v-model.trim="formData.resume" placeholder="请对自己个人情况进行介绍" :disabled=disabledForm @blur="saveForm()"></textarea>
+          <div class="invalid-feedback">个人简历</div>
+        </div>
+        <div class="form-group">
+          <label for="name">志愿服务经历</label>
+          <textarea class="form-control"  id="volunteeringExperience" rows="5" v-model.trim="formData.volunteeringExperience" placeholder="志愿服务经历" @blur="saveForm()" :disabled=disabledForm></textarea>
+          <div class="invalid-feedback">志愿服务经历</div>
+        </div>
+        <div class="form-group">
+          <label for="name">大学期间奖励和处分</label>
+          <textarea class="form-control"  id="rewardsAndPunishment " rows="5" v-model.trim="formData.rewardsAndPunishment" placeholder="大学期间奖励和处分"  @blur="saveForm()" :disabled=disabledForm></textarea>
+          <div class="invalid-feedback">大学期间奖励和处分</div>
+        </div>
+        <div class="form-group">
+          <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block" v-if="!disabledForm">保存</ajax-button>
+        </div>
+      </ajax-form>
+
+      <button :syncing="syncing" class="btn-dark btn-lg btn-block"  @click = "submitCheck()" v-if="showSubmitBtn">提交</button>
+      <button class="btn-dark btn-lg btn-block" @click = "download" v-if="disabledForm" >下载报表</button>
+
+      <div v-if="showConfirmModel" class="model">
+        <div class='mask'></div>
+        <div class='board'>
+          <div><span class="title">确认提交吗？</span></div>
+          <div class='info'>提交后将不能再做任何修改，请谨慎提交！</div>
+          <div class="btngroup">
+            <button class="btn btn-left" @click="showConfirmModel = false">我再想想</button>
+            <button class="btn btn-success" @click="submitApply()">确定提交</button>
+          </div>
+        </div>
+      </div>
+      <hr/>
+    </div>
+
   </div>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

@@ -1,6 +1,178 @@
 <div id="schoolDashboard" v-cloak>
   <div class="container">
-    TODO： School
+    <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
+    <div class="my-3 row">
+      <table class="table clickable table-hover large" v-if="applyList.length > 0">
+        <thead>
+          <tr>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>报名时间</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="data of applyList" @click="getApplyDetail(data)" data-toggle="modal" data-target="#applyDetail" >
+            <td>{{data.id}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.applyTime}}</td>
+            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <span v-else>
+        尚无报名信息
+      </span>
+
+      <!-- 模态框 -->
+      <div class="modal fade" id="applyDetail">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">{{applyForm.name}}</h4>
+            </div>
+            <div class="modal-body">
+              <div class=row >
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="school">学校名称</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.school" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.name" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="name">性别</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.sex" disabled>
+                  </div>
+                </div>
+                <div class="form-group col-6">
+                    <div class="image-area mt-4">
+                      <img id="imageResult" :src="imageUrl" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
+                    </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nation">民族</label>
+                <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.nation" disabled>
+              </div>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="birthDate">出生年月</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.birthDate" disabled>
+                </div>
+                <div class="form-group col-6">
+                  <label for="politicalStatus">政治面貌</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.politicalStatus" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name">身份证号</label>
+                <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.IDNumber" disabled>
+              </div>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="education">学历</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.education" disabled>
+                </div>
+                <div class="form-group col-6">
+                  <label for="major">院（系）专业</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.major" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name">特长</label>
+                <input class="form-control" id="specialty" type="text" v-model.trim="applyForm.specialty" disabled>
+              </div>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="name">健康状况</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.healthStatus" disabled>
+                </div>
+                <div class="form-group col-6">
+                  <label for="name">既往病史</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.pastMedicalHistory" disabled>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="name">入学前户籍所在地</label>
+              </div>
+              <div class="row">
+                <div class="form-group col-4">
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.domicileProvince" disabled>
+                </div>
+                <div class="form-group col-4">
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.domicileCity" disabled>
+                </div>
+                <div class="form-group col-4">
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.domicileAddr" disabled>
+                </div>
+              </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">联系电话</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.phone" disabled>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="name">电子邮箱</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.email" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="name">家庭通讯地址及电话</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.homeAddressAndPhone" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="name">服务意向</label>
+                  <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.intentType" disabled>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="name">服务意向地区</label>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.intention1" disabled>
+                  </div>
+                  <div class="form-group col-6">
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.intention2" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">是否服从分配</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.obeyTheAdjustment" disabled>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="name">是否从事过共青团工作</label>
+                    <input class="form-control"  id="name" type="text"  v-model.trim="applyForm.workedInTheCYL" disabled>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label for="name">个人简历</label>
+                  <textarea class="form-control"  id="resume" rows="5" v-model.trim="applyForm.resume" disabled></textarea>
+                <div class="invalid-feedback">个人简历</div>
+              </div>
+              <div class="form-group">
+                <label for="name">志愿服务经历</label>
+                <textarea class="form-control"  id="volunteeringExperience" rows="5" v-model.trim="applyForm.volunteeringExperience" disabled></textarea>
+                <div class="invalid-feedback">志愿服务经历</div>
+              </div>
+              <div class="form-group">
+                <label for="name">大学期间奖励和处分</label>
+                <textarea class="form-control"  id="rewardsAndPunishment " rows="5" v-model.trim="applyForm.rewardsAndPunishment" disabled></textarea>
+                <div class="invalid-feedback">大学期间奖励和处分</div>
+              </div>
+            </div>
+            <div class="modal-footer" v-if="waitCheck">
+              <button :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

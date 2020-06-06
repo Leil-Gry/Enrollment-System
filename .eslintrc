@@ -45,7 +45,11 @@
     "Application": true,
 
     // …and any others.
-    "constants": true
+    "MailerService": true,
+    "AuthService": true,
+    "constants": true,
+    "jsonData": true,
+    "Cloud": true
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   },
 
