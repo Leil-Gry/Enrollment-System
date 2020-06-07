@@ -155,23 +155,25 @@ parasails.registerPage('userApply', {
       return '/public/avatars/' + fd; // TODO: constants
     },
 
-    updateApply: async function() {
+    updateApply: async function(showTip=true) {
+      if (!this.formData.pastMedicalHistory) {this.formData.pastMedicalHistory = '无';}
+      if (!this.formData.resume) {this.formData.resume = '无';}
+      if (!this.formData.volunteeringExperience) {this.formData.volunteeringExperience = '无';}
+      if (!this.formData.rewardsAndPunishment) {this.formData.rewardsAndPunishment = '无';}
+
       this.saveForm();
 
       var valid = await this.$refs.form.validate();
-      if (!valid) {
-        return;
-      }
+      if (!valid) {return;}
 
       let formData = await Cloud.createApplication.with(this.formData);
       this.applyID = formData.id;
 
       if(this.photoFile) {
         const resizedimage = this.$refs.uploader.getImage();
-        let fd;
+
         try {
-          fd = await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
-          // this.photo = fd;
+          await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
         } catch (e) {
           console.log(e);// TODO: show toast
         }
@@ -181,17 +183,18 @@ parasails.registerPage('userApply', {
       // this.formData = await Cloud.createApplication.with(this.formData);
       // this.saveForm();
       // this.photo = this.formData.photo;
-      ShowTip('保存成功！','success');
+      if (showTip) {
+        ShowTip('保存成功！','success');
+        this.showSubmitBtn = true;
+      }
       this.cloudSuccess = true;
     },
 
     getApplyForm: async function() {
       let form;
-      try {
-        await Cloud.getApply.with();
-      } catch (e) {
-        // 404 is ok
-      }
+      try{
+        form = await Cloud.getApply.with();
+      }catch(e){}
 
       if(form) {
         this.applyID = form.id;
@@ -202,20 +205,22 @@ parasails.registerPage('userApply', {
           this.showImg = true;
         }
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
-        this.disabledForm = form.status > 1?true:false;
+        this.disabledForm = form.status > 1;
         if(!this.disabledForm) {
           // this.canUpload = true;
           this.showSubmitBtn = true;
         }
+        this.status = form.status;
       } else {
         // this.canUpload = false;
         let localForm = JSON.parse(localStorage.getItem('applyForm'));
-        this.formData = localForm?localForm:this.formData;
         if(localForm){
+          this.formData = localForm;
           this.getCityRegion(localForm.domicileProvince,localForm.domicileCity,localForm.domicileAddr);
         }
+        this.status = constants.APPLICATION_STATUS_EDITING;
       }
-      this.status = form.status;
+
       this.statusControl();
 
       if (this.status === 1) {
@@ -255,6 +260,7 @@ parasails.registerPage('userApply', {
 
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
+      this.updateApply(false);
       await Cloud.submitApplication.with(this.formData);
       ShowTip('提交成功！','success');
       this.getApplyForm();
