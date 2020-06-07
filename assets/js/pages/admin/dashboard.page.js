@@ -5,6 +5,7 @@ parasails.registerPage('adminDashboard', {
   data: {
     // Main syncing/loading state for this page.
     syncing: false,
+    enlarge:false,
     applyList:[],
     applyForm: '',
 
@@ -15,6 +16,8 @@ parasails.registerPage('adminDashboard', {
     applyOrder: null,
     waitCheck:false,
     orderInput:false,
+    applyNum:200,
+    admitNum:200,
 
     queryData: {
       school: '',
@@ -23,6 +26,39 @@ parasails.registerPage('adminDashboard', {
       politicalStatus: '',
       obeyTheAdjustment: ''
     },
+
+    statistics: [
+      {
+        item:'专科',
+        applyNum: 20,
+        percent:'20%'
+      },
+      {
+        item:'专科',
+        applyNum: 20,
+        percent:'20%'
+      },
+      {
+        item:'专科',
+        applyNum: 20,
+        percent:'20%'
+      },
+      {
+        item:'专科',
+        applyNum: 20,
+        percent:'20%'
+      },
+      {
+        item:'专科',
+        applyNum: 20,
+        percent:'20%'
+      },
+      {
+        item:'专科',
+        applyNum: 20,
+        percent:'20%'
+      },
+    ],
 
     schools:[],
     nations: [],
@@ -115,6 +151,20 @@ parasails.registerPage('adminDashboard', {
     searchApply: async function() {
       console.log(this.queryData);
       return;
+    },
+
+    drag (event) {
+      var drag = document.getElementById('shrinkFloating');
+      var ev = event || window.event;
+      event.stopPropagation();
+      var disX = ev.clientX - drag.offsetLeft;
+      var disY = ev.clientY - drag.offsetTop;
+      document.onmousemove = function(event) {
+        var ev = event || window.event;
+        drag.style.left = ev.clientX - disX + 'px';
+        drag.style.top = ev.clientY - disY + 'px';
+        drag.style.cursor = 'move';
+      };
     },
 
 

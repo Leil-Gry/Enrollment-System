@@ -95,5 +95,53 @@
       </div>
     </div>
   </div>
+
+	<div class="floating-box" v-if="enlarge" @blur="enlarge=false">
+		<div class="floating-head">
+      <div class="floating-head-left">
+        <div class="box">
+          <span class="item">已报名：<span class="text">{{applyNum}}</span>人</span>
+        </div>
+        <div class="box">
+          <span class="item">已录取：<span class="text">{{admitNum}}</span>人</span>
+        </div>
+      </div>
+      <div class="floating-head-right" @click="enlarge=false">
+        <i class="fa fa-compress shrinkIcon" aria-hidden="true"></i> 
+      </div>
+		</div>
+		<div class="floating-body">
+        <h5 class="text-center table-title">当前报名人数分项统计</h5>
+          <table class="table" v-if="applyList.length > 0">
+              <tr>
+                <th>项目名称</th>
+                <th>报名人数</th>
+                <th>百分比%</th>
+              </tr>
+              <tr v-for="data of statistics">
+                <th>{{data.item}}</th>       
+                <td>{{data.applyNum}}</td>
+                <td>{{data.percent}}</td>
+              </tr>
+          </table>
+          <span v-else>
+            尚无报名信息
+          </span>
+		</div>
+	</div>
+
+  <div class="shrink-floating-box" v-else id="shrinkFloating">
+		<div class="shrink-floating-left">
+      <span class="item">已报名：<span class="text">{{applyNum}}</span>人</span>
+      <span class="item">已录取：<span class="text">{{admitNum}}</span>人</span>
+    </div>
+    <div class="shrink-floating-right" @click="enlarge=true">
+      <i class="fa fa-expand shrinkIcon" aria-hidden="true"></i> 
+    </div>
+	</div>
+
+  <div>
+
+  </div>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
