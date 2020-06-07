@@ -132,7 +132,7 @@ parasails.registerPage('userApply', {
 
     this.schools   = await Cloud.findSchool.with();
     this.nations   = await Cloud.findNation.with();
-    this.province  = await Cloud.findProvince.with();
+    this.province  = await Cloud.findProvince.with(); //TODO:province.json完善
     this.cities    = await Cloud.findCity.with();
     this.intention = await Cloud.findIntention.with();
     this.getApplyForm();

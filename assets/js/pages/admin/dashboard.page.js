@@ -16,6 +16,21 @@ parasails.registerPage('adminDashboard', {
     waitCheck:false,
     orderInput:false,
 
+    queryData: {
+      school: '',
+      nation: '',
+      intentType: '',
+      politicalStatus: '',
+      obeyTheAdjustment: ''
+    },
+
+    schools:[],
+    nations: [],
+    intentions: [],
+    politics: constants.POLITICS,
+    education: constants.EDUCATION,
+    intentTypes: constants.INTENTTYPES,
+    ifObeyTheAdjustment: constants.IFOBEYTHEADJUSTMENT,
     statusList: constants.APPLICATION_STATUS_INFO,
     statusChecked:constants.APPLICATION_STATUS_CHECKED,
     statusEditing:constants.APPLICATION_STATUS_EDITING,
@@ -33,6 +48,9 @@ parasails.registerPage('adminDashboard', {
   mounted: async function() {
     //…
     this.getApplyList();
+    this.schools   = await Cloud.findSchool.with();
+    this.nations   = await Cloud.findNation.with();
+    this.intentions = await Cloud.findIntention.with();
   },
   watch: {
     photo: function(v) {
@@ -86,8 +104,7 @@ parasails.registerPage('adminDashboard', {
 
     setOrder: async function() {
       this.orderInput = false;
-      let rule = /^\d+$/;
-      if(!rule.test(this.applyOrder)){
+      if(!isNonNegativeInteger(this.applyOrder)){
         ShowTip('请输入一个>=0的数字！','danger');
         return;
       }
@@ -95,9 +112,14 @@ parasails.registerPage('adminDashboard', {
       this.getApplyList();
     },
 
+    searchApply: async function() {
+      console.log(this.queryData);
+      return;
+    },
+
+
     validateNumber: async function() {
-      let rule = /^\d+$/;
-      if(!rule.test(this.applyOrder)){
+      if(!isNonNegativeInteger(this.applyOrder)){
         ShowTip('请输入一个>=0的数字！','danger');
       }
     },
