@@ -10,10 +10,10 @@ parasails.registerPage('userApply', {
     // Server error state for the form
     cloudError: '',
 
-    photo: '',
+    photoFile: '',
     showImg: false,  // must use v-if, otherwise getting photo file returns 404
     imageUrl: '',
-    canUpload: false,
+    // canUpload: false,
 
     formData:{
       name:'',
@@ -103,27 +103,25 @@ parasails.registerPage('userApply', {
   },
 
   watch: {
-    photo: function(v) {
+    // photo: function(v) {
+    //   if (v) {
+    //     this.showImg = true;
+    //     setTimeout(() => {
+    //       this.imageUrl = this.getImageUrl(this.photo);
+    //     }, 1000);  // WHY ?
+    //     // Vue.nextTick(() => {
+    //     //   this.imageUrl = '/public/avatars/' + this.photo;
+    //     // });
+
+    //   }
+    // }
+    photoFile: function(v) {
       if (v) {
         this.showImg = true;
-        // setTimeout(() => {
-        this.imageUrl = this.getImageUrl(this.photo);
-        // }, 1000);  // WHY ?
-        // Vue.nextTick(() => {
-        //   this.imageUrl = '/public/avatars/' + this.photo;
-        // });
-
+        this.imageUrl = v;
       }
     }
   },
-
-  // computed: {
-
-  //   imageUrl() {
-  //     return this.photo ? '/public/avatars/' + this.photo : ''; // TODO: constants
-  //   }
-
-  // },
 
   //  ╦  ╦╔═╗╔═╗╔═╗╦ ╦╔═╗╦  ╔═╗
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
@@ -157,13 +155,18 @@ parasails.registerPage('userApply', {
       return '/public/avatars/' + fd; // TODO: constants
     },
 
-    createApply: async function() {
-      if(!this.applyID){
-        let formData = await Cloud.createApplication.with();
-        this.applyID = formData.id;
+    updateApply: async function() {
+      this.saveForm();
+
+      var valid = await this.$refs.form.validate();
+      if (!valid) {
+        return;
       }
 
-      if(this.photo) {
+      let formData = await Cloud.createApplication.with(this.formData);
+      this.applyID = formData.id;
+
+      if(this.photoFile) {
         const resizedimage = this.$refs.uploader.getImage();
         let fd;
         try {
@@ -174,28 +177,38 @@ parasails.registerPage('userApply', {
         }
       }
 
-      this.formData = await Cloud.createApplication.with();
-      this.photo = this.formData.photo;
+      // NOTE: upload photo will update it to application record on the server
+      // this.formData = await Cloud.createApplication.with(this.formData);
+      // this.saveForm();
+      // this.photo = this.formData.photo;
       ShowTip('保存成功！','success');
       this.cloudSuccess = true;
-      this.saveForm();
     },
 
     getApplyForm: async function() {
-      let form = await Cloud.getApply.with();
+      let form;
+      try {
+        await Cloud.getApply.with();
+      } catch (e) {
+        // 404 is ok
+      }
+
       if(form) {
         this.applyID = form.id;
         this.formData = form;
         this.showSubmitBtn = false;
-        this.photo = form.photo;
+        if (form.photo) {
+          this.imageUrl = this.getImageUrl(form.photo);
+          this.showImg = true;
+        }
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
         this.disabledForm = form.status > 1?true:false;
         if(!this.disabledForm) {
-          this.canUpload = true;
+          // this.canUpload = true;
           this.showSubmitBtn = true;
         }
       } else {
-        this.canUpload = false;
+        // this.canUpload = false;
         let localForm = JSON.parse(localStorage.getItem('applyForm'));
         this.formData = localForm?localForm:this.formData;
         if(localForm){
@@ -237,9 +250,7 @@ parasails.registerPage('userApply', {
         ShowTip('请先上传照片！','danger');
         return;
       }
-      this.$refs.form.submitApply().then((res) => {
-        this.showConfirmModel = res;
-      });
+      this.showConfirmModel = await this.$refs.form.validate();
     },
 
     // 用户确认提交，数据发送到服务端
@@ -289,10 +300,10 @@ parasails.registerPage('userApply', {
       }
     },
 
-    judge: async function () {
-      if(!this.canUpload) {
-        ShowTip('保存报名表后才能上传图片！', 'danger');
-      }
-    }
+    // judge: async function () {
+    //   if(!this.canUpload) {
+    //     ShowTip('保存报名表后才能上传图片！', 'danger');
+    //   }
+    // }
   }
 });

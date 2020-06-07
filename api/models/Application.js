@@ -78,7 +78,8 @@ module.exports = {
     },
 
     pastMedicalHistory:{
-      type: 'string'
+      type: 'string',
+      required: true
     },
 
     // 户籍省
