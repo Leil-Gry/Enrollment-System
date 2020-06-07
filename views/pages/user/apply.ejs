@@ -6,7 +6,8 @@
     <h1 class="text-center" style="margin-top: 30px;">{{formTitle.bigTitle}}</h1>
     <div class="signup-form">
       <p class="text-center">{{formTitle.subTitle}}</p>
-      <ajax-form action="createApplication" ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="createApply()" >
+      <!-- <ajax-form action="createApplication" ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="updateApply()" > -->
+        <ajax-form ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" ></ajax-form>
         <div class=row >
           <div class="col-6">
             <div class="form-group">
@@ -39,11 +40,11 @@
               <div class="invalid-feedback" v-if="formErrors.nation">请选择你的民族.</div>
             </div>
           </div>
-          <div class="form-group col-6"  @click="judge()">
+          <div class="form-group col-6">  <!--@click="judge()"-->
               <div class="image-area mt-4">
                 <img id="imageResult" v-if="showImg" :src="imageUrl" width="98" height="130" alt="" class="rounded shadow-sm mx-auto d-block">
               </div>
-              <uploader ref="uploader" :photo.sync="photo" :can-upload="canUpload" v-if="!disabledForm"/>
+              <uploader ref="uploader" :photo.sync="photoFile" :can-upload="!disabledForm" v-if="!disabledForm"/>
           </div>
         </div>
 
@@ -198,12 +199,13 @@
           <textarea class="form-control"  id="rewardsAndPunishment " rows="5" v-model.trim="formData.rewardsAndPunishment" placeholder="大学期间奖励和处分"  @blur="saveForm()" :disabled=disabledForm></textarea>
           <div class="invalid-feedback">大学期间奖励和处分</div>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block" v-if="!disabledForm">保存</ajax-button>
-        </div>
+        </div> -->
       </ajax-form>
 
-      <button :syncing="syncing" class="btn-dark btn-lg btn-block"  @click = "submitCheck()" v-if="showSubmitBtn">提交</button>
+      <button :syncing="syncing" class="btn-dark btn-lg btn-block" @click="updateApply()" v-if="!disabledForm">保存</-button>
+      <button :syncing="syncing" class="btn-dark btn-lg btn-block"  @click="submitCheck()" v-if="showSubmitBtn">提交</button>
       <button class="btn-dark btn-lg btn-block" @click = "download" v-if="disabledForm" >下载报表</button>
 
       <div v-if="showConfirmModel" class="model">

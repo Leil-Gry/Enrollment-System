@@ -14,7 +14,7 @@ parasails.registerComponent('uploader', {
   //  ╩  ╩╚═╚═╝╩  ╚═╝
   props: [
     'syncing',
-    'photo',
+    'photo',  // dataURL for preview before upload
     'canUpload'
   ],
 
@@ -24,7 +24,7 @@ parasails.registerComponent('uploader', {
   data: function (){
     return {
       //…
-      resizedimage: ''
+      resizedimage: '' // File
     };
   },
 
@@ -37,9 +37,9 @@ parasails.registerComponent('uploader', {
         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
           <input id="upload" type="file" @change="readURL" class="form-control border-0" v-if="canUpload">
           <input id="upload" @change="readURL" class="form-control border-0" v-else>
-          <label id="upload-label" for="upload" class="font-weight-light text-muted">上传照片</label>
+          <label id="upload-label" for="upload" class="font-weight-light text-muted">照片</label>
           <div class="input-group-append">
-            <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">上传照片</small></label>
+            <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">照片</small></label>
           </div>
         </div>
         <!--<p class="font-italic text-white text-center">The image uploaded will be rendered inside the box below.</p>
@@ -79,7 +79,9 @@ parasails.registerComponent('uploader', {
           maxHeight: 130 // 196
         };
 
-        this.resizedimage = await this.resizeImage(settings);
+        var result = await this.resizeImage(settings);
+        this.resizedimage = result.file;
+        this.$emit('update:photo', result.dataUrl);
 
         // let fd;
         // try {
@@ -143,7 +145,10 @@ parasails.registerComponent('uploader', {
         canvas.getContext('2d').drawImage(image, 0, 0, width, height);
         var dataUrl = canvas.toDataURL('image/jpeg');
         // return dataURItoBlob(dataUrl);
-        return dataURItoFile(dataUrl);
+        return {
+          dataUrl,
+          file: dataURItoFile(dataUrl)
+        };
       };
 
       return new Promise(((ok, no) => {

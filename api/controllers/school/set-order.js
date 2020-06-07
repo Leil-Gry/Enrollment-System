@@ -1,7 +1,7 @@
 module.exports = {
 
 
-  friendlyName: 'Update status of an application by school admin',
+  friendlyName: 'Set order of an application for recommendation by school admin',
 
 
   inputs: {
@@ -12,7 +12,7 @@ module.exports = {
       required: true
     },
 
-    status: {
+    order: {
       type: 'number',
       required: true
     }
@@ -33,10 +33,6 @@ module.exports = {
 
     notFound: {
       responseType: 'notFound'
-    },
-
-    wrongStatus: {
-      responseType: 'forbidden'
     }
 
   },
@@ -56,21 +52,11 @@ module.exports = {
       throw 'notFound';
     }
 
-    if (inputs.status === constants.APPLICATION_STATUS_CHECKED) {
-      if (application.status !== constants.APPLICATION_STATUS_SUBMITTED) {
-        throw 'wrongStatus';
-      }
-    } else if (inputs.status === constants.APPLICATION_STATUS_EDITING) {
-      if (application.status !== constants.APPLICATION_STATUS_SUBMITTED) {
-        throw 'wrongStatus';
-      }
-    }
-
     application = await Application.update({
       id: application.id
     })
       .set({
-        status: inputs.status
+        order: inputs.order
       });
 
     return;

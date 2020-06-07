@@ -11,8 +11,26 @@ parasails.registerPage('adminDashboard', {
     photo: '',
     imageUrl:'',
     applyID: '',
+    applyName: '',
+    applyOrder: null,
     waitCheck:false,
+    orderInput:false,
 
+    queryData: {
+      school: '',
+      nation: '',
+      intentType: '',
+      politicalStatus: '',
+      obeyTheAdjustment: ''
+    },
+
+    schools:[],
+    nations: [],
+    intentions: [],
+    politics: constants.POLITICS,
+    education: constants.EDUCATION,
+    intentTypes: constants.INTENTTYPES,
+    ifObeyTheAdjustment: constants.IFOBEYTHEADJUSTMENT,
     statusList: constants.APPLICATION_STATUS_INFO,
     statusChecked:constants.APPLICATION_STATUS_CHECKED,
     statusEditing:constants.APPLICATION_STATUS_EDITING,
@@ -30,13 +48,16 @@ parasails.registerPage('adminDashboard', {
   mounted: async function() {
     //…
     this.getApplyList();
+    this.schools   = await Cloud.findSchool.with();
+    this.nations   = await Cloud.findNation.with();
+    this.intentions = await Cloud.findIntention.with();
   },
   watch: {
     photo: function(v) {
       if (v) {
-        setTimeout(() => {
-          this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
-        }, 2000);  // WHY ?
+        // setTimeout(() => {
+        this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
+        // }, 2000);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
         // });
@@ -62,18 +83,45 @@ parasails.registerPage('adminDashboard', {
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
         this.applyID = form.id;
-        this.imageUrl = this.getImageUrl(this.photo);
         this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;
       }
     },
 
     checkApply: async function(status) {
-      await Cloud.updateApplicationStatus.with({id: this.applyID, status:status});
+      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
       this.getApplyList();
     },
 
     getImageUrl: function(fd) {
       return '/public/avatars/' + fd; // TODO: constants
+    },
+
+    showInput: async function(data) {
+      this.orderInput = true;
+      this.applyID = data.id;
+      this.applyName = data.name;
+    },
+
+    setOrder: async function() {
+      this.orderInput = false;
+      if(!isNonNegativeInteger(this.applyOrder)){
+        ShowTip('请输入一个>=0的数字！','danger');
+        return;
+      }
+      await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
+      this.getApplyList();
+    },
+
+    searchApply: async function() {
+      console.log(this.queryData);
+      return;
+    },
+
+
+    validateNumber: async function() {
+      if(!isNonNegativeInteger(this.applyOrder)){
+        ShowTip('请输入一个>=0的数字！','danger');
+      }
     },
 
   }

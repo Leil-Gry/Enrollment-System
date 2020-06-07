@@ -7,32 +7,50 @@
           <tr>
             <th>编号</th>
             <th>姓名</th>
-            <th>报名时间</th>
+            <th>性别</th>
+            <th>民族</th>
+            <th>政治面貌</th>
+            <th>学历</th>
+            <th>户籍（省）</th>
+            <th>服务意向地区</th>
             <th>状态</th>
-            <th>order</th>
+            <th>推荐排名</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data of applyList">
+          <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">            
             <td>{{data.id}}</td>
             <td>{{data.name}}</td>
-            <td><js-timestamp :at="data.createdAt"></js-timestamp><br/></td>
-            <td><button type="button" class="btn" :class="statusList[data.status].labelType" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" >{{statusList[data.status].text}}</button></td>
+            <td>{{data.sex}}</td>
+            <td>{{data.nation}}</td>
+            <td>{{data.politicalStatus}}</td>
+            <td>{{data.education}}</td>
+            <td>{{data.domicileProvince}}</td>
+            <td>{{data.intention1}}、{{data.intention2}}</td>
+            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
             <td>
-              <select :disabled="data.status<statusChecked" class="form-control">                
-                <option>待审核</option>
-                <option>推荐</option>
-                <option>退回</option>
-              </select>
+              <a href="#" id="order" @click.stop @click="showInput(data)" >
+                <span v-if="data.order > 0">{{data.order}}</span>
+                <span v-else>点击输入排序</span>
+              </a>
             </td>
           </tr>
         </tbody>
+
+        <div v-show="orderInput" class="model">
+          <div class='mask'></div>
+          <div class='board' @blur="orderInput=false">
+            <div class="title">设置{{applyName}}的推荐排名</div>
+            <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()" @mouseout="validateNumber()"/>
+          </div>
+        </div>
+
       </table>
       <span v-else>
         尚无报名信息
       </span>
 
-      <!-- 模态框 -->
+      <!-- 详情弹框 -->
       <div class="modal fade" id="applyDetail">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -44,9 +62,8 @@
             </div>
             <div class="modal-footer" v-if="waitCheck">
               <button :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回修改</button>
             </div>
-      
           </div>
         </div>
       </div>

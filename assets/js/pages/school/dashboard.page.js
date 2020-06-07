@@ -11,7 +11,10 @@ parasails.registerPage('schoolDashboard', {
     photo: '',
     imageUrl:'',
     applyID: '',
+    applyName: '',
+    applyOrder: null,
     waitCheck:false,
+    orderInput:false,
 
     statusList: constants.APPLICATION_STATUS_INFO,
     statusChecked:constants.APPLICATION_STATUS_CHECKED,
@@ -34,9 +37,9 @@ parasails.registerPage('schoolDashboard', {
   watch: {
     photo: function(v) {
       if (v) {
-        setTimeout(() => {
-          this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
-        }, 2000);  // WHY ?
+        // setTimeout(() => {
+        this.imageUrl = '/public/avatars/' + this.photo; // TODO: constants
+        // }, 2000);  // WHY ?
         // Vue.nextTick(() => {
         //   this.imageUrl = '/public/avatars/' + this.photo;
         // });
@@ -61,9 +64,7 @@ parasails.registerPage('schoolDashboard', {
         this.applyForm.obeyTheAdjustment = constants.ADJUSTMENT[form.obeyTheAdjustment];
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
-        console.log(form);
         this.applyID = form.id;
-        this.imageUrl = this.getImageUrl(this.photo);
         this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;
       }
     },
@@ -75,6 +76,30 @@ parasails.registerPage('schoolDashboard', {
 
     getImageUrl: function(fd) {
       return '/public/avatars/' + fd; // TODO: constants
+    },
+
+    showInput: async function(data) {
+      this.orderInput = true;
+      this.applyID = data.id;
+      this.applyName = data.name;
+    },
+
+    setOrder: async function() {
+      this.orderInput = false;
+      let rule = /^\d+$/;
+      if(!rule.test(this.applyOrder)){
+        ShowTip('请输入一个>=0的数字！','danger');
+        return;
+      }
+      await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
+      this.getApplyList();
+    },
+
+    validateNumber: async function() {
+      let rule = /^\d+$/;
+      if(!rule.test(this.applyOrder)){
+        ShowTip('请输入一个>=0的数字！','danger');
+      }
     },
 
   }

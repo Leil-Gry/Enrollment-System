@@ -43,7 +43,7 @@ parasails.registerComponent('ajaxForm', {
   //  ╩╝╚╝╩ ╩ ╩╩ ╩╩═╝  ╚═╝ ╩ ╩ ╩ ╩ ╚═╝
   data: function (){
     return {
-      //…
+      argins: undefined
     };
   },
 
@@ -148,7 +148,7 @@ parasails.registerComponent('ajaxForm', {
       await this._submit();
     },
 
-    submitApply: async function () {
+    validate: async function () {
 
       // Prevent double-posting.
       if (this.syncing) {
@@ -159,25 +159,25 @@ parasails.registerComponent('ajaxForm', {
       this.$emit('update:cloudError', '');
 
       // Determine the argins that will be sent to the server in our request.
-      var argins;
+      this.argins = undefined; // var argins;
       if (this.handleParsing) {
         // Run the provided "handle-parsing" logic.
         // > This should clear out any pre-existing error messages, perform any additional
         // > client-side form validation checks, and do any necessary data transformations
         // > to munge the form data into the format expected by the server.
-        argins = this.handleParsing();
-        if (argins === undefined) {
+        this.argins = this.handleParsing();
+        if (this.argins === undefined) {
           // If argins came back undefined, then avast.
           // (This means that parsing the form failed.  Submission will not be attempted.)
           return;
-        } else if (!_.isObject(argins) || _.isArray(argins) || _.isFunction(argins)) {
+        } else if (!_.isObject(this.argins) || _.isArray(this.argins) || _.isFunction(this.argins)) {
           throw new Error('Invalid data returned from custom form parsing logic.  (Should return a dictionary of argins, like `{}`.)');
         }//•
       } else if (this.formData) {
         // Or use the simpler, built-in absorbtion strategy.
         // > This uses the provided form data as our argins, verbatim.  Then it runs
         // > built-in client-side validation, if configured to do so.
-        argins = this.formData;
+        this.argins = this.formData;
 
         let formData = this.formData;
         let formErrors = {};
@@ -322,12 +322,8 @@ parasails.registerComponent('ajaxForm', {
         }//•
       }//ﬁ  (determining argins)
 
-      // Set syncing state to `false` on userland "syncing" prop.
-      this.$emit('update:syncing', false);
-
-
-
     },
+
     //  ╔═╗╦═╗╦╦  ╦╔═╗╔╦╗╔═╗  ╔╦╗╔═╗╔╦╗╦ ╦╔═╗╔╦╗╔═╗
     //  ╠═╝╠╦╝║╚╗╔╝╠═╣ ║ ║╣   ║║║║╣  ║ ╠═╣║ ║ ║║╚═╗
     //  ╩  ╩╚═╩ ╚╝ ╩ ╩ ╩ ╚═╝  ╩ ╩╚═╝ ╩ ╩ ╩╚═╝═╩╝╚═╝
@@ -338,171 +334,10 @@ parasails.registerComponent('ajaxForm', {
         return;
       }//•
 
-      // Clear the userland "cloudError" prop.
-      this.$emit('update:cloudError', '');
-
-      // Determine the argins that will be sent to the server in our request.
-      var argins;
-      if (this.handleParsing) {
-        // Run the provided "handle-parsing" logic.
-        // > This should clear out any pre-existing error messages, perform any additional
-        // > client-side form validation checks, and do any necessary data transformations
-        // > to munge the form data into the format expected by the server.
-        argins = this.handleParsing();
-        if (argins === undefined) {
-          // If argins came back undefined, then avast.
-          // (This means that parsing the form failed.  Submission will not be attempted.)
-          return;
-        } else if (!_.isObject(argins) || _.isArray(argins) || _.isFunction(argins)) {
-          throw new Error('Invalid data returned from custom form parsing logic.  (Should return a dictionary of argins, like `{}`.)');
-        }//•
-      } else if (this.formData) {
-        // Or use the simpler, built-in absorbtion strategy.
-        // > This uses the provided form data as our argins, verbatim.  Then it runs
-        // > built-in client-side validation, if configured to do so.
-        argins = this.formData;
-
-        let formData = this.formData;
-        let formErrors = {};
-
-        for (let fieldName in this.formRules) {
-          let fieldValue = formData[fieldName];
-
-          for (let ruleName in this.formRules[fieldName]) {
-            let ruleRhs = this.formRules[fieldName][ruleName];
-            let violation;
-
-            let isFieldValuePresent = (
-              fieldValue !== undefined &&
-              fieldValue !== '' &&
-              !_.isNull(fieldValue)
-            );
-
-            if (ruleName === 'required' && (ruleRhs === true || ruleRhs === false)) {
-              // ® Must be defined, non-null, and not the empty string
-              if (ruleRhs === false) {
-                violation = false;
-              } else {
-                violation = (
-                  !isFieldValuePresent
-                );
-              }
-            } else if (!isFieldValuePresent) {
-              // Do nothing.
-              // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-              // Note:
-              // In order to allow use with optional fields, all rules except for
-              // `required: true` are only actually checked when the field value
-              // is "present" -- i.e. some value other than `null`, `undefined`,
-              // or `''` (empty string).
-              //
-              // > Trying to figure out how to handle a conditionally-requiured
-              // > field that uses one of these validations?  For example, a
-              // > "Confirm email" re-entry field for an optional email address?
-              // > Just make `required` validation rule dynamic, and everything
-              // > else will work as expected.
-              // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            } else if (ruleName === 'isEmail' && (ruleRhs === true || ruleRhs === false)) {
-              // ® Must be an email address (unless falsy)
-              if (ruleRhs === false) {
-                violation = false;
-              } else {
-                violation = (
-                  !/.+@.+\..+/.test(fieldValue)
-                  // !parasails.util.isValidEmailAddress(fieldValue)
-                );
-              }
-            } else if (ruleName === 'isIn' && _.isArray(ruleRhs)) {
-              // ® Must be one of these things
-              violation = (
-                !_.contains(ruleRhs, fieldValue)
-              );
-            } else if (ruleName === 'is') {
-              // ® Must be exactly this thing (useful for required checkboxes)
-              violation = (
-                ruleRhs !== fieldValue
-              );
-            } else if (ruleName === 'minLength' && _.isNumber(ruleRhs)) {
-              // ® Must consist of at least this many characters
-              violation = (
-                !_.isString(fieldValue) ||
-                fieldValue.length < ruleRhs
-              );
-            } else if (ruleName === 'maxLength' && _.isNumber(ruleRhs)) {
-              // ® Must consist of no more than this many characters
-              violation = (
-                !_.isString(fieldValue) ||
-                fieldValue.length > ruleRhs
-              );
-            } else if (ruleName === 'sameAs' && ruleRhs !== '' && _.isString(ruleRhs)) {
-              // ® Must match the value in another field
-              let otherFieldName = ruleRhs;
-              let otherFieldValue = formData[otherFieldName];
-              violation = (
-                otherFieldValue !== fieldValue
-              );
-            } else if (ruleName === 'differentWith' && ruleRhs !== '' && _.isString(ruleRhs)) {
-              // ® Must match the value in another field
-              let otherFieldName = ruleRhs;
-              let otherFieldValue = formData[otherFieldName];
-              violation = (
-                otherFieldValue === fieldValue
-              );
-            } else if (ruleName === 'isHalfwayDecentPassword' && (ruleRhs === true || ruleRhs === false)) {
-              // ® Must be a halfway-decent password
-              // > This is an arbitrary distinction, so change it if you want.
-              // > Just... please use common sense.  And try to avoid engaging
-              // > in security theater.
-              if (ruleRhs === false) {
-                violation = false;
-              } else {
-                violation = (
-                  (!_.isString(fieldValue) && !_.isNumber(fieldValue)) ||
-                  fieldValue.length < 6
-                );
-              }
-            } else if (ruleName === 'custom' && _.isFunction(ruleRhs)) {
-              // ® Provided function must return truthy when invoked with the value.
-              try {
-                violation = (
-                  !ruleRhs(fieldValue)
-                );
-              } catch (err) {
-                console.warn(err);
-                violation = true;
-              }
-            } else {
-              throw new Error('Cannot interpret client-side validation rule (`'+ruleName+'`) because the configuration provided for it is not recognized by <ajax-form>.\n [?] If you\'re unsure, visit https://sailsjs.com/support');
-            }
-
-            // If a rule violation was detected, then set it as a form error
-            // and break out of the `for` loop to continue on to the next field.
-            // (We only track one form error per field.)
-            if (violation) {
-              formErrors[fieldName] = ruleName;
-              break;
-            }//˚
-
-          }//∞
-        }//∞
-
-        // Whether there are any errors or not, update userland "formErrors" prop
-        // so that the markup reflects the new reality (i.e. inline validation errors
-        // either get rendered or go away.)
-        this.$emit('update:formErrors', formErrors);
-
-        // If there were any form errors, avast.  (Submission will not be attempted.)
-        if (Object.keys(formErrors).length > 0) {
-          // In development mode, also log a warning
-          // (so that it's clear what's going on just in case validation
-          // states/messages are not hooked up in the HTML template)
-          if (this._environment !== 'production') {
-            console.warn(`<ajax-form> encountered ${Object.keys(formErrors).length} form error${Object.keys(formErrors).length !== 1 ? 's' : ''} when performing client-side validation of "form-data" versus "form-rules".  (Note: This warning is only here to assist with debugging-- it will not be displayed in production.  If you're unsure, check out https://sailsjs.com/support for more resources.)`, _.cloneDeep(formErrors));
-          }//ﬁ
-          return;
-        }//•
-      }//ﬁ  (determining argins)
-
+      let valid = await this.validate();
+      if (!valid) {
+        return;
+      }
 
       // Set syncing state to `true` on userland "syncing" prop.
       this.$emit('update:syncing', true);
@@ -518,7 +353,7 @@ parasails.registerComponent('ajaxForm', {
           // FUTURE: Consider cloning the argins ahead of time to prevent accidental mutation of form data.
           // (but remember argins could contain File instances that might not be clone-able)
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          result = await this.handleSubmitting(argins);
+          result = await this.handleSubmitting(this.argins);
         } catch (err) {
           rawErrorFromCloudSDK = err;
           if (_.isString(err) && err !== '') {
@@ -537,7 +372,7 @@ parasails.registerComponent('ajaxForm', {
         // (assuming cloudsdk has that information available)
         // Or better yet, just have `Cloud.*.with()` take care of that automatically.
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        result = await Cloud[this.action].with(argins)
+        result = await Cloud[this.action].with(this.argins)
         .tolerate((err)=>{
           rawErrorFromCloudSDK = err;
           failedWithCloudExit = err.exit || 'error';
