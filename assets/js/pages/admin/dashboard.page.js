@@ -27,38 +27,7 @@ parasails.registerPage('adminDashboard', {
       obeyTheAdjustment: ''
     },
 
-    statistics: [
-      {
-        item:'专科',
-        applyNum: 20,
-        percent:'20%'
-      },
-      {
-        item:'专科',
-        applyNum: 20,
-        percent:'20%'
-      },
-      {
-        item:'专科',
-        applyNum: 20,
-        percent:'20%'
-      },
-      {
-        item:'专科',
-        applyNum: 20,
-        percent:'20%'
-      },
-      {
-        item:'专科',
-        applyNum: 20,
-        percent:'20%'
-      },
-      {
-        item:'专科',
-        applyNum: 20,
-        percent:'20%'
-      },
-    ],
+    statistics:[],
 
     schools:[],
     nations: [],
@@ -149,8 +118,42 @@ parasails.registerPage('adminDashboard', {
     },
 
     searchApply: async function() {
-      console.log(this.queryData);
-      return;
+      // this.applyList = await Cloud.criteriaFindApplication.with({query: this.queryData});
+    },
+
+    getStatistics: async function() {
+      this.statistics =  [
+        {
+          item:'专科',
+          applyNum: 20,
+          percent:'20%'
+        },
+        {
+          item:'专科',
+          applyNum: 20,
+          percent:'20%'
+        },
+        {
+          item:'专科',
+          applyNum: 20,
+          percent:'20%'
+        },
+        {
+          item:'专科',
+          applyNum: 20,
+          percent:'20%'
+        },
+        {
+          item:'专科',
+          applyNum: 20,
+          percent:'20%'
+        },
+        {
+          item:'专科',
+          applyNum: 20,
+          percent:'20%'
+        },
+      ];
     },
 
     drag (event) {
