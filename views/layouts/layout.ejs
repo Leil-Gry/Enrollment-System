@@ -47,10 +47,13 @@
   </head>
   <body>
     <div id="page-wrap">
-      <header id="page-header" class="navbar navbar-expand-sm navbar-dark bg-dark flex-column flex-md-row justify-content-between">
+      <header id="page-header" class="navbar navbar-expand-sm navbar-light bg-light flex-column flex-md-row justify-content-between">
         <!-- <a class="navbar-brand mr-0" href="/"><img class="logo" alt="NEW_APP_NAME logo" src="/images/logo.png"/></a> -->
-        <a class="navbar-brand mr-0" href="/">浙江省大学生志愿服务山区、海岛、边远地区计划 网络报名系统
-          </a>
+        <div>
+          <a class="navbar-brand mr-0 has-logo" href="/"><img class="logo" alt="logo" src="/images/emblem.png"/></a>
+          <a class="navbar-brand mr-0 has-logo" href="/"><img class="logo" alt="logo" src="/images/logo.png"/></a>
+        </div>
+        <a class="navbar-brand mr-0" href="/">浙江省大学生志愿服务山区、海岛、边远地区计划 网络报名系统</a>
         <div class="navbar-nav flex-row">
           <!-- LOGGED-IN NAVIGATION -->
           <% if(me) { %>
@@ -105,7 +108,7 @@
           <% } %> -->
         </div>
         <!-- <small class="copy">Copyright &copy; 2020 *******版权所有. <br class="xs-only"/>All rights reserved.</small> -->
-        <small class="copy">技术支持：<a href="http://tuanwei.hdu.edu.cn/">杭州电子科技大学团委</a></small>
+        <small class="copy">技术支持：<a href="http://tuanwei.hdu.edu.cn/" target="_blank">杭州电子科技大学团委</a></small>
       </footer>
     </div>
 
@@ -118,7 +121,7 @@
       by the asset pipeline between "SCRIPTS" and "SCRIPTS END", or both.
       (https://sailsjs.com/docs/concepts/assets/task-automation)
     */ %>
-    <% if(!me && req.originalUrl !== '/login') { %>
+    <% if(!me && req.originalUrl !== '/login' && req.originalUrl !== '/signup' && req.originalUrl !== '/password/forgot') { %>
       <script>window.location.replace('/login')</script>
     <% } %>
 

@@ -1,7 +1,7 @@
 <div id="adminDashboard" v-cloak>
   <div class="container">
     <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
-    <h6 class="text-center statistic-link"><a href="/statistics">报名表统计</a></h6>
+    <h6 class="text-center statistic-link"><a href="/statistics">报名情况统计表</a></h6>
     <div class="row" style="margin: auto;">
       <select class="form-control search-term" id="school" type="text" v-model="queryData.school" title="根据学校选取报名表">
         <option value="" disabled>高校</option>
@@ -44,7 +44,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">            
+          <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">
             <td>{{data.id}}</td>
             <td>{{data.school.name}}</td>
             <td>{{data.name}}</td>
@@ -88,7 +88,7 @@
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
             <div class="modal-footer" v-if="waitCheck">
-              <button :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
+              <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回修改</button>
             </div>
           </div>
@@ -108,7 +108,7 @@
         </div>
       </div>
       <div class="floating-head-right" @click="enlarge=false">
-        <i class="fa fa-compress shrinkIcon" aria-hidden="true"></i> 
+        <i class="fa fa-compress shrinkIcon" aria-hidden="true"></i>
       </div>
 		</div>
 		<div class="floating-body">
@@ -120,7 +120,7 @@
                 <th>百分比%</th>
               </tr>
               <tr v-for="data of stats.itemStats">
-                <th>{{data.item}}</th>       
+                <th>{{data.item}}</th>
                 <td>{{data.applyNum}}</td>
                 <td>{{data.percent}}</td>
               </tr>
@@ -137,7 +137,7 @@
       <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
     </div>
     <div class="shrink-floating-right" @click="enlarge=true">
-      <i class="fa fa-expand shrinkIcon" aria-hidden="true"></i> 
+      <i class="fa fa-expand shrinkIcon" aria-hidden="true"></i>
     </div>
 	</div>
 

@@ -200,13 +200,13 @@
           <div class="invalid-feedback">大学期间奖励和处分</div>
         </div>
         <!-- <div class="form-group">
-          <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block" v-if="!disabledForm">保存</ajax-button>
+          <ajax-button type="submit" :syncing="syncing" class="btn-success btn-lg btn-block" v-if="!disabledForm">保存</ajax-button>
         </div> -->
       </ajax-form>
 
-      <button :syncing="syncing" class="btn-dark btn-lg btn-block" @click="updateApply()" v-if="!disabledForm">保存</button>
-      <button :syncing="syncing" class="btn-dark btn-lg btn-block"  @click="submitCheck()" v-if="showSubmitBtn">提交</button>
-      <button class="btn-dark btn-lg btn-block" @click = "download" v-if="disabledForm" >下载报表</button>
+      <button :syncing="syncing" class="btn-success btn-lg btn-block" @click="updateApply()" v-if="!disabledForm">保存</button>
+      <button :syncing="syncing" class="btn-success btn-lg btn-block"  @click="submitCheck()" v-if="showSubmitBtn">提交</button>
+      <button class="btn-success btn-lg btn-block" @click = "download" v-if="disabledForm" >下载报表</button>
 
       <div v-if="showConfirmModel" class="model">
         <div class='mask'></div>

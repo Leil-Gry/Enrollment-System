@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">            
+          <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">
             <td>{{data.id}}</td>
             <td>{{data.name}}</td>
             <td>{{data.sex}}</td>
@@ -61,7 +61,7 @@
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
             <div class="modal-footer" v-if="waitCheck">
-              <button :syncing="syncing" class="btn-dark btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
+              <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回修改</button>
             </div>
           </div>
