@@ -16,8 +16,6 @@ parasails.registerPage('adminDashboard', {
     applyOrder: null,
     waitCheck:false,
     orderInput:false,
-    applyNum:200,
-    admitNum:200,
 
     queryData: {
       school: '',
@@ -27,7 +25,7 @@ parasails.registerPage('adminDashboard', {
       obeyTheAdjustment: ''
     },
 
-    statistics:[],
+    stats: {},
 
     schools:[],
     nations: [],
@@ -56,6 +54,7 @@ parasails.registerPage('adminDashboard', {
     this.schools   = await Cloud.findSchool.with();
     this.nations   = await Cloud.findNation.with();
     this.intentions = await Cloud.findIntention.with();
+    this.getStatistics();
   },
   watch: {
     photo: function(v) {
@@ -118,42 +117,31 @@ parasails.registerPage('adminDashboard', {
     },
 
     searchApply: async function() {
-      // this.applyList = await Cloud.criteriaFindApplication.with({query: this.queryData});
+      console.log(this.queryData);
+      let query = {};
+      Object.keys(this.queryData).forEach(key =>{
+        if(this.queryData[key] !== ''){
+          query[key]=this.queryData[key];
+        }
+      });
+      console.log(query);
+      this.applyList = await Cloud.findApplication.with(query);
+      console.log(this.applyList);
+    },
+
+    searchReset: async function () {
+      this.queryData = {
+        school: '',
+        nation: '',
+        intentType: '',
+        politicalStatus: '',
+        obeyTheAdjustment: ''
+      };
+      this.getApplyList();
     },
 
     getStatistics: async function() {
-      this.statistics =  [
-        {
-          item:'专科',
-          applyNum: 20,
-          percent:'20%'
-        },
-        {
-          item:'专科',
-          applyNum: 20,
-          percent:'20%'
-        },
-        {
-          item:'专科',
-          applyNum: 20,
-          percent:'20%'
-        },
-        {
-          item:'专科',
-          applyNum: 20,
-          percent:'20%'
-        },
-        {
-          item:'专科',
-          applyNum: 20,
-          percent:'20%'
-        },
-        {
-          item:'专科',
-          applyNum: 20,
-          percent:'20%'
-        },
-      ];
+      this.stats = await Cloud.getStats.with({groupBySchool: false});
     },
 
     drag (event) {

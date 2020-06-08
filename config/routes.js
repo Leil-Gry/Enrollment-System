@@ -78,6 +78,6 @@ module.exports.routes = {
   'POST /api/v1/application/:id': { action: 'school/set-order'},
   'POST /api/v1/school/application/:id/status': { action: 'school/update-school-application-status' },
   'POST /api/v1/admin/application/:id/status': { action: 'admin/update-application-status' },
-  'GET /api/v1/admin/statistics':          { action: 'admin/statistics' },
+  'GET /api/v1/admin/stats':          { action: 'admin/get-stats' },
 
 };

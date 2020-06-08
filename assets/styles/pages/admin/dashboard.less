@@ -59,30 +59,42 @@
 
 .shrink-floating-box {
   z-index: 1000;display: flex; height: 80px;width: 150px;background-color:#d9edf7 ;float: left;top: 20%; border-radius: 10px;position: fixed;box-shadow:5px 8px 10px #6c757d;
-    .shrink-floating-left {
-      width: 88%;
-      height: 80px;
-      padding:  12px 5px 5px 3px;
-      text-align: center;
-      .item {
-        padding: 1px 8px 8px 0;
-        font-size: 1rem;
-        display: block;
-        .text {
-          color: red;
-          text-decoration: underline;
-        }
-      }
-    }
-    .shrink-floating-right {
-      max-width: 12%;
-      flex: 0 0 12%;
-      float: right;
-      position: relative;
-      .shrinkIcon {
-        float: right;
-        font-size: 22px;
-        padding: 5px;
+  .shrink-floating-left {
+    width: 88%;
+    height: 80px;
+    padding:  12px 5px 5px 3px;
+    text-align: center;
+    .item {
+      padding: 1px 8px 8px 0;
+      font-size: 1rem;
+      display: block;
+      .text {
+        color: red;
+        text-decoration: underline;
       }
     }
   }
+  .shrink-floating-right {
+    max-width: 12%;
+    flex: 0 0 12%;
+    float: right;
+    position: relative;
+    .shrinkIcon {
+      float: right;
+      font-size: 22px;
+      padding: 5px;
+    }
+  }
+}
+
+.search-term {
+  width: 15%;
+  margin-right: auto;
+}
+
+.search-btn-term {
+  width: 5%;
+  margin-left: auto;
+}
+
+

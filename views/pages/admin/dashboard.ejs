@@ -2,29 +2,30 @@
   <div class="container">
     <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
     <h6 class="text-center statistic-link"><a href="/statistics">报名表统计</a></h6>
-    <div class="row">
-    <select class="form-control col-2" id="school" type="text" v-model="queryData.school" title="根据学校选取报名表">
-      <option value="" disabled>高校</option>
-      <option v-for="data in schools" :value="data.id">{{data.name}}</option>
-    </select>
-    <select class="form-control col-2" id="school" type="text" v-model="queryData.nation" title="根据民族选取报名表">
-      <option value="" disabled>民族</option>
-      <option v-for="data in nations" :value="data.name">{{data.name}}</option>
-    </select>
-    <select class="form-control col-2" id="school" type="text" v-model="queryData.politicalStatus" title="根据政治面貌选取报名表">
-      <option value="" disabled>政治面貌</option>
-      <option v-for="data in politics" :value="data.name">{{data.name}}</option>
-    </select>
-    <select class="form-control col-2" id="school" type="text" v-model="queryData.intentType" title="根据服务意向选取报名表">
-      <option value="" disabled>服务意向</option>
-      <option v-for="data in intentTypes" :value="data">{{data}}</option>
-    </select>
-    <select class="form-control col-2" id="school" type="text" v-model="queryData.obeyTheAdjustment" title="根据是否服从调剂选取报名表">
-      <option value="" disabled>是否服从调剂</option>
-      <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
-    </select>
-    <button type="button" class="form-control col-2 btn btn-primary"  @click="searchApply()">搜索</button>
-  </div>
+    <div class="row" style="margin: auto;">
+      <select class="form-control search-term" id="school" type="text" v-model="queryData.school" title="根据学校选取报名表">
+        <option value="" disabled>高校</option>
+        <option v-for="data in schools" :value="data.id">{{data.name}}</option>
+      </select>
+      <select class="form-control search-term" id="school" type="text" v-model="queryData.nation" title="根据民族选取报名表">
+        <option value="" disabled>民族</option>
+        <option v-for="data in nations" :value="data.name">{{data.name}}</option>
+      </select>
+      <select class="form-control search-term" id="school" type="text" v-model="queryData.politicalStatus" title="根据政治面貌选取报名表">
+        <option value="" disabled>政治面貌</option>
+        <option v-for="data in politics" :value="data.name">{{data.name}}</option>
+      </select>
+      <select class="form-control search-term" id="school" type="text" v-model="queryData.intentType" title="根据服务意向选取报名表">
+        <option value="" disabled>服务意向</option>
+        <option v-for="data in intentTypes" :value="data">{{data}}</option>
+      </select>
+      <select class="form-control search-term" id="school" type="text" v-model="queryData.obeyTheAdjustment" title="根据是否服从调剂选取报名表">
+        <option value="" disabled>是否服从调剂</option>
+        <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
+      </select>
+      <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply()">搜索</button>
+      <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset()">重置</button>
+    </div>
     <div class="my-3 row">
       <table class="table clickable table-hover large" v-if="applyList.length > 0">
         <thead>
@@ -100,10 +101,10 @@
 		<div class="floating-head">
       <div class="floating-head-left">
         <div class="box">
-          <span class="item">已报名：<span class="text">{{applyNum}}</span>人</span>
+          <span class="item">已报名：<span class="text">{{stats.applyNum}}</span> 人</span>
         </div>
         <div class="box">
-          <span class="item">已录取：<span class="text">{{admitNum}}</span>人</span>
+          <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
         </div>
       </div>
       <div class="floating-head-right" @click="enlarge=false">
@@ -112,13 +113,13 @@
 		</div>
 		<div class="floating-body">
         <h5 class="text-center table-title">当前报名人数分项统计</h5>
-          <table class="table" v-if="applyList.length > 0">
+          <table class="table" v-if="stats.itemStats">
               <tr>
                 <th>项目名称</th>
                 <th>报名人数</th>
                 <th>百分比%</th>
               </tr>
-              <tr v-for="data of statistics">
+              <tr v-for="data of stats.itemStats">
                 <th>{{data.item}}</th>       
                 <td>{{data.applyNum}}</td>
                 <td>{{data.percent}}</td>
@@ -132,8 +133,8 @@
 
   <div class="shrink-floating-box" v-else id="shrinkFloating">
 		<div class="shrink-floating-left">
-      <span class="item">已报名：<span class="text">{{applyNum}}</span>人</span>
-      <span class="item">已录取：<span class="text">{{admitNum}}</span>人</span>
+      <span class="item">已报名：<span class="text">{{stats.applyNum}}</span> 人</span>
+      <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
     </div>
     <div class="shrink-floating-right" @click="enlarge=true">
       <i class="fa fa-expand shrinkIcon" aria-hidden="true"></i> 

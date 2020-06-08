@@ -1,8 +1,7 @@
 <div id="statistics" v-cloak>
   <div class="container">
     <h1 class="text-center" style="margin-top: 30px;">报名情况统计表</h1>
-    <button class="btn" type="button" @click='test'></button>
-    <table class="table clickable table-hover large" v-if="list.length > 0">
+    <table class="table clickable table-hover large" v-if="stats.length > 0">
       <thead>
         <tr>
           <th>学校</th>
@@ -10,29 +9,27 @@
           <th>本科</th>
           <th>硕士</th>
           <th>博士</th>
-          <th>西部生源</th>
           <th>党员</th>
+          <th>预备党员</th>
           <th>团员</th>
+          <th>群众</th>
           <th>男</th>
           <th>女</th>
-          <th>新增</th>
-          <th>累计</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="data of list" >
+        <tr v-for="data of stats" >
           <td>{{data.school}}</td>
           <td>{{data.eduVD}}</td>
           <td>{{data.eduBD}}</td>
           <td>{{data.eduMD}}</td>
           <td>{{data.eduPhD}}</td>
-          <td>{{data.westernStudentsNum}}</td>
-          <td>{{data.communistNum}}</td>
-          <td>{{data.leagueMemberNum}}</td>
-          <td>{{data.maleNum}}</td>
-          <td>{{data.femaleNum}}</td>
-          <td>{{data.add}}</td>
-          <td>{{data.sum}}</td>
+          <td>{{data.communist}}</td>
+          <td>{{data.communistPM}}</td>
+          <td>{{data.leagueMember}}</td>
+          <td>{{data.theMasses}}</td>
+          <td>{{data.male}}</td>
+          <td>{{data.female}}</td>
         </tr>
       </tbody>
     </table>
