@@ -169,10 +169,11 @@ parasails.registerComponent('ajaxForm', {
         if (this.argins === undefined) {
           // If argins came back undefined, then avast.
           // (This means that parsing the form failed.  Submission will not be attempted.)
-          return;
+          return false;
         } else if (!_.isObject(this.argins) || _.isArray(this.argins) || _.isFunction(this.argins)) {
           throw new Error('Invalid data returned from custom form parsing logic.  (Should return a dictionary of argins, like `{}`.)');
         }//•
+        return true;
       } else if (this.formData) {
         // Or use the simpler, built-in absorbtion strategy.
         // > This uses the provided form data as our argins, verbatim.  Then it runs

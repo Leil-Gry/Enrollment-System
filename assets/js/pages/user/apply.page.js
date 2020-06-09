@@ -200,6 +200,7 @@ parasails.registerPage('userApply', {
         this.showSubmitBtn = false;
         if (form.photo) {
           this.imageUrl = this.getImageUrl(form.photo);
+          console.log(this.imageUrl);
           this.showImg = true;
         }
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
