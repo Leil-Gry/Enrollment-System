@@ -174,6 +174,7 @@ parasails.registerComponent('ajaxForm', {
           throw new Error('Invalid data returned from custom form parsing logic.  (Should return a dictionary of argins, like `{}`.)');
         }//•
       } else if (this.formData) {
+        console.log('here');
         // Or use the simpler, built-in absorbtion strategy.
         // > This uses the provided form data as our argins, verbatim.  Then it runs
         // > built-in client-side validation, if configured to do so.
@@ -329,6 +330,7 @@ parasails.registerComponent('ajaxForm', {
     //  ╩  ╩╚═╩ ╚╝ ╩ ╩ ╩ ╚═╝  ╩ ╩╚═╝ ╩ ╩ ╩╚═╝═╩╝╚═╝
     _submit: async function () {
 
+      console.log('here');
       // Prevent double-posting.
       if (this.syncing) {
         return;
@@ -341,7 +343,7 @@ parasails.registerComponent('ajaxForm', {
 
       // Set syncing state to `true` on userland "syncing" prop.
       this.$emit('update:syncing', true);
-
+      console.log('here');
 
       // Submit the form
       var failedWithCloudExit;

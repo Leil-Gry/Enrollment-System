@@ -28,12 +28,13 @@
             <td>{{data.domicileProvince}}</td>
             <td>{{data.intention1}}、{{data.intention2}}</td>
             <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
-            <td>
+            <td v-if="data.status >= 3">
               <a href="#" id="order" @click.stop @click="showInput(data)" >
                 <span v-if="data.order > 0">{{data.order}}</span>
                 <span v-else>点击输入排序</span>
               </a>
             </td>
+            <td v-else>等待审核</td>
           </tr>
         </tbody>
 
@@ -41,7 +42,7 @@
           <div class='mask'></div>
           <div class='board' @blur="orderInput=false">
             <div class="title">设置{{applyName}}的推荐排名</div>
-            <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()" @mouseout="validateNumber()"/>
+            <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()"/>
           </div>
         </div>
 

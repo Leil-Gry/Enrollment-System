@@ -4,7 +4,12 @@ parasails.registerPage('signup', {
   //  ╩╝╚╝╩ ╩ ╩╩ ╩╩═╝  ╚═╝ ╩ ╩ ╩ ╩ ╚═╝
   data: {
     // Form data
-    formData: { /* … */ },
+    formData: {
+      fullName: '王五',
+      emailAddress:'wangwu@qq.com',
+      password:'1502',
+      confirmPassword: '1502'
+    },
 
     // For tracking client-side validation errors in our form.
     // > Has property set to `true` for each invalid property in `formData`.
@@ -77,9 +82,9 @@ parasails.registerPage('signup', {
       }
 
       // Validate ToS agreement:
-      if(!argins.agreed) {
-        this.formErrors.agreed = true;
-      }
+      // if(!argins.agreed) {
+      //   this.formErrors.agreed = true;
+      // }
 
       // If there were any issues, they've already now been communicated to the user,
       // so simply return undefined.  (This signifies that the submission should be
