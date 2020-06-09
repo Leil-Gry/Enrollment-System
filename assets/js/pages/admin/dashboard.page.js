@@ -13,9 +13,7 @@ parasails.registerPage('adminDashboard', {
     imageUrl:'',
     applyID: '',
     applyName: '',
-    applyOrder: null,
     waitCheck:false,
-    orderInput:false,
 
     queryData: {
       school: '',
@@ -27,6 +25,8 @@ parasails.registerPage('adminDashboard', {
 
     stats: {},
 
+    isRecommended:false,
+    isExamed:false,
     schools:[],
     nations: [],
     intentions: [],
@@ -35,8 +35,6 @@ parasails.registerPage('adminDashboard', {
     intentTypes: constants.INTENTTYPES,
     ifObeyTheAdjustment: constants.IFOBEYTHEADJUSTMENT,
     statusList: constants.APPLICATION_STATUS_INFO,
-    statusChecked:constants.APPLICATION_STATUS_CHECKED,
-    statusEditing:constants.APPLICATION_STATUS_EDITING,
     // Server error state for the form
     cloudError: '',
   },
@@ -51,8 +49,8 @@ parasails.registerPage('adminDashboard', {
   mounted: async function() {
     //…
     this.getApplyList();
-    this.schools   = await Cloud.findSchool.with();
-    this.nations   = await Cloud.findNation.with();
+    this.schools    = await Cloud.findSchool.with();
+    this.nations    = await Cloud.findNation.with();
     this.intentions = await Cloud.findIntention.with();
     this.getStatistics();
   },
@@ -74,12 +72,14 @@ parasails.registerPage('adminDashboard', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
-    getApplyList: async function() {
-      this.applyList = await Cloud.findApplication.with();
+    getApplyList: async function(data) {
+      this.applyList = await Cloud.findApplication.with(data);
     },
 
     getApplyDetail: async function(id) {
       let form = await Cloud.findOneApplication.with(id);
+      this.isRecommended = form.status === constants.APPLICATION_STATUS_RECOMMENDED?true:false;
+      this.isExamed = form.status === constants.APPLICATION_STATUS_EXAMED?true:false;
       if(form) {
         this.applyForm = form;
         this.applyForm.school = form.school.name;
@@ -91,29 +91,13 @@ parasails.registerPage('adminDashboard', {
       }
     },
 
-    checkApply: async function(status) {
-      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
+    changeStatus: async function(status) {
+      await Cloud.updateApplicationStatus.with({id: this.applyID, status:status});
       this.getApplyList();
     },
 
     getImageUrl: function(fd) {
       return '/public/avatars/' + fd; // TODO: constants
-    },
-
-    showInput: async function(data) {
-      this.orderInput = true;
-      this.applyID = data.id;
-      this.applyName = data.name;
-    },
-
-    setOrder: async function() {
-      this.orderInput = false;
-      if(!isNonNegativeInteger(this.applyOrder)){
-        ShowTip('请输入一个>=0的数字！','danger');
-        return;
-      }
-      await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
-      this.getApplyList();
     },
 
     searchApply: async function() {
@@ -124,9 +108,7 @@ parasails.registerPage('adminDashboard', {
           query[key]=this.queryData[key];
         }
       });
-      console.log(query);
-      this.applyList = await Cloud.findApplication.with(query);
-      console.log(this.applyList);
+      this.getApplyList(query);
     },
 
     searchReset: async function () {
@@ -144,10 +126,17 @@ parasails.registerPage('adminDashboard', {
       this.stats = await Cloud.getStats.with({groupBySchool: false});
     },
 
-    drag (event) {
-      var drag = document.getElementById('shrinkFloating');
+    examedPass: async function() {
+      this.changeStatus(constants.APPLICATION_STATUS_EXAMED);
+    },
+
+    admit: async function() {
+      this.changeStatus(constants.APPLICATION_STATUS_ADMITTED);
+    },
+
+    drag (id,event) {
+      var drag = document.getElementById(id);
       var ev = event || window.event;
-      event.stopPropagation();
       var disX = ev.clientX - drag.offsetLeft;
       var disY = ev.clientY - drag.offsetTop;
       document.onmousemove = function(event) {
@@ -156,14 +145,12 @@ parasails.registerPage('adminDashboard', {
         drag.style.top = ev.clientY - disY + 'px';
         drag.style.cursor = 'move';
       };
+      document.onmouseup = function() {
+        document.onmousemove = null;
+        drag.style.cursor = 'default';
+      };
     },
 
-
-    validateNumber: async function() {
-      if(!isNonNegativeInteger(this.applyOrder)){
-        ShowTip('请输入一个>=0的数字！','danger');
-      }
-    },
 
   }
 });

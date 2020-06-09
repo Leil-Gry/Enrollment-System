@@ -54,23 +54,16 @@
             <td>{{data.education}}</td>
             <td>{{data.domicileProvince}}</td>
             <td>{{data.intention1}}、{{data.intention2}}</td>
-            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
             <td>
-              <a href="#" id="order" @click.stop @click="showInput(data)" >
-                <span v-if="data.order > 0">{{data.order}}</span>
-                <span v-else>点击输入排序</span>
-              </a>
+              <button type="button" class="btn" :class="statusList[data.status].labelType">
+                {{statusList[data.status].text}}
+              </button>
             </td>
+            <td v-if="data.order > 0">{{data.order}}</td>
+            <td v-else>暂无排序</td>
           </tr>
         </tbody>
 
-        <div v-show="orderInput" class="model">
-          <div class='mask'></div>
-          <div class='board' @blur="orderInput=false">
-            <div class="title">设置{{applyName}}的推荐排名</div>
-            <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()" @mouseout="validateNumber()"/>
-          </div>
-        </div>
 
       </table>
       <span v-else>
@@ -87,9 +80,11 @@
             <div class="modal-body">
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
-            <div class="modal-footer" v-if="waitCheck">
-              <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回修改</button>
+            <div class="modal-footer" v-if="isRecommended">
+              <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="examedPass()">{{statusList[applyForm.status].adminLabel}}</button>
+            </div>
+            <div class="modal-footer" v-if="isExamed">
+              <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="admit()">录取</button>
             </div>
           </div>
         </div>
@@ -97,7 +92,7 @@
     </div>
   </div>
 
-	<div class="floating-box" v-if="enlarge" @blur="enlarge=false">
+	<div class="floating-box" v-if="enlarge" id="enlargeFloating" @blur="enlarge=false" @mousedown="drag('enlargeFloating')">
 		<div class="floating-head">
       <div class="floating-head-left">
         <div class="box">
@@ -131,7 +126,7 @@
 		</div>
 	</div>
 
-  <div class="shrink-floating-box" v-else id="shrinkFloating">
+  <div class="shrink-floating-box" v-else id="shrinkFloating"  @mousedown="drag('shrinkFloating')">
 		<div class="shrink-floating-left">
       <span class="item">已报名：<span class="text">{{stats.applyNum}}</span> 人</span>
       <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
@@ -141,8 +136,5 @@
     </div>
 	</div>
 
-  <div>
-
-  </div>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

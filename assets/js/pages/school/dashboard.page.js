@@ -86,20 +86,13 @@ parasails.registerPage('schoolDashboard', {
 
     setOrder: async function() {
       this.orderInput = false;
-      let rule = /^\d+$/;
-      if(!rule.test(this.applyOrder)){
+      if(!isNonNegativeInteger(this.applyOrder)){
         ShowTip('请输入一个>=0的数字！','danger');
         return;
       }
       await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
+      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:constants.APPLICATION_STATUS_RECOMMENDED});
       this.getApplyList();
-    },
-
-    validateNumber: async function() {
-      let rule = /^\d+$/;
-      if(!rule.test(this.applyOrder)){
-        ShowTip('请输入一个>=0的数字！','danger');
-      }
     },
 
   }

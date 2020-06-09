@@ -43,7 +43,8 @@ const constants = {
       labelType:'btn-warning',
       bigTitle:'等待体检',
       subTitle:'',
-      stepLabel: '推荐'
+      stepLabel: '推荐',
+      adminLabel: '体检通过'  // 管理员操作
     },
     11:
     {
@@ -52,7 +53,8 @@ const constants = {
       labelType:'btn-info',
       bigTitle:'等待录取',
       subTitle:'',
-      stepLabel: '体检'
+      stepLabel: '体检',
+      adminLabel: '录取'  // 管理员操作
     },
     12:
     {
