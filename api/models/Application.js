@@ -175,6 +175,10 @@ module.exports = {
       required: true
     },
 
+    position: {
+      model: 'position'
+    },
+
     school: {
       model: 'school',
       required: true

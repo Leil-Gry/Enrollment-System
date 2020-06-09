@@ -28,6 +28,7 @@ module.exports.routes = {
   'GET /account/password':   { action: 'account/view-edit-password' },
   // 'GET /account/profile':    { action: 'account/view-edit-profile' },
   'GET /statistics':          { action: 'admin/view-statistics' },
+  'GET /distribution':          { action: 'admin/view-distribution' },
 
   'GET /user/apply':          { view: 'pages/user/apply' },
   'GET /admin/dashboard':          { view: 'pages/admin/dashboard' },

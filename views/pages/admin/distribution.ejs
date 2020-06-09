@@ -1,0 +1,39 @@
+<div id="distribution" v-cloak>
+  <div class="container">
+    <h1 class="text-center" style="margin-top: 30px;">岗位分配</h1>
+    <h6 class="text-center statistic-link"><a href="/admin/dashboard">报名列表</a></h6>
+    <table class="table clickable table-hover large" v-if="true">
+      <thead>
+        <tr>
+          <th>学校</th>
+          <th>专科</th>
+          <th>本科</th>
+          <th>硕士</th>
+          <th>博士</th>
+          <th>党员</th>
+          <th>预备党员</th>
+          <th>团员</th>
+          <th>群众</th>
+          <th>男</th>
+          <th>女</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="data of stats" >
+          <td>{{data.school}}</td>
+          <td>{{data.eduVD}}</td>
+          <td>{{data.eduBD}}</td>
+          <td>{{data.eduMD}}</td>
+          <td>{{data.eduPhD}}</td>
+          <td>{{data.communist}}</td>
+          <td>{{data.communistPM}}</td>
+          <td>{{data.leagueMember}}</td>
+          <td>{{data.theMasses}}</td>
+          <td>{{data.male}}</td>
+          <td>{{data.female}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

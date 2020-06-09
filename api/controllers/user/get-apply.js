@@ -7,7 +7,7 @@ module.exports = {
   exits: {
 
     notFound: {
-      responseType: 'notFound',
+      responseType: 'string',
       description: 'The application is not found'
     }
 
@@ -21,7 +21,7 @@ module.exports = {
     });
 
     if (!application) {
-      throw 'notFound';
+      return 'notFound';
     }
 
     return application;

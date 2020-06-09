@@ -81,6 +81,7 @@ module.exports = {
 
 
   fn: async function (inputs, exits) {
+    let outPDF = (sails.config.environment === 'production');
 
     let application = await Application.findOne({
       id: inputs.id,
@@ -106,7 +107,8 @@ module.exports = {
     };
     var imageModule = new ImageModule(opts);
 
-    let fileName =  '两项计划报名登记表.pdf';
+    let fileName = '两项计划报名登记表.' + (outPDF ? 'pdf' : 'docx');
+
     var content = fs.readFileSync(path.resolve(sails.config.appPath, 'assets/templates/form-template.docx'), 'binary');
 
     var zip = new PizZip(content);
@@ -138,15 +140,17 @@ module.exports = {
     }
 
     var buf = doc.getZip().generate({type: 'nodebuffer', compression: 'DEFLATE'});
-    buf = await new Promise((resolve, reject) => {
-      libre.convert(buf, 'pdf', undefined, (err, result) => {
-        if (err) {
-          return reject(Error(`Error converting file: ${err}`));
-        }
+    if (outPDF){
+      buf = await new Promise((resolve, reject) => {
+        libre.convert(buf, 'pdf', undefined, (err, result) => {
+          if (err) {
+            return reject(Error(`Error converting file: ${err}`));
+          }
 
-        return resolve(result);
+          return resolve(result);
+        });
       });
-    });
+    }
 
     return exits.success({
       fileName,

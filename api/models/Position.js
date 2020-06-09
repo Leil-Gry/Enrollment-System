@@ -1,5 +1,5 @@
 /**
- * Batch.js
+ * Position.js
  *
  * @description :: A model definition.  Represents a database table/collection/etc.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -31,11 +31,11 @@ module.exports = {
 
     applications: {
       collection: 'application',
-      via: 'batch'
+      via: 'position'
     },
-    positions: {
-      collection: 'position',
-      via: 'batch'
+    batch: {
+      model: 'batch',
+      required: true
     }
   }
 };

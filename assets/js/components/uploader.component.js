@@ -24,7 +24,7 @@ parasails.registerComponent('uploader', {
   data: function (){
     return {
       //…
-      resizedimage: '' // File
+      resizedImage: '' // File
     };
   },
 
@@ -80,7 +80,7 @@ parasails.registerComponent('uploader', {
         };
 
         var result = await this.resizeImage(settings);
-        this.resizedimage = result.file;
+        this.resizedImage = result.file;
         this.$emit('update:photo', result.dataUrl);
 
         // let fd;
@@ -165,7 +165,7 @@ parasails.registerComponent('uploader', {
     },
 
     getImage () {
-      return this.resizedimage;
+      return this.resizedImage;
     }
   }
 });

@@ -166,10 +166,11 @@ parasails.registerPage('userApply', {
       var valid = await this.$refs.form.validate();
       if (!valid) {return;}
 
+      delete this.formData['id'];
       let formData = await Cloud.createApplication.with(this.formData);
       this.applyID = formData.id;
 
-      if(this.photoFile) {
+      if(this.photoFile && this.$refs.uploader) {
         const resizedimage = this.$refs.uploader.getImage();
 
         try {
@@ -191,12 +192,9 @@ parasails.registerPage('userApply', {
     },
 
     getApplyForm: async function() {
-      let form;
-      try{
-        form = await Cloud.getApply.with();
-      }catch(e){}
+      let form = await Cloud.getApply.with();
 
-      if(form) {
+      if(form !== 'notFound') {
         this.applyID = form.id;
         this.formData = form;
         this.showSubmitBtn = false;
