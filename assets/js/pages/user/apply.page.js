@@ -151,15 +151,13 @@ parasails.registerPage('userApply', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
-    getImageUrl: function(fd) {
-      return '/public/avatars/' + fd; // TODO: constants
-    },
+    getImageUrl: function(fd) { return constants.IMAGE_SAVE_DIR + fd; },
 
     updateApply: async function(showTip=true) {
-      if (!this.formData.pastMedicalHistory) {this.formData.pastMedicalHistory = '无';}
-      if (!this.formData.resume) {this.formData.resume = '无';}
-      if (!this.formData.volunteeringExperience) {this.formData.volunteeringExperience = '无';}
-      if (!this.formData.rewardsAndPunishment) {this.formData.rewardsAndPunishment = '无';}
+      this.formData.resume = this.formData.resume ? this.formData.resume : '无';
+      this.formData.pastMedicalHistory = this.formData.pastMedicalHistory ? this.formData.pastMedicalHistory : '无';
+      this.formData.rewardsAndPunishment = this.formData.rewardsAndPunishment ? this.formData.rewardsAndPunishment : '无';
+      this.formData.volunteeringExperience = this.formData.volunteeringExperience ? this.formData.volunteeringExperience : '无';
 
       this.saveForm();
 
@@ -177,6 +175,7 @@ parasails.registerPage('userApply', {
           await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
         } catch (e) {
           console.log(e);// TODO: show toast
+          ShowTip('图片上传失败','danger');
         }
       }
 
@@ -193,25 +192,21 @@ parasails.registerPage('userApply', {
 
     getApplyForm: async function() {
       let form = await Cloud.getApply.with();
-
       if(form !== 'notFound') {
         this.applyID = form.id;
         this.formData = form;
-        this.showSubmitBtn = false;
+
         if (form.photo) {
           this.imageUrl = this.getImageUrl(form.photo);
-          console.log(this.imageUrl);
+          // console.log(this.imageUrl);
           this.showImg = true;
         }
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
-        this.disabledForm = form.status > 1;
-        if(!this.disabledForm) {
-          // this.canUpload = true;
-          this.showSubmitBtn = true;
-        }
+        this.disabledForm = (form.status > 1);
+        this.showSubmitBtn = !this.disabledForm;
+
         this.status = form.status;
       } else {
-        // this.canUpload = false;
         let localForm = JSON.parse(localStorage.getItem('applyForm'));
         if(localForm){
           this.formData = localForm;
@@ -259,7 +254,7 @@ parasails.registerPage('userApply', {
 
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
-      this.updateApply(false);
+      // await this.updateApply(false);
       await Cloud.submitApplication.with(this.formData);
       ShowTip('提交成功！','success');
       this.getApplyForm();

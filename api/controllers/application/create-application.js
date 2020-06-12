@@ -51,11 +51,10 @@ module.exports = {
         .fetch();
       application = application[0];
     } else {
-      application = await Application.create(data);
+      application = await Application.create(data).fetch();
     }
 
     return application;
-
   }
 
 };

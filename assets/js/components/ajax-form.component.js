@@ -64,7 +64,7 @@ parasails.registerComponent('ajaxForm', {
   },
   mounted: async function (){
     if (this.action === undefined && this.handleSubmitting === undefined) {
-      throw new Error('Neither `:action` nor `:handle-submitting` was passed in to <ajax-form>, but one or the other must be provided.');
+      // throw new Error('Neither `:action` nor `:handle-submitting` was passed in to <ajax-form>, but one or the other must be provided.');
     } else if (this.action !== undefined && this.handleSubmitting !== undefined) {
       throw new Error('Both `:action` AND `:handle-submitting` were passed in to <ajax-form>, but only one or the other should be provided.');
     } else if (this.action !== undefined && (!_.isString(this.action) || !_.isFunction(Cloud[_.camelCase(this.action)]))) {

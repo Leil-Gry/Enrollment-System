@@ -85,13 +85,13 @@
       <% if(me&&me.emailChangeCandidate) { %>
       <div class="container-fluid">
         <div class="alert alert-secondary mt-2" role="alert">
-        Your updated email address needs verification. Until you click the link sent to <strong><%= me.emailChangeCandidate %></strong>, you'll still need to sign in as <strong><%= me.emailAddress %></strong>.
+          您更新的电子邮件地址需要验证。在单击发送到的链接<strong><%= me.emailChangeCandidate %></strong>之前，您仍需要以<strong><%= me.emailAddress %></strong>登录。
         </div>
       </div>
       <% } else if(me&&me.emailStatus === 'unconfirmed') { %>
       <div class="container-fluid">
         <div class="alert alert-secondary mt-2" role="alert">
-        Your email address still needs verification. Your account access may be limited until you click the link sent to <strong><%= me.emailChangeCandidate ? me.emailChangeCandidate : me.emailAddress%></strong>.
+          您的电子邮件地址仍需要验证。在单击发送到的链接之前，您的帐户访问可能会受到限制<strong><%= me.emailChangeCandidate ? me.emailChangeCandidate : me.emailAddress%></strong>.
         </div>
       </div>
       <% } %>
@@ -106,6 +106,10 @@
           <% if(me) { %>
           <small class="nav-item"><a class="nav-link text-info" href="/logout">Sign out</a></small>
           <% } %> -->
+          <small class="copy">
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010302001221" target="_blank">浙公网安备 33010302001221号</a>
+            <a href="http://beian.miit.gov.cn/" target="_blank" style="margin-left: 10px;">浙ICP备11049465号</a>
+          </small>
         </div>
         <!-- <small class="copy">Copyright &copy; 2020 *******版权所有. <br class="xs-only"/>All rights reserved.</small> -->
         <small class="copy">技术支持：<a href="http://tuanwei.hdu.edu.cn/" target="_blank">杭州电子科技大学团委</a></small>
