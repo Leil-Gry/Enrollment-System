@@ -121,7 +121,7 @@
       by the asset pipeline between "SCRIPTS" and "SCRIPTS END", or both.
       (https://sailsjs.com/docs/concepts/assets/task-automation)
     */ %>
-    <% if(!me && req.originalUrl !== '/login' && req.originalUrl !== '/signup' && req.originalUrl !== '/password/forgot') { %>
+    <% if(!me && req.originalUrl !== '/login' && req.originalUrl !== '/signup' && req.originalUrl !== '/password/forgot' && /^\/password\/new\?token=.+$/.test(req.originalUrl) !== true ) { %>
       <script>window.location.replace('/login')</script>
     <% } %>
 

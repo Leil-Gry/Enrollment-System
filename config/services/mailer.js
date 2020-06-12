@@ -5,8 +5,8 @@ module.exports = {
     mailer: {
       sendcloud: {
         auth: {
-          api_user: 'zjlxjhxm_test_oQW3iS', // 'notice.zjstudent.com',
-          api_key: 'jpCD23sc4jcQsEiB'
+          api_user: 'notice.zjgqt.org',
+          api_key: 'pLsLbbWAhwKtIrRk'
         }
       }
     }

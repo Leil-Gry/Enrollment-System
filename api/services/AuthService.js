@@ -10,7 +10,7 @@ module.exports = {
     // nodemailer-sendcloud-transport
     var email = {
       // to: to, //values.email,
-      from: 'no-reply@notice.zjstudent.com',
+      from: 'no-reply@notice.zjgqt.org',
       fromname: '两项计划',
       template_invoke_name: 'confirm_template',
       // resp_email_id: true,
@@ -45,14 +45,14 @@ module.exports = {
 
     var email = {
       // to: to, //values.email,
-      from: 'no-reply@notice.zjstudent.com',
+      from: 'no-reply@notice.zjgqt.org',
       fromname: '两项计划',
       template_invoke_name: 'reset_template',
       // resp_email_id: true,
       substitution_vars: JSON.stringify({
         to: [to],
         sub: {
-          "%url%": [resetUrl]
+          "%resetUrl%": [resetUrl]
         }
       })
     };

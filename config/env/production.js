@@ -47,8 +47,8 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     default: {
-      // adapter: 'sails-mysql',
-      // url: 'mysql://user:password@host:port/database',
+      adapter: 'sails-mysql',
+      url: 'mysql://apply:zU84xxwwxx.09@127.0.0.1:3306/applyproject',
       //--------------------------------------------------------------------------
       //  /\   To avoid checking it in to version control, you might opt to set
       //  ||   sensitive credentials like `url` using an environment variable.
@@ -251,7 +251,7 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     onlyAllowOrigins: [
-      'http://lxjh.zjstudent.com'
+      'http://lxjh.zjgqt.org' // 'http://lxjh.zjstudent.com'
     ],
 
 
@@ -370,7 +370,7 @@ module.exports = {
   *                                                                         *
   ***************************************************************************/
   custom: {
-    baseUrl: 'http://lxjh.zjstudent.com',
+    baseUrl: 'http://lxjh.zjgqt.org',
     // internalEmailAddress: 'support@example.com',
 
     // mailgunDomain: 'mg.example.com',

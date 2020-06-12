@@ -1,0 +1,11 @@
+Development:
+
+1) Upload source code
+2) npm install
+3) Modify
+node_modules/nodemailer-sendcloud-transport/src/sendcloud-transport.js
+Change path : '/webapi/mail.send.json'
+to path : '/webapi/mail.send_template.json'
+4) Add mysql production url to config/datastore.js
+5) run node app.js to create seed data in config/bootstrap.js
+6) NODE_ENV=production pm2 start app.js --name apply
