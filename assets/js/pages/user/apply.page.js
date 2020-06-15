@@ -92,13 +92,16 @@ parasails.registerPage('userApply', {
       pastMedicalHistory: { required: true,maxLength:40 },
       domicileProvince: { required: true },
       domicileCity: { required: true },
-      domicileAddr: { required: true },
+      // domicileAddr: { required: true },
       phone: { required: true,maxLength:20 },
       email: { required: true,isEmail:true },
       intentType: { required: true },
       intention1: { required: true },
       intention2: { required: true,differentWith: 'intention1'},
-      homeAddressAndPhone: { required: true }
+      homeAddressAndPhone: { required: true },
+      resume: { maxLength:500 },
+      volunteeringExperience: { maxLength:300 },
+      rewardsAndPunishment: { maxLength:300 },
     }
   },
 
@@ -171,6 +174,7 @@ parasails.registerPage('userApply', {
     },
 
     updateApply: async function(showTip=true) {
+      this.formData.domicileAddr = this.formData.domicileAddr ? this.formData.domicileAddr : '无';
       this.formData.resume = this.formData.resume ? this.formData.resume : '无';
       this.formData.pastMedicalHistory = this.formData.pastMedicalHistory ? this.formData.pastMedicalHistory : '无';
       this.formData.rewardsAndPunishment = this.formData.rewardsAndPunishment ? this.formData.rewardsAndPunishment : '无';
@@ -320,11 +324,5 @@ parasails.registerPage('userApply', {
         this.disabledForm = true;
       }
     },
-
-    // judge: async function () {
-    //   if(!this.canUpload) {
-    //     ShowTip('保存报名表后才能上传图片！', 'danger');
-    //   }
-    // }
   }
 });
