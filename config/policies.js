@@ -16,6 +16,7 @@ module.exports.policies = {
   'entrance/*': true,
   // 'password/*': true,
   'account/logout': true,
-  'view-homepage-or-redirect': true
+  'view-homepage-or-redirect': true,
+  '/email/notconfirmed': true
 
 };

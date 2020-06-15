@@ -47,7 +47,8 @@ module.exports = {
       id: application.id
     })
       .set({
-        status: constants.APPLICATION_STATUS_SUBMITTED
+        status: constants.APPLICATION_STATUS_SUBMITTED,
+        submitAt: Date.now()
       });
 
     return;

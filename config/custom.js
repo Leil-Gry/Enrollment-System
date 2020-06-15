@@ -96,8 +96,6 @@ module.exports.custom = {
     maxPageSize: 50,
   },
 
-  avatarLocation :'assets/public/avatars',
-
   defaultAvatarName : 'default.jpg',
 
   linuxSplitChar : '/',

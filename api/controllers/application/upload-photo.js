@@ -56,14 +56,23 @@ module.exports = {
     }
 
     const fs = require('fs');
-    const dirname = require('path').resolve(sails.config.appPath, sails.config.custom.avatarLocation);
+    let picName;
+    const dirname = require('path').resolve(sails.config.paths.public, 'public/avatars/');  // .tmp/public/public/avatars
+    const copyDir = require('path').resolve(sails.config.appPath, 'assets/public/avatars/');
     let fd = await new Promise((resolve) => {
       let options = {
         dirname: dirname
       };
-      this.req.file('photo').upload(options,(err, uploadedFile)=>{
+      this.req.file('photo').upload(options, (err, uploadedFile)=>{
         if (err || !uploadedFile || uploadedFile.length <= 0) { throw 'serverError'; }
-        resolve(uploadedFile[0].fd);
+
+        let fd = uploadedFile[0].fd;
+        picName = _.last(_.split(fd, splitChar));
+        fs.copyFile(fd, `${copyDir}/${picName}`, (err) => {
+          if (err) { throw 'serverError'; }
+
+          resolve(fd);
+        });
       });
     });
 
@@ -73,9 +82,13 @@ module.exports = {
       if (fs.existsSync(picAddress)) {
         fs.unlinkSync(picAddress);
       }
+      picAddress = copyDir + splitChar + application.photo;
+      if (fs.existsSync(picAddress)) {
+        fs.unlinkSync(picAddress);
+      }
     }
 
-    let picName = _.last(_.split(fd, splitChar));
+    // let picName = _.last(_.split(fd, splitChar));
     await Application.updateOne({ id: inputs.id }).set({ photo: picName });
 
     return picName;

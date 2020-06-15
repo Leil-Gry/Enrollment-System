@@ -8,10 +8,15 @@ parasails.registerPage('login', {
 
     // Form data
     formData: {
-      emailAddress: '1@a.com',
-      password: 'abc123',
-      rememberMe: true,
+      emailAddress: '',
+      password: '',
+      rememberMe: false,
     },
+    // formData: {
+    //   emailAddress: '1@a.com',
+    //   password: 'abc123',
+    //   rememberMe: true,
+    // },
 
     // For tracking client-side validation errors in our form.
     // > Has property set to `true` for each invalid property in `formData`.

@@ -19,6 +19,8 @@
  * https://sailsjs.com/docs/concepts/deployment
  */
 
+var path = require('path');
+
 module.exports = {
 
 
@@ -388,8 +390,7 @@ module.exports = {
     // ```
     //--------------------------------------------------------------------------
 
-  },
-
+  }
 
 
 };

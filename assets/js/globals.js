@@ -8,6 +8,8 @@ const constants = {
   APPLICATION_STATUS_ADMITTED: 12,
   APPLICATION_STATUS: [1,2,3,4,11,12],
 
+  IMAGE_SAVE_DIR: '/public/avatars/',
+
   APPLICATION_STATUS_INFO: {
     1:
     {

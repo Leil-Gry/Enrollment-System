@@ -10,9 +10,9 @@ parasails.registerPage('userApply', {
     // Server error state for the form
     cloudError: '',
 
-    photoFile: '',
+    photoFile: '',  // can be used to check if photo has been uploaded/changed on local
     showImg: false,  // must use v-if, otherwise getting photo file returns 404
-    imageUrl: '',
+    imageUrl: '',    // could be url to photo on the server, or dataUrl to local base64 image from uploader
     // canUpload: false,
 
     formData:{
@@ -44,7 +44,7 @@ parasails.registerPage('userApply', {
       school:''
     },
 
-    applyID: null,
+    applyID: null,  // 可用于判断是否已保存到服务器
     formTitle:'',
     showDownload: false,
     school: '',
@@ -151,15 +151,30 @@ parasails.registerPage('userApply', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
-    getImageUrl: function(fd) {
-      return '/public/avatars/' + fd; // TODO: constants
+    getImageUrl: function(fd) { return constants.IMAGE_SAVE_DIR + fd; },
+
+    uploadPhoto: async function() {
+      const resizedimage = this.$refs.uploader.getImage();
+
+      let photo;
+      try {
+        photo = await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
+      } catch (e) {
+        console.log(e);// TODO: show toast
+        ShowTip('图片上传失败','danger');
+      }
+
+      this.formData.photo = photo;
+      this.imageUrl = this.getImageUrl(photo);
+      this.showImg = true;
+      this.photoFile = null;
     },
 
     updateApply: async function(showTip=true) {
-      if (!this.formData.pastMedicalHistory) {this.formData.pastMedicalHistory = '无';}
-      if (!this.formData.resume) {this.formData.resume = '无';}
-      if (!this.formData.volunteeringExperience) {this.formData.volunteeringExperience = '无';}
-      if (!this.formData.rewardsAndPunishment) {this.formData.rewardsAndPunishment = '无';}
+      this.formData.resume = this.formData.resume ? this.formData.resume : '无';
+      this.formData.pastMedicalHistory = this.formData.pastMedicalHistory ? this.formData.pastMedicalHistory : '无';
+      this.formData.rewardsAndPunishment = this.formData.rewardsAndPunishment ? this.formData.rewardsAndPunishment : '无';
+      this.formData.volunteeringExperience = this.formData.volunteeringExperience ? this.formData.volunteeringExperience : '无';
 
       this.saveForm();
 
@@ -170,14 +185,8 @@ parasails.registerPage('userApply', {
       let formData = await Cloud.createApplication.with(this.formData);
       this.applyID = formData.id;
 
-      if(this.photoFile && this.$refs.uploader) {
-        const resizedimage = this.$refs.uploader.getImage();
-
-        try {
-          await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
-        } catch (e) {
-          console.log(e);// TODO: show toast
-        }
+      if (this.photoFile && this.$refs.uploader) {
+        await this.uploadPhoto();
       }
 
       // NOTE: upload photo will update it to application record on the server
@@ -193,25 +202,20 @@ parasails.registerPage('userApply', {
 
     getApplyForm: async function() {
       let form = await Cloud.getApply.with();
-
       if(form !== 'notFound') {
         this.applyID = form.id;
         this.formData = form;
-        this.showSubmitBtn = false;
+
         if (form.photo) {
           this.imageUrl = this.getImageUrl(form.photo);
-          console.log(this.imageUrl);
           this.showImg = true;
         }
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
-        this.disabledForm = form.status > 1;
-        if(!this.disabledForm) {
-          // this.canUpload = true;
-          this.showSubmitBtn = true;
-        }
+        this.disabledForm = (form.status > 1);
+        this.showSubmitBtn = !this.disabledForm;
+
         this.status = form.status;
       } else {
-        // this.canUpload = false;
         let localForm = JSON.parse(localStorage.getItem('applyForm'));
         if(localForm){
           this.formData = localForm;
@@ -243,6 +247,7 @@ parasails.registerPage('userApply', {
 
     // 保存报表到本地
     saveForm: async function() {
+      // TODO: save photoFile
       localStorage.setItem('applyForm',JSON.stringify(this.formData));
       $('select').blur();
     },
@@ -250,6 +255,17 @@ parasails.registerPage('userApply', {
     // 用户点击后，进行输入校验。校验成功跳出提示弹窗。
     submitCheck: async function() {
       this.saveForm();
+
+      if (!this.applyID) {
+        ShowTip('还未保存，请点击保存！','danger');
+        return;
+      }
+
+      if (this.photoFile) {
+        ShowTip('照片还未保存，请点击保存！','danger');
+        return;
+      }
+
       if(!this.imageUrl) {
         ShowTip('请先上传照片！','danger');
         return;
@@ -259,7 +275,7 @@ parasails.registerPage('userApply', {
 
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
-      this.updateApply(false);
+      // await this.updateApply(false);
       await Cloud.submitApplication.with(this.formData);
       ShowTip('提交成功！','success');
       this.getApplyForm();

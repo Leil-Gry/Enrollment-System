@@ -1,4 +1,9 @@
-Development:
+=====================
+Development
+=====================
+
+Clean data: sails lift --drop
+remove files in assets/public/images/
 
 1) Upload source code
 2) npm install
@@ -9,3 +14,19 @@ to path : '/webapi/mail.send_template.json'
 4) Add mysql production url to config/datastore.js
 5) run node app.js to create seed data in config/bootstrap.js
 6) NODE_ENV=production pm2 start app.js --name apply
+
+=====================
+Update
+=====================
+WARNING!  Do not replace assets/public folder when uploading updates!
+
+=====================
+Implementation Details
+=====================
+Redirect:
+put req.originalUrl !== '/login' to avoid infinite redirecting
+put url that should not been redirected to /login when not logged in
+layout.ejs
+<% if(!me && req.originalUrl !== '/login' && req.originalUrl !== '/signup' && req.originalUrl !== '/password/forgot' && /^\/password\/new\?token=.+$/.test(req.originalUrl) !== true ) { %>
+      <script>window.location.replace('/login')</script>
+    <% } %>
