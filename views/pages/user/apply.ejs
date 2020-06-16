@@ -86,7 +86,7 @@
         <div class="form-group">
           <label for="name">特长</label>
           <input class="form-control" id="specialty" type="text" v-model.trim="formData.specialty" placeholder="请填写你的特长" @blur="saveForm()" :disabled=disabledForm>
-          <div class="invalid-feedback" v-if="formErrors.specialty">请不要超过四十个字.</div>
+          <div class="invalid-feedback" v-if="formErrors.specialty">请不要超过40个字.</div>
         </div>
         <div class="row">
           <div class="form-group col-6">

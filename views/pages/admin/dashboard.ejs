@@ -3,7 +3,7 @@
     <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
     <div style="display: flex;">
       <h6 class="statistic-link"><a href="/statistics">报名情况统计表</a></h6>
-      <h6 class="statistic-link"><a href="/distribution">岗位分配</a></h6>
+      <h6 class="statistic-link"><a href="/distribution">岗位设置</a></h6>
     </div>
     <div class="row" style="margin: auto;">
       <select class="form-control search-term" id="school" type="text" v-model="queryData.school" title="根据学校选取报名表">
@@ -26,6 +26,21 @@
         <option value="" disabled>是否服从调剂</option>
         <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
       </select>
+      <div class="dropdown">
+        <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
+            data-toggle="dropdown">
+          主题
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">全部岗位</a></li>
+          <li class="divider"></li>
+          <li role="presentation" class="dropdown-header">下拉菜单标题</li>
+          <li><p><input type="checkbox" name="vehicle" value="Bike" /> I have a bike</p></li>
+          <li><p><input type="checkbox" name="vehicle" value="Bike" /> I have a bike</p></li>
+          <li>分离的链接</li>
+        </ul>
+      </div>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply()">搜索</button>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset()">重置</button>
     </div>
@@ -43,7 +58,8 @@
             <th>户籍（省）</th>
             <th>服务意向地区</th>
             <th>状态</th>
-            <th>推荐排名</th>
+            <th>综合推荐</th>
+            <th>岗位分配</th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +79,13 @@
               </button>
             </td>
             <td v-if="data.order > 0">{{data.order}}</td>
-            <td v-else></td>
+            <td v-else>暂未推荐</td>
+            <td  @click.stop>
+              <select class="form-control" type="text" >
+                <option value="" selected>无</option>
+                <option v-for="post in posts">{{post.name}}</option>
+              </select>
+            </td>
           </tr>
         </tbody>
 

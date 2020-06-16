@@ -14,7 +14,7 @@
             <th>户籍（省）</th>
             <th>服务意向地区</th>
             <th>状态</th>
-            <th>推荐排名</th>
+            <th>综合推荐</th>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
             <td v-if="data.status >= 3">
               <a href="#" id="order" @click.stop @click="showInput(data)" >
                 <span v-if="data.order > 0">{{data.order}}</span>
-                <span v-else>点击输入排序</span>
+                <span v-else>点击输入推荐排名</span>
               </a>
             </td>
             <td v-else>等待审核</td>
