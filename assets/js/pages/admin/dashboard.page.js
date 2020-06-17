@@ -8,6 +8,7 @@ parasails.registerPage('adminDashboard', {
     enlarge:false,
     applyList:[],
     applyForm: '',
+    selectedPost:'',
     posts:[],
 
     photo: '',
@@ -91,6 +92,12 @@ parasails.registerPage('adminDashboard', {
           name:'3'
         }
       ];
+    },
+
+    distribute: async function(id) {
+      // this.posts = await Cloud.findPosts.with();
+      console.log($('#selectedPost').val());
+      // await Cloud.distribute.with({id:id,post:('#selectedPost').val()});
     },
 
     getApplyDetail: async function(id) {
