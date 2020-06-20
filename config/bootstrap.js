@@ -86,7 +86,7 @@ module.exports.bootstrap = async function() {
       name: school.name
     }).fetch();
     await User.create({
-      emailAddress: school.name + '@zjstudent.com',
+      emailAddress: school.name + '@zjgqt.org',
       password: await sails.helpers.passwords.hashPassword('zj123456'),
       isSchoolAdmin: true,
       school: created.id,

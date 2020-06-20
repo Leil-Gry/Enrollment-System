@@ -156,6 +156,10 @@ module.exports = {
       required: true
     },
 
+    submitAt: {
+      type: 'number'
+    },
+
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

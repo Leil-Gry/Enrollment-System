@@ -1,0 +1,10 @@
+<div id="confirmed-email" v-cloak>
+  <div class="container">
+    <h1 class="text-center">电子邮件尚未确认</h1>
+    <div class="confirmation-message">
+      <hr/>
+      <p>您的电子邮件地址仍需要验证。请单击发送到<strong><%= me.emailAddress%></strong>的确认链接。</p>
+    </div>
+  </div>
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

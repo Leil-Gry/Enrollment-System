@@ -19,6 +19,7 @@ module.exports.routes = {
   'GET /signup':             { action: 'entrance/view-signup' },
   'GET /email/confirm':      { action: 'entrance/confirm-email' },
   'GET /email/confirmed':    { action: 'entrance/view-confirmed-email' },
+  'GET /email/notconfirmed':    { action: 'entrance/view-need-confirm' },
 
   'GET /login':              { action: 'entrance/view-login' },
   'GET /password/forgot':    { action: 'entrance/view-forgot-password' },
@@ -78,6 +79,8 @@ module.exports.routes = {
   'POST /api/v1/application/:id': { action: 'school/set-order'},
   'POST /api/v1/school/application/:id/status': { action: 'school/update-school-application-status' },
   'POST /api/v1/admin/application/:id/status': { action: 'admin/update-application-status' },
+  'POST /api/v1/admin/excel/upload':          { action: 'admin/upload-excel' },
   'GET /api/v1/admin/stats':          { action: 'admin/get-stats' },
+  'GET /api/v1/admin/position':          { action: 'admin/get-position-list' },
 
 };

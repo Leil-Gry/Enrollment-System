@@ -10,9 +10,9 @@ parasails.registerPage('userApply', {
     // Server error state for the form
     cloudError: '',
 
-    photoFile: '',
+    photoFile: '',  // can be used to check if photo has been uploaded/changed on local
     showImg: false,  // must use v-if, otherwise getting photo file returns 404
-    imageUrl: '',
+    imageUrl: '',    // could be url to photo on the server, or dataUrl to local base64 image from uploader
     // canUpload: false,
 
     formData:{
@@ -44,7 +44,7 @@ parasails.registerPage('userApply', {
       school:''
     },
 
-    applyID: null,
+    applyID: null,  // 可用于判断是否已保存到服务器
     formTitle:'',
     showDownload: false,
     school: '',
@@ -92,13 +92,16 @@ parasails.registerPage('userApply', {
       pastMedicalHistory: { required: true,maxLength:40 },
       domicileProvince: { required: true },
       domicileCity: { required: true },
-      domicileAddr: { required: true },
+      // domicileAddr: { required: true },
       phone: { required: true,maxLength:20 },
       email: { required: true,isEmail:true },
       intentType: { required: true },
       intention1: { required: true },
       intention2: { required: true,differentWith: 'intention1'},
-      homeAddressAndPhone: { required: true }
+      homeAddressAndPhone: { required: true },
+      resume: { maxLength:500 },
+      volunteeringExperience: { maxLength:300 },
+      rewardsAndPunishment: { maxLength:300 },
     }
   },
 
@@ -153,7 +156,25 @@ parasails.registerPage('userApply', {
   methods: {
     getImageUrl: function(fd) { return constants.IMAGE_SAVE_DIR + fd; },
 
+    uploadPhoto: async function() {
+      const resizedimage = this.$refs.uploader.getImage();
+
+      let photo;
+      try {
+        photo = await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
+      } catch (e) {
+        console.log(e);// TODO: show toast
+        ShowTip('图片上传失败','danger');
+      }
+
+      this.formData.photo = photo;
+      this.imageUrl = this.getImageUrl(photo);
+      this.showImg = true;
+      this.photoFile = null;
+    },
+
     updateApply: async function(showTip=true) {
+      this.formData.domicileAddr = this.formData.domicileAddr ? this.formData.domicileAddr : '无';
       this.formData.resume = this.formData.resume ? this.formData.resume : '无';
       this.formData.pastMedicalHistory = this.formData.pastMedicalHistory ? this.formData.pastMedicalHistory : '无';
       this.formData.rewardsAndPunishment = this.formData.rewardsAndPunishment ? this.formData.rewardsAndPunishment : '无';
@@ -168,15 +189,8 @@ parasails.registerPage('userApply', {
       let formData = await Cloud.createApplication.with(this.formData);
       this.applyID = formData.id;
 
-      if(this.photoFile && this.$refs.uploader) {
-        const resizedimage = this.$refs.uploader.getImage();
-
-        try {
-          await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
-        } catch (e) {
-          console.log(e);// TODO: show toast
-          ShowTip('图片上传失败','danger');
-        }
+      if (this.photoFile && this.$refs.uploader) {
+        await this.uploadPhoto();
       }
 
       // NOTE: upload photo will update it to application record on the server
@@ -198,7 +212,6 @@ parasails.registerPage('userApply', {
 
         if (form.photo) {
           this.imageUrl = this.getImageUrl(form.photo);
-          // console.log(this.imageUrl);
           this.showImg = true;
         }
         this.getCityRegion(form.domicileProvince,form.domicileCity,form.domicileAddr);
@@ -238,6 +251,7 @@ parasails.registerPage('userApply', {
 
     // 保存报表到本地
     saveForm: async function() {
+      // TODO: save photoFile
       localStorage.setItem('applyForm',JSON.stringify(this.formData));
       $('select').blur();
     },
@@ -245,6 +259,17 @@ parasails.registerPage('userApply', {
     // 用户点击后，进行输入校验。校验成功跳出提示弹窗。
     submitCheck: async function() {
       this.saveForm();
+
+      if (!this.applyID) {
+        ShowTip('还未保存，请点击保存！','danger');
+        return;
+      }
+
+      if (this.photoFile) {
+        ShowTip('照片还未保存，请点击保存！','danger');
+        return;
+      }
+
       if(!this.imageUrl) {
         ShowTip('请先上传照片！','danger');
         return;
@@ -299,11 +324,5 @@ parasails.registerPage('userApply', {
         this.disabledForm = true;
       }
     },
-
-    // judge: async function () {
-    //   if(!this.canUpload) {
-    //     ShowTip('保存报名表后才能上传图片！', 'danger');
-    //   }
-    // }
   }
 });

@@ -8,6 +8,7 @@ parasails.registerPage('adminDashboard', {
     enlarge:false,
     applyList:[],
     applyForm: '',
+    posts:[],
 
     photo: '',
     imageUrl:'',
@@ -53,6 +54,7 @@ parasails.registerPage('adminDashboard', {
     this.nations    = await Cloud.findNation.with();
     this.intentions = await Cloud.findIntention.with();
     this.getStatistics();
+    this.getPosts();
   },
   watch: {
     photo: function(v) {
@@ -74,6 +76,21 @@ parasails.registerPage('adminDashboard', {
   methods: {
     getApplyList: async function(data) {
       this.applyList = await Cloud.findApplication.with(data);
+    },
+
+    getPosts: async function() {
+      // this.posts = await Cloud.findPosts.with();
+      this.posts = [
+        {
+          name:'1'
+        },
+        {
+          name:'2'
+        },
+        {
+          name:'3'
+        }
+      ];
     },
 
     getApplyDetail: async function(id) {

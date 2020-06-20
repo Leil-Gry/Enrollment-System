@@ -53,7 +53,7 @@
           <a class="navbar-brand mr-0 has-logo" href="/"><img class="logo" alt="logo" src="/images/emblem.png"/></a>
           <a class="navbar-brand mr-0 has-logo" href="/"><img class="logo" alt="logo" src="/images/logo.png"/></a>
         </div>
-        <a class="navbar-brand mr-0" href="/">浙江省大学生志愿服务山区、海岛、边远地区计划 网络报名系统</a>
+        <a class="navbar-brand mr-0 title-line-break" href="/">浙江省大学生志愿服务山区、海岛、边远地区计划 网络报名系统</a>
         <div class="navbar-nav flex-row">
           <!-- LOGGED-IN NAVIGATION -->
           <% if(me) { %>
@@ -85,15 +85,16 @@
       <% if(me&&me.emailChangeCandidate) { %>
       <div class="container-fluid">
         <div class="alert alert-secondary mt-2" role="alert">
-          您更新的电子邮件地址需要验证。在单击发送到的链接<strong><%= me.emailChangeCandidate %></strong>之前，您仍需要以<strong><%= me.emailAddress %></strong>登录。
+        您更新的电子邮件地址需要验证。在单击发送到的链接<strong><%= me.emailChangeCandidate %></strong>之前，您仍需要以<strong><%= me.emailAddress %></strong>登录。
         </div>
       </div>
-      <% } else if(me&&me.emailStatus === 'unconfirmed') { %>
-      <div class="container-fluid">
+      <% } else if(me && me.emailStatus === 'unconfirmed' && req.originalUrl !== '/email/notconfirmed') { %>
+      <!-- <div class="container-fluid">
         <div class="alert alert-secondary mt-2" role="alert">
-          您的电子邮件地址仍需要验证。在单击发送到的链接之前，您的帐户访问可能会受到限制<strong><%= me.emailChangeCandidate ? me.emailChangeCandidate : me.emailAddress%></strong>.
+        您的电子邮件地址仍需要验证。在单击发送到<strong><%= me.emailChangeCandidate ? me.emailChangeCandidate : me.emailAddress%></strong>的链接之前，您的帐户访问可能会受到限制。
         </div>
-      </div>
+      </div> -->
+      <script>window.location.replace('/email/notconfirmed')</script>
       <% } %>
 
       <%- body %>
@@ -125,7 +126,7 @@
       by the asset pipeline between "SCRIPTS" and "SCRIPTS END", or both.
       (https://sailsjs.com/docs/concepts/assets/task-automation)
     */ %>
-    <% if(!me && req.originalUrl !== '/login' && req.originalUrl !== '/signup' && req.originalUrl !== '/password/forgot') { %>
+    <% if(!me && req.originalUrl !== '/login' && req.originalUrl !== '/signup' && req.originalUrl !== '/password/forgot' && /^\/password\/new\?token=.+$/.test(req.originalUrl) !== true ) { %>
       <script>window.location.replace('/login')</script>
     <% } %>
 
@@ -250,6 +251,45 @@
       }
     })();//†
     </script>
+<!-- vaptcha -->
+<script src="https://v.vaptcha.com/v3.js"></script>
+<script>
+  // vaptcha({
+  //   //配置参数
+  //   vid: '5ee90cab1850112466713209', // 验证单元id
+  //   type: 'click', // 展现类型 点击式
+  //   scene: 1,
+  //   container: '#vaptchaContainer',// 按钮容器，可为Element 或者 selector
+  //   // eslint-disable-next-line camelcase
+  //   // offline_server: 'http://localhost:1338',
+  //   offline_server: 'http://localhost:1338/',
 
+  // }).then((vaptchaObj) => {
+  //   console.log('qqq');
+    // obj = vaptchaObj; //将VAPTCHA验证实例保存到局部变量中
+    // vaptchaObj.render(); // 调用验证实例 vpObj 的 render 方法加载验证按钮
+    // //获取token的方式一：
+    // //vaptchaObj.renderTokenInput('.login-form')//以form的方式提交数据时，使用此函数向表单添加token值
+    // //获取token的方式二：
+    // vaptchaObj.listen("pass", function () {
+    //   // 验证成功进行后续操作
+    //   var data = {
+    //     //表单数据
+    //     token: vaptchaObj.getToken(),
+    //   };
+    //   alert(1)
+    //   // $.post("login", data, function (r) {
+    //   //   if (r.code !== 200) {
+    //   //     console.log("登录失败");
+    //   //     vaptchaObj.reset(); //重置验证码
+    //   //   }
+    //   // });
+    // });
+    // //关闭验证弹窗时触发
+    // vaptchaObj.listen("close", function () {
+    //   //验证弹窗关闭触发
+    // });
+  // });
+</script>
   </body>
 </html>
