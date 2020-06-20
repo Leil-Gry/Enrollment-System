@@ -6,6 +6,13 @@ module.exports = {
 
   description: 'get position list.',
 
+  inputs: {
+    isUnassigned: {
+      type: 'boolean',
+      required: true
+    }
+  },
+
   exits: {
 
     notFound: {
@@ -15,17 +22,30 @@ module.exports = {
 
   },
 
-  fn: async function () {
+  fn: async function (inputs) {
 
     let result = await Position.find({
-      batch: this.req.currentBatch.id
+      batch: this.req.currentBatch.id,
     });
 
     if (!result) {
       return 'notFound';
     }
 
-    return result;
+    let list;
+    if(inputs.isUnassigned){
+      list = [];
+      result.forEach(item => {
+        if(!item.application){
+          list.push(item);
+        }
+      });
+    } else {
+      list = result;
+    }
+
+
+    return list;
 
   }
 

@@ -9,7 +9,7 @@ parasails.registerPage('distribution', {
 
   methods: {
     getPosts: async function() {
-      this.posts = await Cloud.getPositionList.with();
+      this.posts = await Cloud.getPositionList.with({ isUnassigned: false });
     },
 
     uploadExcel: async function(event) {
@@ -27,7 +27,11 @@ parasails.registerPage('distribution', {
         ShowTip('上传成功','success');
         return;
       }
-      ShowTip('上传失败','danger');
+    },
+
+    test: async function() {
+      alert(1);
+      console.log();
     }
 
   }

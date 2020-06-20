@@ -59,7 +59,6 @@ module.exports = {
 
     var book = XLSX.readFile(dest);
     var sheet1 = book.Sheets[book.SheetNames[0]];
-
     var range = XLSX.utils.decode_range(sheet1['!ref']);
 
     let positionList = [];
@@ -73,13 +72,14 @@ module.exports = {
           break;
         }
       }
-      if(isExist) { break; }
+      if(isExist) { continue; }
 
       positionList.push({
         name: sheet1[cell].v,
         batch: this.req.currentBatch.id
       });
     }
+
     if(positionList.length === 0){
       return 'notFound';
     }

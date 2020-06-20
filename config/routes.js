@@ -82,5 +82,7 @@ module.exports.routes = {
   'POST /api/v1/admin/excel/upload':          { action: 'admin/upload-excel' },
   'GET /api/v1/admin/stats':          { action: 'admin/get-stats' },
   'GET /api/v1/admin/position':          { action: 'admin/get-position-list' },
+  'DELETE /api/v1/admin/position/delete':          { action: 'admin/delete-position' },
+  'PUT /api/v1/admin/position/update':          { action: 'admin/update-position' },
 
 };
