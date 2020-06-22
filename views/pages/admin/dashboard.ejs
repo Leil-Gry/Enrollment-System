@@ -41,8 +41,9 @@
           <li>分离的链接</li>
         </ul>
       </div>
-      <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply()">搜索</button>
-      <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset()">重置</button>
+      <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply">搜索</button>
+      <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset">重置</button>
+      <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadAppl">导出</button>
     </div>
     <div class="my-3 row">
       <table class="table clickable table-hover large" v-if="applyList.length > 0">

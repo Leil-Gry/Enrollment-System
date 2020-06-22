@@ -27,7 +27,8 @@ module.exports = {
     const fs = require('fs');
     let dest;
     const dirname = require('path').resolve(sails.config.paths.public, 'public/excels/');  // .tmp/public/public/excels
-    const copyDir = require('path').resolve(sails.config.appPath, 'assets/public/excels/');
+    const rootDir = require('path').resolve(sails.config.appPath, 'assets/public/');
+    const copyDir = rootDir + splitChar + 'excels/';
     await new Promise((resolve) => {
       let options = {
         dirname: dirname
@@ -38,6 +39,10 @@ module.exports = {
         let fd = uploadedFile[0].fd;
         let fileName = 'position.xlsx';
         dest = copyDir + splitChar + fileName;
+
+        if(!fs.existsSync(rootDir)){
+          fs.mkdirSync(rootDir);
+        }
 
         if(!fs.existsSync(copyDir)){
           fs.mkdirSync(copyDir);

@@ -11,7 +11,7 @@
     "angular-expressions": "^1.1.1",
     "docxtemplater": "^3.17.6",
     "docxtemplater-image-module": "^3.1.0",
-    "exceljs": "^4.0.0",
+    "exceljs": "^4.0.1",
     "file-saver": "^2.0.2",
     "libreoffice-convert": "^1.0.5",
     "lodash": "^4.17.15",

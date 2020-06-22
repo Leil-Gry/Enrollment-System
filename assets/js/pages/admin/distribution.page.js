@@ -25,6 +25,7 @@ parasails.registerPage('distribution', {
           return;
         }
         ShowTip('上传成功','success');
+        window.history.go(0);
         return;
       }
     },

@@ -58,7 +58,17 @@ module.exports = {
     const fs = require('fs');
     let picName;
     const dirname = require('path').resolve(sails.config.paths.public, 'public/avatars/');  // .tmp/public/public/avatars
-    const copyDir = require('path').resolve(sails.config.appPath, 'assets/public/avatars/');
+    const rootDir = require('path').resolve(sails.config.appPath, 'assets/public/');
+    const copyDir = rootDir + splitChar + 'avatars/';
+
+    if(!fs.existsSync(rootDir)){
+      fs.mkdirSync(rootDir);
+    }
+
+    if(!fs.existsSync(copyDir)){
+      fs.mkdirSync(copyDir);
+    }
+
     let fd = await new Promise((resolve) => {
       let options = {
         dirname: dirname

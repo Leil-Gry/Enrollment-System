@@ -5,7 +5,7 @@ parasails.registerPage('adminDashboard', {
   data: {
     // Main syncing/loading state for this page.
     syncing: false,
-    enlarge:false,
+    enlarge: false,
     applyList:[],
     applyForm: '',
     selectedPost:'',
@@ -94,6 +94,29 @@ parasails.registerPage('adminDashboard', {
       ];
     },
 
+    downloadAppl: async function() {
+      if(!this.applyList.length){
+        ShowTip('无可导出记录','danger');
+        return;
+      }
+      let query = '';
+      let hasQuery = false;
+      Object.keys(this.queryData).forEach(key =>{
+        if(this.queryData[key] !== ''){
+          if(!hasQuery){
+            hasQuery = true;
+            query += '?' + key + '=' + this.queryData[key];
+            return;
+          }
+          query += '&' + key + '=' + this.queryData[key];
+
+        }
+      });
+      // console.log(await Cloud.downloadApplication.with({  }));
+      let url = `/api/v1/admin/application/download` + (hasQuery ? query : '');
+      window.location.href = url;
+    },
+
     distribute: async function(id) {
       // this.posts = await Cloud.findPosts.with();
       console.log($('#selectedPost').val());
@@ -102,8 +125,8 @@ parasails.registerPage('adminDashboard', {
 
     getApplyDetail: async function(id) {
       let form = await Cloud.findOneApplication.with(id);
-      this.isRecommended = form.status === constants.APPLICATION_STATUS_RECOMMENDED?true:false;
-      this.isExamed = form.status === constants.APPLICATION_STATUS_EXAMED?true:false;
+      this.isRecommended = (form.status === constants.APPLICATION_STATUS_RECOMMENDED);
+      this.isExamed = (form.status === constants.APPLICATION_STATUS_EXAMED);
       if(form) {
         this.applyForm = form;
         this.applyForm.school = form.school.name;
@@ -111,7 +134,7 @@ parasails.registerPage('adminDashboard', {
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
         this.applyID = form.id;
-        this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;
+        this.waitCheck = (form.status === constants.APPLICATION_STATUS_SUBMITTED);
       }
     },
 
@@ -125,7 +148,6 @@ parasails.registerPage('adminDashboard', {
     },
 
     searchApply: async function() {
-      console.log(this.queryData);
       let query = {};
       Object.keys(this.queryData).forEach(key =>{
         if(this.queryData[key] !== ''){
