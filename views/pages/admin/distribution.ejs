@@ -38,6 +38,7 @@
       <div class='board' @blur="activeUpdateForm = false">
         <button type="button" class="close" aria-label="Close" @click="activeUpdateForm = false"><span aria-hidden="true">&times;</span></button>
         <div class="title">编辑岗位</div>
+        <div class='info text-center'>修改后点击窗口外可确认修改。</div>
         <input class='inputOrder' v-model="newPositionName" placeholder="请输入新岗位名" @blur="updatePosition()"/>
       </div>
     </div>
@@ -46,7 +47,7 @@
       <div class='mask'></div>
       <div class='board'>
         <div><span class="title">确认删除吗？</span></div>
-        <div class='info'>删除会导致已分配该岗位的用户解除岗位，请谨慎操作！</div>
+        <div class='info text-center'>删除会导致已分配该岗位的用户解除岗位，请谨慎操作！</div>
         <div class="btngroup">
           <button class="btn btn-left" @click="activeDeleteConfirm = false">我再想想</button>
           <button class="btn btn-success" @click="deletePosition">确定删除</button>
