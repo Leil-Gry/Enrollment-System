@@ -81,10 +81,10 @@
             </td>
             <td v-if="data.order > 0">{{data.order}}</td>
             <td v-else>暂未推荐</td>
-            <td  @click.stop>
+            <td @click.stop>
               <select class="form-control" type="text" @change="distribute(data.id)" :value="data.post" id="selectedPost">
                 <option value="" selected>无</option>
-                <option v-for="post in posts" :value="post.name">{{post.name}}</option>
+                <option v-for="post in positionList" :value="post.name">{{post.name}}</option>
               </select>
             </td>
           </tr>

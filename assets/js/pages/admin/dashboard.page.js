@@ -9,7 +9,7 @@ parasails.registerPage('adminDashboard', {
     applyList:[],
     applyForm: '',
     selectedPost:'',
-    posts:[],
+    positionList:[],
 
     photo: '',
     imageUrl:'',
@@ -56,7 +56,7 @@ parasails.registerPage('adminDashboard', {
     this.nations    = await Cloud.findNation.with();
     this.intentions = await Cloud.findIntention.with();
     this.getStatistics();
-    this.getPosts();
+    this.getPositions();
   },
   watch: {
     photo: function(v) {
@@ -80,19 +80,9 @@ parasails.registerPage('adminDashboard', {
       this.applyList = await Cloud.findApplication.with(data);
     },
 
-    getPosts: async function() {
+    getPositions: async function() {
       // this.posts = await Cloud.findPosts.with();
-      this.posts = [
-        {
-          name:'岗位1'
-        },
-        {
-          name:'岗位2'
-        },
-        {
-          name:'岗位3'
-        }
-      ];
+      this.positionList = await Cloud.getPositionList.with({isUnassigned:true});
     },
 
     downloadAppl: async function() {
@@ -119,8 +109,12 @@ parasails.registerPage('adminDashboard', {
     },
 
     distribute: async function(id) {
-      // this.posts = await Cloud.findPosts.with();
-      console.log($('#selectedPost').val());
+      let choosedPosition = $('#selectedPost').val();
+      if (!choosedPosition) {
+        await Cloud.deletePosition.with({id:id});
+      } else {
+        await Cloud.updatePosition.with({position:$('#selectedPost').val()});
+      }
       // await Cloud.distribute.with({id:id,post:('#selectedPost').val()});
     },
 
