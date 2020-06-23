@@ -29,9 +29,8 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
-    applications: {
-      collection: 'application',
-      via: 'position'
+    application: {
+      model: 'application'
     },
     batch: {
       model: 'batch',

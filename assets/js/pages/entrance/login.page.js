@@ -41,8 +41,7 @@ parasails.registerPage('login', {
     _.extend(this, SAILS_LOCALS);
   },
   mounted: async function() {
-    //…
-    await this.vaptchaSet();
+
   },
 
   //  ╦╔╗╔╔╦╗╔═╗╦═╗╔═╗╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
@@ -58,19 +57,6 @@ parasails.registerPage('login', {
       localStorage.removeItem('applyForm');
       window.location = '/';
     },
-
-    vaptchaSet: async function() {
-      console.log('qqq');
-      window.vaptcha({
-        //配置参数
-        vid: '5ee73be818501124667130e3', // 验证单元id
-        type: 'click', // 展现类型 点击式
-        container: '#vaptchaContainer'// 按钮容器，可为Element 或者 selector
-      }).then((vaptchaObj) => {
-        console.log('qqq');
-        vaptchaObj.render();// 调用验证实例 vaptchaObj 的 render 方法加载验证按钮
-      });
-    }
 
   }
 });

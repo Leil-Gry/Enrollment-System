@@ -1,6 +1,7 @@
 <div id="schoolDashboard" v-cloak>
   <div class="container">
     <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
+    <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadAppl">导出</button>
     <div class="my-3 row">
       <table class="table clickable table-hover large" v-if="applyList.length > 0">
         <thead>

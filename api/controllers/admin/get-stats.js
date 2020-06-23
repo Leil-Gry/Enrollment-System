@@ -18,32 +18,32 @@ module.exports = {
   fn: async function (inputs) {
     let SQL = {
       groupBySchoolAndEducation: `
-        SELECT s.name as school, a.education as education, COUNT(education) as num 
+        SELECT any_value(s.name) as school, a.education as education, COUNT(education) as num 
         FROM application as a,school as s
         WHERE a.school=s.id and a.status>1
         GROUP BY a.school,education`,
       groupBySchoolAndPoliticalStatus: `
-        SELECT s.name as school, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num 
+        SELECT any_value(s.name) as school, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num 
         FROM application as a,school as s
         WHERE a.school=s.id and a.status>1
         GROUP BY a.school,politicalStatus`,
       groupBySchoolAndSex: `
-        SELECT s.name as school, a.sex as sex, COUNT(sex) as num 
+        SELECT any_value(s.name) as school, a.sex as sex, COUNT(sex) as num 
         FROM application as a,school as s
         WHERE a.school=s.id and a.status>1
         GROUP BY a.school,sex`,
       groupByEducation: `
-        SELECT a.status as status, a.education as education, COUNT(education) as num 
+        SELECT any_value(a.status) as status, a.education as education, COUNT(education) as num 
         FROM application as a
         WHERE a.status>1
         GROUP BY education`,
       groupByPoliticalStatus: `
-        SELECT a.status as status, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num 
+        SELECT any_value(a.status) as status, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num 
         FROM application as a
         WHERE a.status>1
         GROUP BY politicalStatus`,
       groupBySex: `
-        SELECT a.status as status, a.sex as sex, COUNT(sex) as num 
+        SELECT any_value(a.status) as status, a.sex as sex, COUNT(sex) as num 
         FROM application as a
         WHERE a.status>1
         GROUP BY sex`,
@@ -111,7 +111,7 @@ module.exports = {
         item = {
           item: row.education,
           applyNum: row.num,
-          percent: (row.num / applyNum * 100).toFixed(2)
+          percent: (row.num / applyNum * 100).toFixed(1) + '%'
         };
         itemStats.push(item);
       });
@@ -119,7 +119,7 @@ module.exports = {
         item = {
           item: row.politicalStatus,
           applyNum: row.num,
-          percent: (row.num / applyNum * 100).toFixed(2)
+          percent: (row.num / applyNum * 100).toFixed(1) + '%'
         };
         itemStats.push(item);
       });
@@ -127,7 +127,7 @@ module.exports = {
         item = {
           item: row.sex,
           applyNum: row.num,
-          percent: (row.num / applyNum * 100).toFixed(2)
+          percent: (row.num / applyNum * 100).toFixed(1) + '%'
         };
         itemStats.push(item);
       });

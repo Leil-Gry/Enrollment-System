@@ -52,6 +52,15 @@ parasails.registerPage('schoolDashboard', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
+    downloadAppl: async function() {
+      if(!this.applyList.length){
+        ShowTip('无可导出记录','danger');
+        return;
+      }
+
+      let url = `/api/v1/admin/application/download`;
+      window.location.href = url;
+    },
     getApplyList: async function() {
       this.applyList = await Cloud.findApplication.with();
     },
