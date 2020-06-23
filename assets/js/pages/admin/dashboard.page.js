@@ -20,6 +20,7 @@ parasails.registerPage('adminDashboard', {
     queryData: {
       school: '',
       nation: '',
+      post: '',
       intentType: '',
       politicalStatus: '',
       obeyTheAdjustment: ''
@@ -83,13 +84,13 @@ parasails.registerPage('adminDashboard', {
       // this.posts = await Cloud.findPosts.with();
       this.posts = [
         {
-          name:'1'
+          name:'岗位1'
         },
         {
-          name:'2'
+          name:'岗位2'
         },
         {
-          name:'3'
+          name:'岗位3'
         }
       ];
     },
