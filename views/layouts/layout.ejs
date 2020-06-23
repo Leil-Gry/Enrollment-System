@@ -149,7 +149,6 @@
     <script src="/dependencies/bootstrap-datetimepicker.js"></script>
     <script src="/dependencies/bootstrap-editable.js"></script>
     <script src="/dependencies/cloud.js"></script>
-    <script src="/dependencies/Export2Excel.js"></script>
     <script src="/dependencies/moment.js"></script>
     <script src="/dependencies/parasails.js"></script>
     <script src="/js/cloud.setup.js"></script>
@@ -252,45 +251,5 @@
       }
     })();//†
     </script>
-<!-- vaptcha -->
-<script src="https://v.vaptcha.com/v3.js"></script>
-<script>
-  // vaptcha({
-  //   //配置参数
-  //   vid: '5ee90cab1850112466713209', // 验证单元id
-  //   type: 'click', // 展现类型 点击式
-  //   scene: 1,
-  //   container: '#vaptchaContainer',// 按钮容器，可为Element 或者 selector
-  //   // eslint-disable-next-line camelcase
-  //   // offline_server: 'http://localhost:1338',
-  //   offline_server: 'http://localhost:1338/',
-
-  // }).then((vaptchaObj) => {
-  //   console.log('qqq');
-    // obj = vaptchaObj; //将VAPTCHA验证实例保存到局部变量中
-    // vaptchaObj.render(); // 调用验证实例 vpObj 的 render 方法加载验证按钮
-    // //获取token的方式一：
-    // //vaptchaObj.renderTokenInput('.login-form')//以form的方式提交数据时，使用此函数向表单添加token值
-    // //获取token的方式二：
-    // vaptchaObj.listen("pass", function () {
-    //   // 验证成功进行后续操作
-    //   var data = {
-    //     //表单数据
-    //     token: vaptchaObj.getToken(),
-    //   };
-    //   alert(1)
-    //   // $.post("login", data, function (r) {
-    //   //   if (r.code !== 200) {
-    //   //     console.log("登录失败");
-    //   //     vaptchaObj.reset(); //重置验证码
-    //   //   }
-    //   // });
-    // });
-    // //关闭验证弹窗时触发
-    // vaptchaObj.listen("close", function () {
-    //   //验证弹窗关闭触发
-    // });
-  // });
-</script>
   </body>
 </html>

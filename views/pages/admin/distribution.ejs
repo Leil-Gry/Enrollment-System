@@ -22,16 +22,38 @@
           <td>{{data.name}}</td>
           <td>{{data.application ? '是' : '否'}}</td>
           <td>
-            <button type="button" class="btn btn-primary" >
+            <button type="button" class="btn btn-primary" @click="showUpdateForm(data)">
               <i class="fa fa-edit opp-icon" aria-hidden="true"></i>
             </button>
-            <button type="button" class="btn btn-danger" @Click="test()" >
+            <button type="button" class="btn btn-danger" @click="showDeleteForm(data.id)" >
               <i class="fa fa-trash-o opp-icon" aria-hidden="true"></i>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div v-show="activeUpdateForm" class="model">
+      <div class='mask'></div>
+      <div class='board' @blur="activeUpdateForm = false">
+        <button type="button" class="close" aria-label="Close" @click="activeUpdateForm = false"><span aria-hidden="true">&times;</span></button>
+        <div class="title">编辑岗位</div>
+        <input class='inputOrder' v-model="newPositionName" placeholder="请输入新岗位名" @blur="updatePosition()"/>
+      </div>
+    </div>
+
+    <div v-show="activeDeleteConfirm" class="model">
+      <div class='mask'></div>
+      <div class='board'>
+        <div><span class="title">确认删除吗？</span></div>
+        <div class='info'>删除会导致已分配该岗位的用户解除岗位，请谨慎操作！</div>
+        <div class="btngroup">
+          <button class="btn btn-left" @click="activeDeleteConfirm = false">我再想想</button>
+          <button class="btn btn-success" @click="deletePosition">确定删除</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

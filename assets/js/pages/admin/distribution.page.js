@@ -1,6 +1,11 @@
 parasails.registerPage('distribution', {
   data: {
     posts:[],
+    activeUpdateForm: false,
+    activeDeleteConfirm: false,
+    newPositionName: '',
+    currentPositionId: '',
+    deletePositionId: ''
   },
 
   beforeMount: async function() {
@@ -8,6 +13,30 @@ parasails.registerPage('distribution', {
   },
 
   methods: {
+    showDeleteForm: async function(positionId) {
+      this.deletePositionId = positionId;
+      this.activeDeleteConfirm = true;
+    },
+
+    deletePosition: async function() {
+      // TODO: 完善API细节
+      await Cloud.deletePosition.with({ id: this.deletePositionId });
+      this.deletePositionId = '';
+      this.activeDeleteConfirm = false;
+    },
+
+    updatePosition: async function() {
+      await Cloud.updatePosition.with({ id: this.currentPositionId, newName: this.newPositionName }); // TODO: 完成这个API，完善边缘逻辑，如错误提示等
+      this.activeUpdateForm = false; // 关闭弹窗
+    },
+
+    showUpdateForm: async function(position) {
+      // TODO: position中有 id name application  这里做判断，如果新修改名和旧一致则不修改 ，弹窗报告  等， js里用 === 代表等于 !== 代表不等于
+      this.currentPositionId = position.Id;
+      this.newPositionName = position.name;
+      this.activeUpdateForm = true;
+    },
+
     getPosts: async function() {
       this.posts = await Cloud.getPositionList.with({ isUnassigned: false });
     },
@@ -28,12 +57,6 @@ parasails.registerPage('distribution', {
         window.history.go(0);
         return;
       }
-    },
-
-    test: async function() {
-      alert(1);
-      console.log();
     }
-
   }
 });
