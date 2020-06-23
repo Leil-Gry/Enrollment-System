@@ -26,21 +26,10 @@
         <option value="" disabled>是否服从调剂</option>
         <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
       </select>
-      <div class="dropdown">
-        <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
-            data-toggle="dropdown">
-          主题
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="#">全部岗位</a></li>
-          <li class="divider"></li>
-          <li role="presentation" class="dropdown-header">下拉菜单标题</li>
-          <li><p><input type="checkbox" name="vehicle" value="Bike" /> I have a bike</p></li>
-          <li><p><input type="checkbox" name="vehicle" value="Bike" /> I have a bike</p></li>
-          <li>分离的链接</li>
-        </ul>
-      </div>
+      <select class="form-control search-term" id="position" type="text" v-model="queryData.position" title="根据分配岗位选取报名表">
+        <option value="" disabled>全部岗位</option>
+        <option v-for="data in positionList" :value="data">{{data}}</option>
+      </select>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply">搜索</button>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset">重置</button>
       <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadAppl">导出</button>
@@ -84,7 +73,7 @@
             <td @click.stop>
               <select class="form-control" type="text" @change="distribute(data.id)" :value="data.post" id="selectedPost">
                 <option value="" selected>无</option>
-                <option v-for="post in positionList" :value="post.name">{{post.name}}</option>
+                <option v-for="post in positionList" :value="post">{{post}}</option>
               </select>
             </td>
           </tr>

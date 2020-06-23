@@ -23,7 +23,8 @@ parasails.registerPage('adminDashboard', {
       post: '',
       intentType: '',
       politicalStatus: '',
-      obeyTheAdjustment: ''
+      obeyTheAdjustment: '',
+      position: ''
     },
 
     stats: {},
