@@ -3,7 +3,7 @@
     <h1 class="text-center">账号登录</h1>
     <div class="login-form-container">
       <hr/>
-      <ajax-form action="login" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="submittedForm()">
+      <ajax-form ref="loginForm" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="submittedForm()">
         <div class="form-group">
           <input class="form-control" placeholder="请输入电子邮件地址" :class="[formErrors.emailAddress ? 'is-invalid' : '']" v-model.trim="formData.emailAddress" autocomplete="email" focus-first>
           <div class="invalid-feedback" v-if="formErrors.emailAddress">请提供有效的电子邮件地址。</div>
@@ -18,10 +18,16 @@
         </div>
         <p class="text-danger" v-if="cloudError==='badCombo'"><small>账号或密码错误，请仔细检查输入的账号和密码后重试。</small></p>
         <p class="text-danger" v-else-if="cloudError"><small>处理您的请求时发生错误。 请检查您的信息，然后重试。</small></p>
-        <div class="form-group">
-          <ajax-button  type="submit" :syncing="syncing" class="btn-success btn-lg btn-block">登录</ajax-button>
+        <div>
+          <vaptcha ref="captcha" v-model="token" :syncing="true"></vaptcha>        
         </div>
+        <!-- <div class="form-group">
+          <ajax-button  type="submit" :syncing="syncing" class="btn-success btn-lg btn-block">登录</ajax-button>
+        </div> -->
       </ajax-form>
+      <div class="form-group">
+        <button class="btn btn-success btn-lg btn-block" @click="handleLogin()">登录</button>
+      </div>
       <p class="text-center"><a href="/password/forgot">忘记密码？</a></p>
     </div>
   </div>

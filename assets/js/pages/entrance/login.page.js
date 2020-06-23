@@ -6,6 +6,8 @@ parasails.registerPage('login', {
     // Main syncing/loading state for this page.
     syncing: false,
 
+    token: '',
+
     // Form data
     formData: {
       emailAddress: '',
@@ -49,14 +51,29 @@ parasails.registerPage('login', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
-    submittedForm: async function() {
-      // Redirect to the logged-in dashboard on success.
-      // > (Note that we re-enable the syncing state here.  This is on purpose--
-      // > to make sure the spinner stays there until the page navigation finishes.)
+    // submittedForm: async function() {
+    //   // Redirect to the logged-in dashboard on success.
+    //   // > (Note that we re-enable the syncing state here.  This is on purpose--
+    //   // > to make sure the spinner stays there until the page navigation finishes.)
+    //   this.syncing = true;
+    //   localStorage.removeItem('applyForm');
+    //   // window.location = '/';
+    //   console.log(this.token);
+    // },
+
+    handleLogin: async function() {
+      var valid = await this.$refs.loginForm.validate();
+      if (!valid) {return;}
+      if(!this.token) {
+        ShowTip('请先进行人机验证！','danger');
+        return;
+      }
       this.syncing = true;
+      await Cloud.login.with(this.formData);
+      this.syncing = false;
       localStorage.removeItem('applyForm');
       window.location = '/';
-    },
+    }
 
   }
 });
