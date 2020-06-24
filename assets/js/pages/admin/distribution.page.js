@@ -35,7 +35,9 @@ parasails.registerPage('distribution', {
       await Cloud.updatePosition.with({ id: this.currentPositionId, newName: this.newPositionName }); // TODO: 完成这个API，完善边缘逻辑，如错误提示等
       this.activeUpdateForm = false; // 关闭弹窗
       ShowTip('修改成功！','success');
-      window.history.go(0);
+      setTimeout(() => {
+        window.history.go(0);
+      }, 500);
     },
 
     showUpdateForm: async function(position) {

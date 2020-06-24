@@ -10,6 +10,7 @@ parasails.registerPage('adminDashboard', {
     applyForm: '',
     selectedPost:'',
     positionList:[],
+    allPositionList:[],
 
     photo: '',
     imageUrl:'',
@@ -79,11 +80,14 @@ parasails.registerPage('adminDashboard', {
   methods: {
     getApplyList: async function(data) {
       this.applyList = await Cloud.findApplication.with(data);
+      this.applyList.forEach(item => {
+        item.position = item.position ? item.position.name : null;
+      });
     },
 
     getPositions: async function() {
-      // this.posts = await Cloud.findPosts.with();
-      this.positionList = await Cloud.getPositionList.with({isUnassigned:true});
+      this.positionList = await Cloud.getPositionList.with({ isUnassigned: true });
+      this.allPositionList = await Cloud.getPositionList.with({ isUnassigned: false });
     },
 
     downloadAppl: async function() {
@@ -104,19 +108,25 @@ parasails.registerPage('adminDashboard', {
 
         }
       });
-      // console.log(await Cloud.downloadApplication.with({  }));
+
       let url = `/api/v1/admin/application/download` + (hasQuery ? query : '');
       window.location.href = url;
     },
 
-    distribute: async function(id) {
-      let choosedPosition = $('#selectedPost').val();
-      if (!choosedPosition) {
-        await Cloud.deletePosition.with({id:id});
-      } else {
-        await Cloud.updatePosition.with({position:$('#selectedPost').val()});
+    distribute: async function(applId) {
+      let fd = await Cloud.distributePosition.with({
+        applId: applId,
+        newPostName: $('#selectedPost').val()
+      });
+      if (fd === 'notAdmitted') {
+        ShowTip('只有被录取用户才能被分配岗位','danger');
+        setTimeout(() => {
+          window.history.go(0);
+        }, 500);
+        return;
       }
-      // await Cloud.distribute.with({id:id,post:('#selectedPost').val()});
+
+      ShowTip('分配成功','success');
     },
 
     getApplyDetail: async function(id) {

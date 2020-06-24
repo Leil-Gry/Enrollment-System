@@ -81,6 +81,7 @@ module.exports.routes = {
   'POST /api/v1/school/application/:id/status': { action: 'school/update-school-application-status' },
   'POST /api/v1/admin/application/:id/status': { action: 'admin/update-application-status' },
   'POST /api/v1/admin/excel/upload':          { action: 'admin/upload-excel' },
+  'POST /api/v1/admin/position/distribute':          { action: 'admin/distribute-position' },
   'GET /api/v1/admin/stats':          { action: 'admin/get-stats' },
   'GET /api/v1/admin/position':          { action: 'admin/get-position-list' },
   'DELETE /api/v1/admin/position/delete':          { action: 'admin/delete-position' },

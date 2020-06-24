@@ -34,6 +34,10 @@ password attempt.`,
 `Note that this is NOT SUPPORTED when using virtual requests (e.g. sending
 requests over WebSockets instead of HTTP).`,
       type: 'boolean'
+    },
+
+    token: {
+      type: 'string'
     }
 
   },
@@ -70,7 +74,24 @@ and exposed as \`req.me\`.)`
 
 
   fn: async function (inputs) {
+    const axios = require('axios');
 
+    let res = await axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      url: 'http://0.vaptcha.com/verify',
+      data: {
+        id: '5ee90cab1850112466713209',
+        secretkey: 'ad9598513fc142ae8c18a0d13a69677a',
+        scene: 0, // 场景值 默认0
+        token: inputs.token,
+        ip: constants.PUBLIC_IP
+      }
+    });
+
+    if (!(res.data && res.data.success)) {
+      throw 'badCombo';
+    }
     // Look up by the email address.
     // (note that we lowercase it to ensure the lookup is always case-insensitive,
     // regardless of which database we're using)

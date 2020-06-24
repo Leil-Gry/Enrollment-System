@@ -28,7 +28,7 @@
       </select>
       <select class="form-control search-term" id="position" type="text" v-model="queryData.position" title="根据分配岗位选取报名表">
         <option value="" disabled>全部岗位</option>
-        <option v-for="data in positionList" :value="data">{{data}}</option>
+        <option v-for="data in allPositionList" :value="data.id">{{data.name}}</option>
       </select>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply">搜索</button>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset">重置</button>
@@ -71,9 +71,10 @@
             <td v-if="data.order > 0">{{data.order}}</td>
             <td v-else>暂未推荐</td>
             <td @click.stop>
-              <select class="form-control" type="text" @change="distribute(data.id)" :value="data.post" id="selectedPost">
+              <select class="form-control" type="text" @change="distribute(data.id)" :value="data.position" id="selectedPost">
                 <option value="" selected>无</option>
-                <option v-for="post in positionList" :value="post">{{post}}</option>
+                <option :value="data.position" selected v-if='data.position'>{{data.position}}</option>
+                <option v-for="post in positionList" :value="post.name">{{post.name}}</option>
               </select>
             </td>
           </tr>

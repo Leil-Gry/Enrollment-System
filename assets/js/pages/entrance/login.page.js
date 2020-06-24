@@ -68,6 +68,7 @@ parasails.registerPage('login', {
         ShowTip('请先进行人机验证！','danger');
         return;
       }
+      this.formData.token = this.token;
       this.syncing = true;
       await Cloud.login.with(this.formData);
       this.syncing = false;
