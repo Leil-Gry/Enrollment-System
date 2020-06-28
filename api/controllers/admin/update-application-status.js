@@ -56,11 +56,12 @@ module.exports = {
       throw 'notFound';
     }
 
-    if (inputs.status === constants.APPLICATION_STATUS_EXAMED) {
-      if (application.status !== constants.APPLICATION_STATUS_RECOMMENDED) {
-        throw 'wrongStatus';
-      }
-    } else if (inputs.status === constants.APPLICATION_STATUS_ADMITTED) {
+    // if (inputs.status === constants.APPLICATION_STATUS_EXAMED) {
+    //   if (application.status !== constants.APPLICATION_STATUS_RECOMMENDED || application.status !== constants.APPLICATION_STATUS_CHECKED) {
+    //     throw 'wrongStatus';
+    //   }
+    // } else
+    if (inputs.status === constants.APPLICATION_STATUS_ADMITTED) {
       if (application.status !== constants.APPLICATION_STATUS_EXAMED) {
         throw 'wrongStatus';
       }

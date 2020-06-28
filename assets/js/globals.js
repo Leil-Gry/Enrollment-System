@@ -18,7 +18,8 @@ const constants = {
       labelType:'btn-default',
       bigTitle:'填写报名信息',
       subTitle:'请认真填写以下信息进行报名.',
-      stepLabel: '报名'
+      stepLabel: '报名',
+      adminText:'报名中',
     },
     2:
     {
@@ -27,7 +28,8 @@ const constants = {
       labelType:'btn-default',
       bigTitle:'等待审核',
       subTitle:'你已提交报名表，请耐心等待审核.',
-      stepLabel: '提交'
+      stepLabel: '提交',
+      adminText:'待审核',
     },
     3:
     {
@@ -36,7 +38,9 @@ const constants = {
       labelType:'btn-primary',
       bigTitle:'审核已通过',
       subTitle:'请等待推荐.',
-      stepLabel: '审核'
+      stepLabel: '审核',
+      adminLabel: '体检通过',  // 管理员操作
+      adminText:'等待体检',
     },
     4:
     {
@@ -46,7 +50,8 @@ const constants = {
       bigTitle:'等待体检',
       subTitle:'',
       stepLabel: '推荐',
-      adminLabel: '体检通过'  // 管理员操作
+      adminLabel: '体检通过',  // 管理员操作
+      adminText:'等待体检',
     },
     11:
     {
@@ -56,7 +61,8 @@ const constants = {
       bigTitle:'等待录取',
       subTitle:'',
       stepLabel: '体检',
-      adminLabel: '录取'  // 管理员操作
+      adminLabel: '录取',  // 管理员操作
+      adminText:'等待录取',
     },
     12:
     {
@@ -65,7 +71,8 @@ const constants = {
       labelType:'btn-success',
       bigTitle:'已录取',
       subTitle:'',
-      stepLabel: '录取'
+      stepLabel: '已录取',
+      adminText:'已录取',
     },
   },
 

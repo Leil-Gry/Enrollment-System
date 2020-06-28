@@ -21,7 +21,6 @@ parasails.registerPage('adminDashboard', {
     queryData: {
       school: '',
       nation: '',
-      post: '',
       intentType: '',
       politicalStatus: '',
       obeyTheAdjustment: '',
@@ -30,7 +29,7 @@ parasails.registerPage('adminDashboard', {
 
     stats: {},
 
-    isRecommended:false,
+    isChecked:false,
     isExamed:false,
     schools:[],
     nations: [],
@@ -131,7 +130,7 @@ parasails.registerPage('adminDashboard', {
 
     getApplyDetail: async function(id) {
       let form = await Cloud.findOneApplication.with(id);
-      this.isRecommended = (form.status === constants.APPLICATION_STATUS_RECOMMENDED);
+      this.isChecked = (form.status === constants.APPLICATION_STATUS_RECOMMENDED || form.status === constants.APPLICATION_STATUS_CHECKED);
       this.isExamed = (form.status === constants.APPLICATION_STATUS_EXAMED);
       if(form) {
         this.applyForm = form;
@@ -169,7 +168,8 @@ parasails.registerPage('adminDashboard', {
         nation: '',
         intentType: '',
         politicalStatus: '',
-        obeyTheAdjustment: ''
+        obeyTheAdjustment: '',
+        position: ''
       };
       this.getApplyList();
     },

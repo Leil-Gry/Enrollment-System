@@ -27,7 +27,7 @@
         <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
       </select>
       <select class="form-control search-term" id="position" type="text" v-model="queryData.position" title="根据分配岗位选取报名表">
-        <option value="" disabled>全部岗位</option>
+        <option value="">全部岗位</option>
         <option v-for="data in allPositionList" :value="data.id">{{data.name}}</option>
       </select>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply">搜索</button>
@@ -65,7 +65,7 @@
             <td>{{data.intention1}}、{{data.intention2}}</td>
             <td>
               <button type="button" class="btn" :class="statusList[data.status].labelType">
-                {{statusList[data.status].text}}
+                {{statusList[data.status].adminText}}
               </button>
             </td>
             <td v-if="data.order > 0">{{data.order}}</td>
@@ -96,7 +96,7 @@
             <div class="modal-body">
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
-            <div class="modal-footer" v-if="isRecommended">
+            <div class="modal-footer" v-if="isChecked">
               <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="examedPass()">{{statusList[applyForm.status].adminLabel}}</button>
             </div>
             <div class="modal-footer" v-if="isExamed">
