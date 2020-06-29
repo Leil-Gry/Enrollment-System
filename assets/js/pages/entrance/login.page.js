@@ -8,6 +8,7 @@ parasails.registerPage('login', {
 
     token: '',
 
+    loginBtnDisabled: true,
     // Form data
     formData: {
       emailAddress: '',
@@ -45,6 +46,15 @@ parasails.registerPage('login', {
   mounted: async function() {
 
   },
+  watch: {
+    token: function(v) {
+      if(v) {
+        if(v){
+          this.loginBtnDisabled = false;
+        }
+      }
+    }
+  },
 
   //  ╦╔╗╔╔╦╗╔═╗╦═╗╔═╗╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
@@ -63,17 +73,19 @@ parasails.registerPage('login', {
 
     handleLogin: async function() {
       var valid = await this.$refs.loginForm.validate();
+      this.syncing = true;
       if (!valid) {return;}
       if(!this.token) {
         ShowTip('请先进行人机验证！','danger');
         return;
       }
-      this.formData.token = this.token;
-      this.syncing = true;
-      await Cloud.login.with(this.formData);
       this.syncing = false;
+      this.formData.token = this.token;
+      await Cloud.login.with(this.formData).then((res) => {
+        console.log(res);
+      });
       localStorage.removeItem('applyForm');
-      window.location = '/';
+      // window.location = '/';
     }
 
   }

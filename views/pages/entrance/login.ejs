@@ -27,7 +27,7 @@
         </div> -->
       </ajax-form>
       <div class="form-group">
-        <button class="btn btn-success btn-lg btn-block" @click="handleLogin()">登录</button>
+        <button class="btn btn-lg btn-block" @click="handleLogin()" :class="[token ? 'btn-success' : 'btn-default']" :disabled=loginBtnDisabled>登录</button>
       </div>
       <p class="text-center"><a href="/password/forgot">忘记密码？</a></p>
     </div>
