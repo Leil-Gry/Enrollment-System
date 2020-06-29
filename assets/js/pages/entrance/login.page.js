@@ -48,10 +48,11 @@ parasails.registerPage('login', {
   },
   watch: {
     token: function(v) {
+      console.log(v);
       if(v) {
-        if(v){
-          this.loginBtnDisabled = false;
-        }
+        this.loginBtnDisabled = false;
+      } else {
+        this.loginBtnDisabled = true;
       }
     }
   },
@@ -75,17 +76,25 @@ parasails.registerPage('login', {
       var valid = await this.$refs.loginForm.validate();
       this.syncing = true;
       if (!valid) {return;}
-      if(!this.token) {
-        ShowTip('请先进行人机验证！','danger');
-        return;
-      }
+      // if(!this.token) {
+      //   ShowTip('请先进行人机验证！','danger');
+      //   return;
+      // }
       this.syncing = false;
       this.formData.token = this.token;
-      await Cloud.login.with(this.formData).then((res) => {
-        console.log(res);
-      });
+      try {
+        await Cloud.login.with(this.formData);
+      } catch (err){
+        let statusCode = err.responseInfo.statusCode;
+        if(statusCode === 401) {
+          ShowTip('账号或密码错误！','danger');
+          this.$refs.captcha.resetVaptcha();
+          this.token=null;
+          return;
+        }
+      }
       localStorage.removeItem('applyForm');
-      // window.location = '/';
+      window.location = '/';
     }
 
   }

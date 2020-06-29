@@ -120,7 +120,9 @@ parasails.registerComponent('vaptcha', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
-
+    resetVaptcha () {
+      this.vaptcha.reset();
+    }
 
   }
 });
