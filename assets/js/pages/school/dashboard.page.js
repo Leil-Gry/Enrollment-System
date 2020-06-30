@@ -100,7 +100,6 @@ parasails.registerPage('schoolDashboard', {
         return;
       }
       await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
-      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:constants.APPLICATION_STATUS_RECOMMENDED});
       this.getApplyList();
     },
 

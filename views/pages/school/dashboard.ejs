@@ -42,6 +42,7 @@
         <div v-show="orderInput" class="model">
           <div class='mask'></div>
           <div class='board' @blur="orderInput=false">
+            <button type="button" class="close" aria-label="Close" @click="orderInput = false"><span aria-hidden="true">&times;</span></button>
             <div class="title">设置{{applyName}}的推荐排名</div>
             <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()"/>
           </div>

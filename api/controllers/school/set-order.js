@@ -56,7 +56,8 @@ module.exports = {
       id: application.id
     })
       .set({
-        order: inputs.order
+        order: inputs.order,
+        status: inputs.order ? constants.APPLICATION_STATUS_RECOMMENDED  : constants.APPLICATION_STATUS_CHECKED
       });
 
     return;
