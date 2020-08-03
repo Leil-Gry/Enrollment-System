@@ -18,41 +18,41 @@ module.exports = {
   fn: async function (inputs) {
     let SQL = {
       groupBySchoolAndEducation: `
-        SELECT any_value(s.name) as school, a.education as education, COUNT(education) as num 
+        SELECT any_value(s.name) as school, a.education as education, COUNT(education) as num
         FROM application as a,school as s
         WHERE a.school=s.id and a.status>1
         GROUP BY a.school,education`,
       groupBySchoolAndPoliticalStatus: `
-        SELECT any_value(s.name) as school, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num 
+        SELECT any_value(s.name) as school, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num
         FROM application as a,school as s
         WHERE a.school=s.id and a.status>1
         GROUP BY a.school,politicalStatus`,
       groupBySchoolAndSex: `
-        SELECT any_value(s.name) as school, a.sex as sex, COUNT(sex) as num 
+        SELECT any_value(s.name) as school, a.sex as sex, COUNT(sex) as num
         FROM application as a,school as s
         WHERE a.school=s.id and a.status>1
         GROUP BY a.school,sex`,
       groupByEducation: `
-        SELECT any_value(a.status) as status, a.education as education, COUNT(education) as num 
+        SELECT any_value(a.status) as status, a.education as education, COUNT(education) as num
         FROM application as a
         WHERE a.status>1
         GROUP BY education`,
       groupByPoliticalStatus: `
-        SELECT any_value(a.status) as status, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num 
+        SELECT any_value(a.status) as status, a.politicalStatus as politicalStatus, COUNT(politicalStatus) as num
         FROM application as a
         WHERE a.status>1
         GROUP BY politicalStatus`,
       groupBySex: `
-        SELECT any_value(a.status) as status, a.sex as sex, COUNT(sex) as num 
+        SELECT any_value(a.status) as status, a.sex as sex, COUNT(sex) as num
         FROM application as a
         WHERE a.status>1
         GROUP BY sex`,
       applyNum: `
-        SELECT COUNT(*) as num 
+        SELECT COUNT(*) as num
         FROM application as a
         WHERE a.status>1`,
       admissionNum: `
-        SELECT COUNT(*) as num 
+        SELECT COUNT(*) as num
         FROM application as a
         WHERE a.status=12`
     };

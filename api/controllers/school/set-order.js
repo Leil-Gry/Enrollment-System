@@ -12,7 +12,7 @@ module.exports = {
       required: true
     },
 
-    order: {
+    order: { // 0 to cancel order
       type: 'number',
       required: true
     }
@@ -57,7 +57,7 @@ module.exports = {
     })
       .set({
         order: inputs.order,
-        status: inputs.order ? constants.APPLICATION_STATUS_RECOMMENDED  : constants.APPLICATION_STATUS_CHECKED
+        status: inputs.order !== 0 ? constants.APPLICATION_STATUS_RECOMMENDED : constants.APPLICATION_STATUS_CHECKED
       });
 
     return;

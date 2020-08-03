@@ -64,6 +64,8 @@ module.exports = {
       if (application.status !== constants.APPLICATION_STATUS_SUBMITTED) {
         throw 'wrongStatus';
       }
+    } else {
+      throw 'wrongStatus';
     }
 
     application = await Application.update({

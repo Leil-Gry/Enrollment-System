@@ -390,6 +390,12 @@ module.exports = {
     // ```
     //--------------------------------------------------------------------------
 
+    vaptcha: {
+      ip: '47.114.104.126',  // must be ip, not url, 'http://lxjh.zjgqt.org/',
+      // NOTE: also set id in vaptcha.component
+      id: '5eee08f72fd1114faf06854a',
+      key: 'c843104c0387481cb0a4b2002beedc01'
+    }
   }
 
 

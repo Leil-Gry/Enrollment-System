@@ -57,7 +57,7 @@ parasails.registerPage('adminDashboard', {
     this.nations    = await Cloud.findNation.with();
     this.intentions = await Cloud.findIntention.with();
     this.getStatistics();
-    this.getPositions();
+    // this.getPositions();
   },
   watch: {
     photo: function(v) {
@@ -78,16 +78,56 @@ parasails.registerPage('adminDashboard', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
     getApplyList: async function(data) {
-      this.applyList = await Cloud.findApplication.with(data);
-      this.applyList.forEach(item => {
-        item.position = item.position ? item.position.name : null;
-      });
+      let query = data;
+      if (query) {
+        if (!query.status) {
+          query.status = 2; // only show submitted
+        }
+      } else {
+        query = { status: 2 };
+      }
+
+      this.applyList = await Cloud.findApplication.with(query);
+      // For frontend development
+      // this.applyList = [
+      //   {
+      //     id: 1,
+      //     status: 2,
+      //     order: 0,
+      //     name: "张三",
+      //     sex: "女",
+      //     nation: "汉族",
+      //     politicalStatus: "共青团员",
+      //     domicileProvince: "浙江省",
+      //     education: "本科",
+      //     intention1: "衢州市",
+      //     intention2: "磐安县",
+      //     school: {id: 7, name: "杭州电子科技大学"},
+      //   },
+      //   {
+      //     id: 2,
+      //     status: 2,
+      //     order: 0,
+      //     name: "李四",
+      //     sex: "女",
+      //     nation: "汉族",
+      //     politicalStatus: "共青团员",
+      //     domicileProvince: "浙江省",
+      //     education: "本科",
+      //     intention1: "衢州市",
+      //     intention2: "磐安县",
+      //     school: {id: 7, name: "杭州电子科技大学"},
+      //   }
+      // ];
+      // this.applyList.forEach(item => {
+      //   item.position = item.position ? item.position.name : null;
+      // });
     },
 
-    getPositions: async function() {
-      this.positionList = await Cloud.getPositionList.with({ isUnassigned: true });
-      this.allPositionList = await Cloud.getPositionList.with({ isUnassigned: false });
-    },
+    // getPositions: async function() {
+    //   this.positionList = await Cloud.getPositionList.with({ isUnassigned: true });
+    //   this.allPositionList = await Cloud.getPositionList.with({ isUnassigned: false });
+    // },
 
     downloadAppl: async function() {
       if(!this.applyList.length){

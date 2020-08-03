@@ -143,16 +143,19 @@ module.exports = {
 
     resume:{
       type: 'string',
+      columnType: 'LONGTEXT',
       required: true
     },
 
     volunteeringExperience:{
       type: 'string',
+      columnType: 'LONGTEXT',
       required: true
     },
 
     rewardsAndPunishment:{
       type: 'string',
+      columnType: 'LONGTEXT',
       required: true
     },
 

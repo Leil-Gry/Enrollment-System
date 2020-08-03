@@ -1,4 +1,11 @@
 =====================
+Update
+=====================
+WARNING!  Do not replace assets/public folder when uploading updates!
+
+For model updates,
+
+=====================
 Development
 =====================
 
@@ -13,12 +20,12 @@ Change path : '/webapi/mail.send.json'
 to path : '/webapi/mail.send_template.json'
 4) Add mysql production url to config/datastore.js
 5) run node app.js to create seed data in config/bootstrap.js
+   do this only for 1st time of development
+   otherwise, use mysql console and create table
 6) NODE_ENV=production pm2 start app.js --name apply
 
-=====================
-Update
-=====================
-WARNING!  Do not replace assets/public folder when uploading updates!
+For production env, change vid in js/components/vaptcha.component.js
+
 
 =====================
 Implementation Details

@@ -1,9 +1,10 @@
 <div id="userApply" v-cloak>
   <div class="container">
-    <div class="stepBar">
+    <!-- <div class="stepBar">
       <span v-for="data in allApplyStatus" :class="[status >= data ? 'step-ok' : '']"><i>{{statusInfo[data].stepNum}}</i>{{statusInfo[data].stepLabel}}</span>
     </div>
-    <h1 class="text-center" style="margin-top: 30px;">{{formTitle.bigTitle}}</h1>
+    <h1 class="text-center" style="margin-top: 30px;">{{formTitle.bigTitle}}</h1> -->
+    <h1 class="text-center" style="margin-top: 10px;">{{formTitle.bigTitle}}</h1>
     <div class="signup-form">
       <p class="text-center">{{formTitle.subTitle}}</p>
       <!-- <ajax-form action="createApplication" ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="updateApply()" > -->

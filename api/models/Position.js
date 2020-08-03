@@ -32,10 +32,12 @@ module.exports = {
     application: {
       model: 'application'
     },
+
     batch: {
       model: 'batch',
       required: true
     }
+
   }
 };
 

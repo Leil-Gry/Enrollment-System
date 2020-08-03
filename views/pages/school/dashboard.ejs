@@ -6,7 +6,7 @@
       <table class="table clickable table-hover large" v-if="applyList.length > 0">
         <thead>
           <tr>
-            <th>编号</th>
+            <!-- <th>编号</th> -->
             <th>姓名</th>
             <th>性别</th>
             <th>民族</th>
@@ -14,13 +14,13 @@
             <th>学历</th>
             <th>户籍（省）</th>
             <th>服务意向地区</th>
-            <th>状态</th>
-            <th>综合推荐</th>
+            <!-- <th>状态</th>
+            <th>综合推荐</th> -->
           </tr>
         </thead>
         <tbody>
           <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">
-            <td>{{data.id}}</td>
+            <!-- <td>{{data.id}}</td> -->
             <td>{{data.name}}</td>
             <td>{{data.sex}}</td>
             <td>{{data.nation}}</td>
@@ -28,25 +28,25 @@
             <td>{{data.education}}</td>
             <td>{{data.domicileProvince}}</td>
             <td>{{data.intention1}}、{{data.intention2}}</td>
-            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
+            <!-- <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
             <td v-if="data.status >= 3">
               <a href="#" id="order" @click.stop @click="showInput(data)" >
                 <span v-if="data.order > 0">{{data.order}}</span>
                 <span v-else>点击输入推荐排名</span>
               </a>
             </td>
-            <td v-else>等待审核</td>
+            <td v-else>等待审核</td> -->
           </tr>
         </tbody>
 
-        <div v-show="orderInput" class="model">
-          <div class='mask'></div>
-          <div class='board' @blur="orderInput=false">
-            <button type="button" class="close" aria-label="Close" @click="orderInput = false"><span aria-hidden="true">&times;</span></button>
-            <div class="title">设置{{applyName}}的推荐排名</div>
-            <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()"/>
-          </div>
+      <!-- <div v-show="orderInput" class="model">
+        <div class='mask'></div>
+        <div class='board' @blur="orderInput=false">
+          <button type="button" class="close" aria-label="Close" @click="orderInput = false"><span aria-hidden="true">&times;</span></button>
+          <div class="title">设置{{applyName}}的推荐排名</div>
+          <input class='inputOrder' v-model="applyOrder" placeholder="请输入一个数字" @blur="setOrder()"/>
         </div>
+      </div> -->
 
       </table>
       <span v-else>
@@ -63,10 +63,10 @@
             <div class="modal-body">
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
-            <div class="modal-footer" v-if="waitCheck">
+            <!-- <div class="modal-footer" v-if="waitCheck">
               <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回修改</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

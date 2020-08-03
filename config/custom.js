@@ -99,6 +99,13 @@ module.exports.custom = {
   defaultAvatarName : 'default.jpg',
 
   linuxSplitChar : '/',
-  windowsSplitChar : '\\'
+  windowsSplitChar : '\\',
+
+  vaptcha: {
+    ip: '223.104.247.41',
+    // NOTE: also set id in vaptcha.component
+    id: '5ee90cab1850112466713209', // vid: '5ee73be818501124667130e3',
+    key: 'ad9598513fc142ae8c18a0d13a69677a'
+  }
 
 };

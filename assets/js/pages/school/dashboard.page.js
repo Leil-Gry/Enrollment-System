@@ -62,7 +62,39 @@ parasails.registerPage('schoolDashboard', {
       window.location.href = url;
     },
     getApplyList: async function() {
-      this.applyList = await Cloud.findApplication.with();
+      const data = { status: 2 }; // only show submitted
+      this.applyList = await Cloud.findApplication.with(data);
+      // For frontend development
+      // this.applyList = [
+      //   {
+      //     id: 1,
+      //     status: 2,
+      //     order: 0,
+      //     name: "张三",
+      //     sex: "女",
+      //     nation: "汉族",
+      //     politicalStatus: "共青团员",
+      //     domicileProvince: "浙江省",
+      //     education: "本科",
+      //     intention1: "衢州市",
+      //     intention2: "磐安县",
+      //     school: {id: 7, name: "杭州电子科技大学"},
+      //   },
+      //   {
+      //     id: 2,
+      //     status: 2,
+      //     order: 0,
+      //     name: "李四",
+      //     sex: "女",
+      //     nation: "汉族",
+      //     politicalStatus: "共青团员",
+      //     domicileProvince: "浙江省",
+      //     education: "本科",
+      //     intention1: "温州市",
+      //     intention2: "磐安县",
+      //     school: {id: 7, name: "杭州电子科技大学"},
+      //   }
+      // ];
     },
 
     getApplyDetail: async function(id) {

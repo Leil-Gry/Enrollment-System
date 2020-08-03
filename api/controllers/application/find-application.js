@@ -25,7 +25,7 @@ module.exports = {
 
     let query = {
       where: {},
-      select: ['id', 'status', 'school', 'order', 'name', 'sex', 'nation', 'politicalStatus', 'education', 'domicileProvince', 'intention1', 'intention2', 'position']
+      select: ['id', 'status', 'school', 'order', 'name', 'sex', 'nation', 'politicalStatus', 'education', 'domicileProvince', 'intention1', 'intention2']  // , 'position'
     };
     _.assign(query.where, this.req.allParams());
     if (this.req.me.isSuperAdmin) {
@@ -40,8 +40,8 @@ module.exports = {
     }
 
     let results = await Application.find(query)
-      .populate('school')
-      .populate('position');
+      .populate('school');
+      // .populate('position');
 
     return results;
 

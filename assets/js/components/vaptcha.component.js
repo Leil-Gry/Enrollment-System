@@ -1,5 +1,5 @@
 function loadV2Script() {
-  self = window;
+  self = window; // vaptcha-sdk-popup.2.7.8.js uses self for window
   if (typeof window.vaptcha === 'function') {
     //如果已经加载就直接放回
     return Promise.resolve();
@@ -29,6 +29,10 @@ function optionsMerge (target, source) {
   });
 }
 
+
+/**
+ * 不能嵌入到<ajax-form></ajax-form>
+ */
 parasails.registerComponent('vaptcha', {
   //  ╔═╗╦═╗╔═╗╔═╗╔═╗
   //  ╠═╝╠╦╝║ ║╠═╝╚═╗
@@ -75,38 +79,36 @@ parasails.registerComponent('vaptcha', {
   beforeMount: function() {
     //…
   },
-  mounted: async function(){
-    // const config = Object.assign({
-    //   // vid: '5eee08f72fd1114faf06854a',
-    //   vid: '5ee73be818501124667130e3',
-    //   container: this.$refs.vaptcha,
-    //   type: 'click', // 显示类型 点击式
-    //   scene: 0, // 场景值 默认0
-    //   offline_server: 'aa', //离线模式服务端地址，若尚未配置离线模式，请填写任意地址即可。
-    //   syncing:this.syncing,
-    // }, this.$props); // TODO: vpStyle -> style
+  mounted: async function() {
     const config ={
-      // vid: '5eee08f72fd1114faf06854a',
-      // vid: '5ee73be818501124667130e3',
-      vid: '5ee90cab1850112466713209',
+      // vid: '5ee90cab1850112466713209', // vid: '5ee73be818501124667130e3',
+      vid: '5eee08f72fd1114faf06854a', // for production
       container: this.$refs.vaptcha,
       type: 'click', // 显示类型 点击式
       scene: 0, // 场景值 默认0
       offline_server: 'aa', //离线模式服务端地址，若尚未配置离线模式，请填写任意地址即可。
-      syncing:this.syncing,
+      syncing: this.syncing,
     }; // TODO: vpStyle -> style
 
     // this.$vaptcha && optionsMerge(config, this.$vaptcha.options);
-    loadV2Script().then(() => {
-      window.vaptcha(config).then(obj => {
-        obj.render();
-        obj.listen('pass', () => {
-          let token = obj.getToken();
-          this.$emit('input', token);
-        });
-        this.vaptcha = obj;
-      });
+    // loadV2Script().then(() => {
+    //   window.vaptcha(config).then(obj => {
+    //     obj.render();
+    //     obj.listen('pass', () => {
+    //       let token = obj.getToken();
+    //       this.$emit('input', token);
+    //     });
+    //     this.vaptcha = obj;
+    //   });
+    // });
+    await loadV2Script();
+    let obj = await window.vaptcha(config);
+    obj.render();
+    obj.listen('pass', () => {
+      let token = obj.getToken();
+      this.$emit('input', token);
     });
+    this.vaptcha = obj;
   },
   destroyed() {
     const { vaptcha } = this;
@@ -120,6 +122,7 @@ parasails.registerComponent('vaptcha', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
+
     resetVaptcha () {
       this.vaptcha.reset();
     }

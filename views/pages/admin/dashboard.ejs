@@ -3,7 +3,7 @@
     <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
     <div style="display: flex;">
       <h6 class="statistic-link"><a href="/statistics">报名情况统计表</a></h6>
-      <h6 class="statistic-link"><a href="/distribution">岗位设置</a></h6>
+      <!-- <h6 class="statistic-link"><a href="/distribution">岗位设置</a></h6> -->
     </div>
     <div class="row" style="margin: auto;">
       <select class="form-control search-term" id="school" type="text" v-model="queryData.school" title="根据学校选取报名表">
@@ -26,10 +26,10 @@
         <option value="" disabled>是否服从调剂</option>
         <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
       </select>
-      <select class="form-control search-term" id="position" type="text" v-model="queryData.position" title="根据分配岗位选取报名表">
-        <option value="">全部岗位</option>
-        <option v-for="data in allPositionList" :value="data.id">{{data.name}}</option>
-      </select>
+     <!-- <select class="form-control search-term" id="position" type="text" v-model="queryData.position" title="根据分配岗位选取报名表">
+       <option value="">全部岗位</option>
+       <option v-for="data in allPositionList" :value="data.id">{{data.name}}</option>
+     </select> -->
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchApply">搜索</button>
       <button type="button" class="form-control search-btn-term btn btn-primary"  @click="searchReset">重置</button>
       <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadAppl">导出</button>
@@ -38,7 +38,7 @@
       <table class="table clickable table-hover large" v-if="applyList.length > 0">
         <thead>
           <tr>
-            <th>编号</th>
+            <!-- <th>编号</th> -->
             <th>学校</th>
             <th>姓名</th>
             <th>性别</th>
@@ -47,14 +47,14 @@
             <th>学历</th>
             <th>户籍（省）</th>
             <th>服务意向地区</th>
-            <th>状态</th>
+            <!-- <th>状态</th>
             <th>综合推荐</th>
-            <th>岗位分配</th>
+            <th>岗位分配</th> -->
           </tr>
         </thead>
         <tbody>
           <tr v-for="data of applyList" data-toggle="modal" data-target="#applyDetail" @click="getApplyDetail(data)" style="cursor: pointer;">
-            <td>{{data.id}}</td>
+            <!-- <td>{{data.id}}</td> -->
             <td>{{data.school.name}}</td>
             <td>{{data.name}}</td>
             <td>{{data.sex}}</td>
@@ -63,7 +63,7 @@
             <td>{{data.education}}</td>
             <td>{{data.domicileProvince}}</td>
             <td>{{data.intention1}}、{{data.intention2}}</td>
-            <td>
+            <!-- <td>
               <button type="button" class="btn" :class="statusList[data.status].labelType">
                 {{statusList[data.status].adminText}}
               </button>
@@ -76,7 +76,7 @@
                 <option :value="data.position" selected v-if='data.position'>{{data.position}}</option>
                 <option v-for="post in positionList" :value="post.name">{{post.name}}</option>
               </select>
-            </td>
+            </td> -->
           </tr>
         </tbody>
 
@@ -96,12 +96,12 @@
             <div class="modal-body">
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
-            <div class="modal-footer" v-if="isChecked">
+            <!-- <div class="modal-footer" v-if="isChecked">
               <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="examedPass()">{{statusList[applyForm.status].adminLabel}}</button>
             </div>
             <div class="modal-footer" v-if="isExamed">
               <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="admit()">录取</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

@@ -68,6 +68,10 @@ and exposed as \`req.me\`.)`
       // To customize the response for _only this_ action, replace `responseType` with
       // something else.  For example, you might set `statusCode: 498` and change the
       // implementation below accordingly (see http://sailsjs.com/docs/concepts/controllers).
+    },
+
+    wrongCaptcha: {
+      responseType: 'unauthorized'
     }
 
   },
@@ -81,16 +85,16 @@ and exposed as \`req.me\`.)`
       headers: { 'Content-Type': 'application/json' },
       url: 'http://0.vaptcha.com/verify',
       data: {
-        id: '5ee90cab1850112466713209',
-        secretkey: 'ad9598513fc142ae8c18a0d13a69677a',
+        id: sails.config.custom.vaptcha.id,
+        secretkey: sails.config.custom.vaptcha.key,
         scene: 0, // 场景值 默认0
         token: inputs.token,
-        ip: constants.PUBLIC_IP
+        ip: sails.config.custom.vaptcha.ip
       }
     });
 
     if (!(res.data && res.data.success)) {
-      throw 'badCombo';
+      throw 'wrongCaptcha';
     }
     // Look up by the email address.
     // (note that we lowercase it to ensure the lookup is always case-insensitive,

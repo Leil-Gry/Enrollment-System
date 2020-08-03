@@ -12,8 +12,7 @@
     "axios": "^0.19.2",
     "docxtemplater": "^3.17.6",
     "docxtemplater-image-module": "^3.1.0",
-    "exceljs": "^4.0.1",
-    "file-saver": "^2.0.2",
+    "exceljs": "^4.0.0",
     "libreoffice-convert": "^1.0.5",
     "lodash": "^4.17.15",
     "nodemailer": "^6.4.8",
@@ -25,8 +24,7 @@
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
     "sails-mysql": "^1.0.1",
-    "script-loader": "^0.7.2",
-    "xlsx": "^0.16.2"
+    "xlsx": "^0.16.3"
   },
   "devDependencies": {
     "eslint": "5.16.0",

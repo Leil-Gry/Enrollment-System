@@ -43,6 +43,7 @@
     "School": true,
     "Batch": true,
     "Application": true,
+    "Position": true,
 
     // …and any others.
     "MailerService": true,
