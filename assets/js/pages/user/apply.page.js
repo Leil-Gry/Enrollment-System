@@ -82,9 +82,20 @@ parasails.registerPage('userApply', {
       name: { required: true },
       sex: { required: true },
       nation: { required: true },
-      birthDate: { required: true,maxLength:10 },
+      birthDate: {
+        required: true,
+        maxLength:10,
+        custom : input => {
+          return /^(19|20)[0-9]{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])$/.test(input);
+        }
+      },
       politicalStatus: { required: true },
-      IDNumber: { required: true },
+      IDNumber: {
+        required: true,
+        custom: input => {
+          return /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(input);
+        }
+      },
       education: { required: true },
       major: { required: true },
       specialty: { required: true,maxLength:40 },
@@ -97,7 +108,7 @@ parasails.registerPage('userApply', {
       email: { required: true,isEmail:true },
       intentType: { required: true },
       intention1: { required: true },
-      intention2: { required: true,differentWith: 'intention1'},
+      intention2: { required: true, differentWith: 'intention1'},
       homeAddressAndPhone: { required: true },
       resume: { maxLength:500 },
       volunteeringExperience: { maxLength:300 },
@@ -324,5 +335,15 @@ parasails.registerPage('userApply', {
         this.disabledForm = true;
       }
     },
+
+    genBirth: async function () {
+      let reg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+      let tmp = this.formData.IDNumber;
+      if (!reg.test(tmp)) {
+        ShowTip('身份证号码格式错误！请修改','danger');
+        return;
+      }
+      this.formData.birthDate = tmp.substring(6, 10) + '/' + tmp.substring(10, 12) + '/' + tmp.substring(12, 14);
+    }
   }
 });

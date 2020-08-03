@@ -123,6 +123,8 @@ module.exports = {
       errorHandler(error);
     }
 
+    let tmp = application.IDNumber;
+    application.birthDate = tmp.substring(6, 10) + '/' + tmp.substring(10, 12) + '/' + tmp.substring(12, 14);
     application.edu = application.education;
     application.pastMH = application.pastMedicalHistory;
     application.doP = application.domicileProvince;

@@ -81,8 +81,8 @@ parasails.registerComponent('vaptcha', {
   },
   mounted: async function() {
     const config ={
-      // vid: '5ee90cab1850112466713209', // vid: '5ee73be818501124667130e3',
-      vid: '5eee08f72fd1114faf06854a', // for production
+      vid: '5ee90cab1850112466713209', // vid: '5ee73be818501124667130e3',
+      // vid: '5eee08f72fd1114faf06854a', // for production
       container: this.$refs.vaptcha,
       type: 'click', // 显示类型 点击式
       scene: 0, // 场景值 默认0

@@ -148,6 +148,8 @@ module.exports = {
       item.volunteeringExperience = item.volunteeringExperience.replace(reg, ' ');
       item.rewardsAndPunishment = item.rewardsAndPunishment.replace(reg, ' ');
       item.submitAt = new Date(item.submitAt).toLocaleString();
+      let tmp = item.IDNumber;
+      item.birthDate = tmp.substring(6, 10) + '/' + tmp.substring(10, 12) + '/' + tmp.substring(12, 14);
       srcData.Sheet1.push([
         item.name, item.sex, item.nation, item.birthDate, item.politicalStatus,
         item.IDNumber, item.education, item.major, item.specialty, item.healthStatus,
