@@ -29,12 +29,18 @@ module.exports = {
     };
     _.assign(query.where, this.req.allParams());
     if (this.req.me.isSuperAdmin) {
-
+      if (!query.where.status) {
+        query.where.status = { '>=': constants.APPLICATION_STATUS_CHECKED };
+      }
     } else if (this.req.me.isSchoolAdmin) {
       if (!this.req.me.school) {
         throw 'forbidden';
       }
       query.where.school = this.req.me.school;
+
+      if (!query.where.status) {
+        query.where.status = { '>=': constants.APPLICATION_STATUS_SUBMITTED };
+      }
     } else {
       throw 'forbidden';
     }

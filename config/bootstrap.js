@@ -70,7 +70,9 @@ module.exports.bootstrap = async function() {
 
   // By convention, this is a good place to set up fake data during development.
   await Batch.createEach([{
-    name: '2020'
+    name: '2020',
+    applyUntil: 1597291200000, // 报名截止时间 2020/08/13 12:00:00  毫秒时间戳
+    checkUntil: 1597334400000  // 审核截止时间 2020/08/14 00:00:00  毫秒时间戳
   }]);
   // await School.createEach([{
   //   name: '杭州电子科技大学'
@@ -95,7 +97,7 @@ module.exports.bootstrap = async function() {
   }
   await Application.createEach([{
     // status: constants.APPLICATION_STATUS_SUBMITTED,
-    user: 2,
+    user: 1,
     batch: 1,
     school: 1,
     name: '张三',

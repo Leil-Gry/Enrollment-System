@@ -6,7 +6,7 @@
     <h1 class="text-center" style="margin-top: 30px;">{{formTitle.bigTitle}}</h1> -->
     <h1 class="text-center" style="margin-top: 10px;">{{formTitle.bigTitle}}</h1>
     <div class="signup-form">
-      <p class="text-center">{{formTitle.subTitle}}</p>
+      <p class="text-center">{{formTitle.subTitle}} （报名截止时间：<span style='color:red;'>{{deadline}}前</span>）</p>
       <!-- <ajax-form action="createApplication" ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="updateApply()" > -->
       <ajax-form ref="form" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" ></ajax-form>
         <div class=row >
@@ -21,11 +21,11 @@
             </div>
             <div class="form-group">
               <label for="name">姓名</label>
-              <input class="form-control"  id="name" type="text"  :class="[formErrors.name ? 'is-invalid' : '']" v-model.trim="formData.name" placeholder="例：张三" autocomplete="name" focus-first @blur="saveForm()" :disabled=disabledForm>
+              <input class="form-control" id="name" type="text"  :class="[formErrors.name ? 'is-invalid' : '']" v-model.trim="formData.name" placeholder="例：张三" autocomplete="name" focus-first @blur="saveForm()" :disabled=disabledForm>
               <div class="invalid-feedback" v-if="formErrors.name">请输入你的姓名</div>
             </div>
             <div class="form-group">
-              <label for="name">性别</label>
+              <label for="sex">性别</label>
               <select class="form-control" id="sex" type="text" v-model="formData.sex" @blur="saveForm()" :disabled=disabledForm>
                 <option value="0" disabled>请选择你的性别</option>
                 <option value="男">男</option>
@@ -52,7 +52,7 @@
         <div class="row">
           <div class="form-group col-6">
             <label for="birthDate">出生年月</label>
-            <input class="form-control" :class="[formErrors.birthDate ? 'is-invalid' : '']" v-model="formData.birthDate" placeholder="输入身份证号后自动生成" @blur="saveForm()" disabled>
+            <input class="form-control" id="birthDate" :class="[formErrors.birthDate ? 'is-invalid' : '']" v-model="formData.birthDate" placeholder="输入身份证号后自动生成" @blur="saveForm()" disabled>
             <div class="invalid-feedback" v-if="formErrors.birthDate">请选择你的出生年月.</div>
           </div>
           <div class="form-group col-6">
@@ -65,16 +65,15 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="name">身份证号</label>
-          <input 
-            class="form-control" 
-            id="IDNumber" 
-            type="text" 
-            v-model.trim="formData.IDNumber" 
-            placeholder="例：330XXXXX" 
-            :class="[formErrors.IDNumber ? 'is-invalid' : '']" 
-            @blur="saveForm()" 
-            @change="genBirth()" 
+          <label for="IDNumber">身份证号</label>
+          <input
+            class="form-control"
+            id="IDNumber"
+            type="text"
+            v-model.trim="formData.IDNumber"
+            placeholder="例：330XXXXX"
+            :class="[formErrors.IDNumber ? 'is-invalid' : '']"
+            @blur="genBirthAndSaveForm()"
             :disabled=disabledForm
           >
           <div class="invalid-feedback" v-if="formErrors.IDNumber">请输入你的身份证号.</div>
@@ -95,23 +94,23 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="name">特长</label>
+          <label for="specialty">特长</label>
           <input class="form-control" id="specialty" type="text" v-model.trim="formData.specialty" placeholder="请填写你的特长" @blur="saveForm()" :disabled=disabledForm>
           <div class="invalid-feedback" v-if="formErrors.specialty">请不要超过40个字.</div>
         </div>
         <div class="row">
           <div class="form-group col-6">
-            <label for="name">健康状况</label>
+            <label for="healthStatus">健康状况</label>
             <input class="form-control" id="healthStatus" type="text" v-model.trim="formData.healthStatus" placeholder="请输入你的健康状况" :class="[formErrors.healthStatus ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
             <div class="invalid-feedback" v-if="formErrors.healthStatus">请输入你的健康状况.</div>
           </div>
           <div class="form-group col-6">
-            <label for="name">既往病史</label>
+            <label for="pastMedicalHistory">既往病史</label>
             <input class="form-control" id="pastMedicalHistory" type="text" v-model.trim="formData.pastMedicalHistory" placeholder="" @blur="saveForm()" :disabled=disabledForm>
           </div>
         </div>
         <div class="form-group" style="margin-bottom: 0;">
-          <label for="name">入学前户籍所在地</label>
+          <label for="domicileProvince">入学前户籍所在地</label>
         </div>
         <div class="row">
           <div class="form-group col-4">
@@ -138,36 +137,37 @@
         </div>
         <div class="row">
           <div class="form-group col-6">
-            <label for="name">联系电话</label>
+            <label for="phone">联系电话</label>
             <input class="form-control" id="phone" type="text" v-model.trim="formData.phone" placeholder="联系电话" :class="[formErrors.phone ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
             <div class="invalid-feedback" v-if="formErrors.phone">请输入你的电话.</div>
           </div>
           <div class="form-group col-6">
-            <label for="name">电子邮箱</label>
+            <label for="email">电子邮箱</label>
             <input class="form-control" id="email" type="text" v-model.trim="formData.email" placeholder="电子邮箱" :class="[formErrors.email ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm>
             <div class="invalid-feedback" v-if="formErrors.email">请输入正确的电子邮箱地址.</div>
           </div>
         </div>
         <div class="form-group">
-          <label for="name">家庭通讯地址及电话</label>
-          <input class="form-control"  id="homeAddressAndPhone" type="text" v-model.trim="formData.homeAddressAndPhone" placeholder="例：杭州市西华小区93幢505，155155XXX" :class="[formErrors.homeAddressAndPhone ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm >
+          <label for="homeAddressAndPhone">家庭通讯地址及电话</label>
+          <input class="form-control" id="homeAddressAndPhone" type="text" v-model.trim="formData.homeAddressAndPhone" placeholder="例：杭州市西华小区93幢505，155155XXX" :class="[formErrors.homeAddressAndPhone ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm >
           <div class="invalid-feedback" v-if="formErrors.homeAddressAndPhone">请输入你的家庭通讯地址及电话</div>
         </div>
         <div class="form-group">
-          <label for="name">服务意向</label>
+          <label for="intentType">服务意向</label>
           <div class="form-group">
-            <select class="form-control" id="intention1" v-model="formData.intentType" :class="[formErrors.intentType ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()">
+            <select class="form-control" id="intentType" v-model="formData.intentType" :class="[formErrors.intentType ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()">
               <option value="" selected disabled>请选择你的服务意向类型</option>
               <option v-for="data in intentTypes" :value="data">{{data}}</option>
             </select>
             <div class="invalid-feedback" v-if="formErrors.intentType">请选择你的服务意向类型</div>
           </div>
         </div>
-        <div class="form-group" style="margin-bottom: 0;">
+        <!-- <div class="form-group" style="margin-bottom: 0;">
           <label for="name">服务意向地区</label>
-        </div>
+        </div> -->
         <div class="row">
           <div class="form-group col-6">
+            <label for="intention1">服务意向地区1</label>
             <select class="form-control" id="intention1" v-model="formData.intention1" :class="[formErrors.intention1 ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()">
               <option value="" selected disabled>意向1</option>
               <option v-for="data in intention" :value="data.name">{{data.name}}</option>
@@ -175,6 +175,7 @@
             <div class="invalid-feedback" v-if="formErrors.intention1">请选择你的第一服务意向地区</div>
           </div>
           <div class="form-group col-6">
+            <label for="intention2">服务意向地区2</label>
             <select class="form-control" id="intention2" v-model="formData.intention2" :class="[formErrors.intention2 ? 'is-invalid' : '']" :disabled=disabledForm  @blur="saveForm()"  >
               <option value="" selected disabled>意向2</option>
               <option v-for="data in intention" :value="data.name">{{data.name}}</option>
@@ -184,32 +185,32 @@
         </div>
         <div class="row">
           <div class="form-group col-6">
-            <label for="name">是否服从分配</label>
+            <label for="obeyTheAdjustment">是否服从分配</label>
             <select class="form-control" id="obeyTheAdjustment" v-model="formData.obeyTheAdjustment" :disabled=disabledForm  @blur="saveForm()">
               <option v-for="data in ifObeyTheAdjustment" :value="data.value">{{data.label}}</option>
             </select>
           </div>
           <div class="form-group col-6">
-            <label for="name">是否从事过共青团工作</label>
+            <label for="workedInTheCYL">是否从事过共青团工作</label>
             <select class="form-control" id="workedInTheCYL"  v-model="formData.workedInTheCYL" :disabled=disabledForm >
               <option v-for="data in ifWorkedInTheCYL" :value="data.value">{{data.label}}</option>
             </select>
           </div>
         </div>
         <div class="form-group">
-          <label for="name">个人简历</label>
-          <textarea class="form-control"  id="resume" rows="5" v-model.trim="formData.resume" placeholder="请对自己个人情况进行介绍" :disabled=disabledForm @blur="saveForm()"></textarea>
-          <div class="invalid-feedback" v-if="formErrors.resume">请不要超过500字.</div>
+          <label for="resume">个人简历</label>
+          <textarea class="form-control" id="resume" rows="5" v-model.trim="formData.resume" placeholder="请对自己个人情况进行介绍" :class="[formErrors.resume ? 'is-invalid' : '']" :disabled=disabledForm @blur="saveForm()"></textarea>
+          <div class="invalid-feedback" v-if="formErrors.resume">请不要超过1000字.</div>
         </div>
         <div class="form-group">
-          <label for="name">志愿服务经历</label>
-          <textarea class="form-control"  id="volunteeringExperience" rows="5" v-model.trim="formData.volunteeringExperience" placeholder="志愿服务经历" @blur="saveForm()" :disabled=disabledForm></textarea>
-          <div class="invalid-feedback" v-if="formErrors.volunteeringExperience">请不要超过300字.</div>
+          <label for="volunteeringExperience">志愿服务经历</label>
+          <textarea class="form-control" id="volunteeringExperience" rows="5" v-model.trim="formData.volunteeringExperience" placeholder="志愿服务经历" :class="[formErrors.volunteeringExperience ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm></textarea>
+          <div class="invalid-feedback" v-if="formErrors.volunteeringExperience">请不要超过1000字.</div>
         </div>
         <div class="form-group">
-          <label for="name">大学期间奖励和处分</label>
-          <textarea class="form-control"  id="rewardsAndPunishment" rows="5" v-model.trim="formData.rewardsAndPunishment" placeholder="大学期间奖励和处分"  @blur="saveForm()" :disabled=disabledForm></textarea>
-          <div class="invalid-feedback" v-if="formErrors.rewardsAndPunishment">请不要超过300字.</div>
+          <label for="rewardsAndPunishment">大学期间奖励和处分</label>
+          <textarea class="form-control" id="rewardsAndPunishment" rows="5" v-model.trim="formData.rewardsAndPunishment" placeholder="大学期间奖励和处分"  :class="[formErrors.rewardsAndPunishment ? 'is-invalid' : '']" @blur="saveForm()" :disabled=disabledForm></textarea>
+          <div class="invalid-feedback" v-if="formErrors.rewardsAndPunishment">请不要超过1000字.</div>
         </div>
       </ajax-form>
 

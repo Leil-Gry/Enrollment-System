@@ -25,6 +25,17 @@ parasails.registerPage('statistics', {
   methods: {
     getStats: async function (){
       this.stats = await Cloud.getStats.with({groupBySchool: true});
+      console.log(this.stats );
+    },
+
+    downloadStats: async function() {
+      if(!this.stats.length){
+        ShowTip('无可导出记录','danger');
+        return;
+      }
+
+      let url = `/api/v1/admin/statistics/download`;
+      window.location.href = url;
     }
   }
 });

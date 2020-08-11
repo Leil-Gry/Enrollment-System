@@ -37,12 +37,24 @@ module.exports = {
 
     wrongStatus: {
       responseType: 'forbidden'
+    },
+
+    deadline: {
+      responseType: 'forbidden'
     }
 
   },
 
 
   fn: async function (inputs) {
+
+    if (this.req.currentBatch.checkUntil < new Date().getTime()) {
+      throw {
+        deadline: {
+          code: 'E_DEADLINE'
+        }
+      };
+    }
 
     if (!this.req.me.isSchoolAdmin || !this.req.me.school) {
       throw 'forbidden';
@@ -57,6 +69,10 @@ module.exports = {
     }
 
     if (inputs.status === constants.APPLICATION_STATUS_CHECKED) {
+      if (application.status !== constants.APPLICATION_STATUS_SUBMITTED) {
+        throw 'wrongStatus';
+      }
+    } else if (inputs.status === constants.APPLICATION_STATUS_UNCHECKED) {
       if (application.status !== constants.APPLICATION_STATUS_SUBMITTED) {
         throw 'wrongStatus';
       }

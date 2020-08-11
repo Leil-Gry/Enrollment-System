@@ -18,9 +18,11 @@ parasails.registerPage('schoolDashboard', {
 
     statusList: constants.APPLICATION_STATUS_INFO,
     statusChecked:constants.APPLICATION_STATUS_CHECKED,
+    statusUnChecked:constants.APPLICATION_STATUS_UNCHECKED,
     statusEditing:constants.APPLICATION_STATUS_EDITING,
     // Server error state for the form
     cloudError: '',
+    deadline: ''
   },
 
   //  ╦  ╦╔═╗╔═╗╔═╗╦ ╦╔═╗╦  ╔═╗
@@ -32,6 +34,7 @@ parasails.registerPage('schoolDashboard', {
   },
   mounted: async function() {
     //…
+    this.getDeadline();
     this.getApplyList();
   },
   watch: {
@@ -62,8 +65,8 @@ parasails.registerPage('schoolDashboard', {
       window.location.href = url;
     },
     getApplyList: async function() {
-      const data = { status: 2 }; // only show submitted
-      this.applyList = await Cloud.findApplication.with(data);
+      // const data = { status: 2 }; // only show submitted
+      this.applyList = await Cloud.findApplication.with();  // with(data)
       // For frontend development
       // this.applyList = [
       //   {
@@ -106,12 +109,16 @@ parasails.registerPage('schoolDashboard', {
         this.applyForm.workedInTheCYL = constants.WORKEDINTHECYL[form.workedInTheCYL];
         this.photo = form.photo;
         this.applyID = form.id;
-        this.waitCheck = form.status===constants.APPLICATION_STATUS_SUBMITTED?true:false;
+        this.waitCheck = form.status === constants.APPLICATION_STATUS_SUBMITTED ? true : false;
       }
     },
 
     checkApply: async function(status) {
-      await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
+      try{
+        await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
+      } catch(e) {
+        ShowTip('已过审核截止时间！','danger');
+      }
       this.getApplyList();
     },
 
@@ -134,6 +141,12 @@ parasails.registerPage('schoolDashboard', {
       await Cloud.setOrder.with({id:this.applyID,order:parseInt(this.applyOrder)});
       this.getApplyList();
     },
+
+    getDeadline: async function () {
+      let fb = await Cloud.getDeadline.with();
+      this.deadline = fb.checkUntil;
+      // .replace(/:\d{1,2}$/,' ')
+    }
 
   }
 });

@@ -115,29 +115,32 @@
           <span class="item">已报名：<span class="text">{{stats.applyNum}}</span> 人</span>
         </div>
         <div class="box">
-          <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
+          <span class="item">审核通过：<span class="text">{{stats.checkedNum}}</span> 人</span>
         </div>
+        <!-- <div class="box">
+          <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
+        </div> -->
       </div>
       <div class="floating-head-right" @click="enlarge=false">
         <i class="fa fa-compress shrinkIcon" aria-hidden="true"></i>
       </div>
 		</div>
 		<div class="floating-body">
-        <h5 class="text-center table-title">当前报名人数分项统计</h5>
+        <h5 class="text-center table-title">当前审核通过人数分项统计</h5>
           <table class="table" v-if="stats.itemStats">
               <tr>
                 <th>项目名称</th>
-                <th>报名人数</th>
+                <th>人数</th>
                 <th>百分比</th>
               </tr>
               <tr v-for="data of stats.itemStats">
                 <th>{{data.item}}</th>
-                <td>{{data.applyNum}}</td>
+                <td>{{data.checkedNum}}</td>
                 <td>{{data.percent}}</td>
               </tr>
           </table>
           <span v-else>
-            尚无报名信息
+            尚无信息
           </span>
 		</div>
 	</div>
@@ -145,7 +148,8 @@
   <div class="shrink-floating-box" v-else id="shrinkFloating"  @mousedown="drag('shrinkFloating')">
 		<div class="shrink-floating-left">
       <span class="item">已报名：<span class="text">{{stats.applyNum}}</span> 人</span>
-      <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span>
+      <span class="item">审核通过：<span class="text">{{stats.checkedNum}}</span> 人</span>
+      <!-- <span class="item">已录取：<span class="text">{{stats.admissionNum}}</span> 人</span> -->
     </div>
     <div class="shrink-floating-right" @click="enlarge=true">
       <i class="fa fa-expand shrinkIcon" aria-hidden="true"></i>

@@ -27,7 +27,7 @@ module.exports = {
       // select: ['id', 'status', 'school', 'order', 'name', 'sex', 'nation', 'politicalStatus', 'education', 'domicileProvince', 'intention1', 'intention2']
     };
     _.assign(query.where, this.req.allParams());
-    query['where']['status'] = { '>': 1 };
+    query['where']['status'] = { '>=': constants.APPLICATION_STATUS_CHECKED };
 
     let fileName;
     if (this.req.me.isSuperAdmin) {

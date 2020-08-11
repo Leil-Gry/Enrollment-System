@@ -1,3 +1,5 @@
+const Batch = require('../../models/Batch');
+
 module.exports = {
 
 
@@ -22,12 +24,24 @@ module.exports = {
 
     wrongStatus: {
       responseType: 'forbidden'
+    },
+
+    deadline: {
+      responseType: 'forbidden'
     }
 
   },
 
 
-  fn: async function (inputs) {
+  fn: async function () {
+
+    if (this.req.currentBatch.applyUntil < new Date().getTime()) {
+      throw {
+        deadline: {
+          code: 'E_DEADLINE'
+        }
+      };
+    }
 
     let application = await Application.findOne({
       user: this.req.me.id,

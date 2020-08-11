@@ -20,6 +20,14 @@ module.exports = {
       type: 'string',
       required: true
     },
+    applyUntil: {
+      type: 'number',
+      required: true
+    },
+    checkUntil: {
+      type: 'number',
+      required: true
+    },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

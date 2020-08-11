@@ -1,7 +1,15 @@
 <div id="schoolDashboard" v-cloak>
   <div class="container">
     <h1 class="text-center" style="margin-top: 30px;">报名列表</h1>
-    <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadAppl">导出</button>
+    <div style='text-align: center;'>
+      <small>审核截止时间（<span style='color:red;'>{{deadline}}前</span>）</small>
+    </div>
+    <div>
+      <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadAppl">导出</button>
+      <small style='color:#ADADAD;'>
+        导出审核通过名单
+      </small>
+    </div>
     <div class="my-3 row">
       <table class="table clickable table-hover large" v-if="applyList.length > 0">
         <thead>
@@ -14,8 +22,8 @@
             <th>学历</th>
             <th>户籍（省）</th>
             <th>服务意向地区</th>
-            <!-- <th>状态</th>
-            <th>综合推荐</th> -->
+            <th>状态</th>
+            <!-- <th>综合推荐</th> -->
           </tr>
         </thead>
         <tbody>
@@ -28,8 +36,8 @@
             <td>{{data.education}}</td>
             <td>{{data.domicileProvince}}</td>
             <td>{{data.intention1}}、{{data.intention2}}</td>
-            <!-- <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
-            <td v-if="data.status >= 3">
+            <td><button type="button" class="btn" :class="statusList[data.status].labelType">{{statusList[data.status].text}}</button></td>
+            <!-- <td v-if="data.status >= 3">
               <a href="#" id="order" @click.stop @click="showInput(data)" >
                 <span v-if="data.order > 0">{{data.order}}</span>
                 <span v-else>点击输入推荐排名</span>
@@ -63,10 +71,11 @@
             <div class="modal-body">
               <apply-form :apply-form="applyForm" :image-url="imageUrl" />
             </div>
-            <!-- <div class="modal-footer" v-if="waitCheck">
-              <button :syncing="syncing" class="btn-success btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
+            <div class="modal-footer" v-if="waitCheck">
+              <button :syncing="syncing" class="btn btn-success btn-lg btn-block" data-dismiss="modal" @click="checkApply(statusChecked)">审核通过</button>
+              <button :syncing="syncing" class="btn btn-danger btn-lg btn-block btn-block-second" data-dismiss="modal" @click="checkApply(statusUnChecked)">审核不通过</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="checkApply(statusEditing)">退回修改</button>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>

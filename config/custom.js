@@ -103,7 +103,7 @@ module.exports.custom = {
 
   vaptcha: {
     // ip: '223.104.247.41',
-    ip: '60.12.8.177',
+    ip: '112.10.180.6',
     // NOTE: also set id in vaptcha.component
     id: '5ee90cab1850112466713209', // vid: '5ee73be818501124667130e3',
     key: 'ad9598513fc142ae8c18a0d13a69677a'

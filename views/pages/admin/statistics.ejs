@@ -2,6 +2,9 @@
   <div class="container">
     <h1 class="text-center" style="margin-top: 30px;">报名情况统计表</h1>
     <h6 class="text-center statistic-link"><a href="/admin/dashboard">报名列表</a></h6>
+    <div>
+      <button type="button" class="form-control search-btn-term btn btn-success"  @click="downloadStats">导出</button>
+    </div>
     <table class="table clickable table-hover large" v-if="stats.length > 0">
       <thead>
         <tr>

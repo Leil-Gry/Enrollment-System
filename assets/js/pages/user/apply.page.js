@@ -108,12 +108,14 @@ parasails.registerPage('userApply', {
       email: { required: true,isEmail:true },
       intentType: { required: true },
       intention1: { required: true },
-      intention2: { required: true, differentWith: 'intention1'},
+      intention2: { required: true, differentWith: 'intention1' },
       homeAddressAndPhone: { required: true },
-      resume: { maxLength:500 },
-      volunteeringExperience: { maxLength:300 },
-      rewardsAndPunishment: { maxLength:300 },
-    }
+      resume: { maxLength: 1000 },
+      volunteeringExperience: { maxLength: 1000 },
+      rewardsAndPunishment: { maxLength: 1000 },
+    },
+
+    deadline: ''
   },
 
   watch: {
@@ -152,6 +154,7 @@ parasails.registerPage('userApply', {
     this.getApplyForm();
   },
   mounted: async function() {
+    this.getDeadline();
     let dateMonthConfig = {
       format: 'yyyy-mm',//显示格式
       todayHighlight: 1,//今天高亮
@@ -194,7 +197,25 @@ parasails.registerPage('userApply', {
       this.saveForm();
 
       var valid = await this.$refs.form.validate();
-      if (!valid) {return;}
+
+      // custom validation involve 'this'
+      if (!this.intentTypes.includes(this.formData.intentType)) {
+        this.formErrors.intentType = 'required';
+        valid = false;
+      }
+      if (!this.intention.find(i => i.name === this.formData.intention1)) {
+        this.formErrors.intention1 = 'required';
+        valid = false;
+      }
+      if (!this.intention.find(i => i.name === this.formData.intention2)) {
+        this.formErrors.intention2 = 'required';
+        valid = false;
+      }
+
+      if (!valid) {
+        ShowTip('请检查填写的信息','danger');
+        return;
+      }
 
       delete this.formData['id'];
       let formData = await Cloud.createApplication.with(this.formData);
@@ -264,7 +285,7 @@ parasails.registerPage('userApply', {
     saveForm: async function() {
       // TODO: save photoFile
       localStorage.setItem('applyForm',JSON.stringify(this.formData));
-      $('select').blur();
+      // $('select').blur();
     },
 
     // 用户点击后，进行输入校验。校验成功跳出提示弹窗。
@@ -291,8 +312,14 @@ parasails.registerPage('userApply', {
     // 用户确认提交，数据发送到服务端
     submitApply: async function() {
       // await this.updateApply(false);
-      await Cloud.submitApplication.with(this.formData);
-      ShowTip('提交成功！','success');
+      let err = false;
+      try{
+        await Cloud.submitApplication.with(this.formData);
+      } catch (e) {
+        err = true;
+        ShowTip('已过报名截止时间！','danger');
+      }
+      if(!err) { ShowTip('提交成功！','success'); }
       this.getApplyForm();
       this.showConfirmModel = false;
     },
@@ -336,7 +363,7 @@ parasails.registerPage('userApply', {
       }
     },
 
-    genBirth: async function () {
+    genBirthAndSaveForm: async function () {
       let reg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
       let tmp = this.formData.IDNumber;
       if (!reg.test(tmp)) {
@@ -344,6 +371,13 @@ parasails.registerPage('userApply', {
         return;
       }
       this.formData.birthDate = tmp.substring(6, 10) + '/' + tmp.substring(10, 12) + '/' + tmp.substring(12, 14);
+
+      this.saveForm();
+    },
+    getDeadline: async function () {
+      let fb = await Cloud.getDeadline.with();
+      this.deadline = fb.applyUntil;
+      // .replace(/:\d{1,2}$/,' ')
     }
   }
 });

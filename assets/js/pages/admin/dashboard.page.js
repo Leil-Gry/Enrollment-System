@@ -79,13 +79,15 @@ parasails.registerPage('adminDashboard', {
   methods: {
     getApplyList: async function(data) {
       let query = data;
-      if (query) {
-        if (!query.status) {
-          query.status = 2; // only show submitted
-        }
-      } else {
-        query = { status: 2 };
-      }
+
+      // Now we should show only checked
+      // if (query) {
+      //   if (!query.status) {
+      //     query.status = 2; // only show submitted
+      //   }
+      // } else {
+      //   query = { status: 2 };
+      // }
 
       this.applyList = await Cloud.findApplication.with(query);
       // For frontend development
