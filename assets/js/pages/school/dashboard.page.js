@@ -116,8 +116,15 @@ parasails.registerPage('schoolDashboard', {
     checkApply: async function(status) {
       try{
         await Cloud.updateSchoolApplicationStatus.with({id: this.applyID, status:status});
-      } catch(e) {
-        ShowTip('已过审核截止时间！','danger');
+      } catch (e) {
+        if (e.responseInfo &&
+          e.responseInfo.body &&
+          e.responseInfo.body.code &&
+          e.responseInfo.body.code === 'E_DEADLINE') {
+          ShowTip('已过审核截止时间！','danger');
+        } else {
+          throw e;
+        }
       }
       this.getApplyList();
     },

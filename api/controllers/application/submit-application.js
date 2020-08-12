@@ -1,5 +1,3 @@
-const Batch = require('../../models/Batch');
-
 module.exports = {
 
 

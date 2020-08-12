@@ -316,8 +316,15 @@ parasails.registerPage('userApply', {
       try{
         await Cloud.submitApplication.with(this.formData);
       } catch (e) {
-        err = true;
-        ShowTip('已过报名截止时间！','danger');
+        if (e.responseInfo &&
+            e.responseInfo.body &&
+            e.responseInfo.body.code &&
+            e.responseInfo.body.code === 'E_DEADLINE') {
+          err = true;
+          ShowTip('已过报名截止时间！','danger');
+        } else {
+          throw e;
+        }
       }
       if(!err) { ShowTip('提交成功！','success'); }
       this.getApplyForm();

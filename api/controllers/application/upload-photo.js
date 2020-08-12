@@ -69,7 +69,7 @@ module.exports = {
       fs.mkdirSync(copyDir);
     }
 
-    let fd = await new Promise((resolve) => {
+    await new Promise((resolve) => {
       let options = {
         dirname: dirname
       };
