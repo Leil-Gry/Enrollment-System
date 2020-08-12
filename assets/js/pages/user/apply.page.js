@@ -178,6 +178,7 @@ parasails.registerPage('userApply', {
         photo = await Cloud.uploadPhoto.with({id: this.applyID, photo: resizedimage});
       } catch (e) {
         console.log(e);// TODO: show toast
+        // eslint-disable-next-line no-undef
         ShowTip('图片上传失败','danger');
       }
 
@@ -213,6 +214,7 @@ parasails.registerPage('userApply', {
       }
 
       if (!valid) {
+        // eslint-disable-next-line no-undef
         ShowTip('请检查填写的信息','danger');
         return;
       }
@@ -230,6 +232,7 @@ parasails.registerPage('userApply', {
       // this.saveForm();
       // this.photo = this.formData.photo;
       if (showTip) {
+        // eslint-disable-next-line no-undef
         ShowTip('保存成功！','success');
         this.showSubmitBtn = true;
       }
@@ -293,16 +296,19 @@ parasails.registerPage('userApply', {
       this.saveForm();
 
       if (!this.applyID) {
+        // eslint-disable-next-line no-undef
         ShowTip('还未保存，请点击保存！','danger');
         return;
       }
 
       if (this.photoFile) {
+        // eslint-disable-next-line no-undef
         ShowTip('照片还未保存，请点击保存！','danger');
         return;
       }
 
       if(!this.imageUrl) {
+        // eslint-disable-next-line no-undef
         ShowTip('请先上传照片！','danger');
         return;
       }
@@ -321,11 +327,13 @@ parasails.registerPage('userApply', {
             e.responseInfo.body.code &&
             e.responseInfo.body.code === 'E_DEADLINE') {
           err = true;
+          // eslint-disable-next-line no-undef
           ShowTip('已过报名截止时间！','danger');
         } else {
           throw e;
         }
       }
+      // eslint-disable-next-line no-undef
       if(!err) { ShowTip('提交成功！','success'); }
       this.getApplyForm();
       this.showConfirmModel = false;
@@ -374,6 +382,7 @@ parasails.registerPage('userApply', {
       let reg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
       let tmp = this.formData.IDNumber;
       if (!reg.test(tmp)) {
+        // eslint-disable-next-line no-undef
         ShowTip('身份证号码格式错误！请修改','danger');
         return;
       }

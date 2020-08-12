@@ -57,6 +57,7 @@ parasails.registerPage('schoolDashboard', {
   methods: {
     downloadAppl: async function() {
       if(!this.applyList.length){
+        // eslint-disable-next-line no-undef
         ShowTip('无可导出记录','danger');
         return;
       }
@@ -121,6 +122,7 @@ parasails.registerPage('schoolDashboard', {
           e.responseInfo.body &&
           e.responseInfo.body.code &&
           e.responseInfo.body.code === 'E_DEADLINE') {
+          // eslint-disable-next-line no-undef
           ShowTip('已过审核截止时间！','danger');
         } else {
           throw e;
@@ -141,7 +143,9 @@ parasails.registerPage('schoolDashboard', {
 
     setOrder: async function() {
       this.orderInput = false;
+      // eslint-disable-next-line no-undef
       if(!isNonNegativeInteger(this.applyOrder)){
+        // eslint-disable-next-line no-undef
         ShowTip('请输入一个>=0的数字！','danger');
         return;
       }
