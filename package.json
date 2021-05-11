@@ -14,7 +14,7 @@
     "docxtemplater-image-module": "^3.1.0",
     "exceljs": "^4.0.0",
     "libreoffice-convert": "^1.0.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "nodemailer": "^6.4.8",
     "nodemailer-sendcloud-transport": "0.0.2",
     "pizzip": "^3.0.6",
